@@ -9,9 +9,13 @@ import {
     DeviceScreen,
     SignUpScreen
 } from "./screens";
+import { Logs } from "expo";
 const Stack = createNativeStackNavigator();
 
-export default function App() {
+Logs.enableExpoCliLogging()
+ 
+export default function App() {    
+
     return (
         <NavigationContainer>
             <Stack.Navigator
