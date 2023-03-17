@@ -28,6 +28,9 @@ class MQTTClient {
             callback(topic, JSON.parse(message));
         });
     }
+    async end() {
+        this.client.end();
+    }
 
     async publish(feedId, value) {
         await this.client.publish(

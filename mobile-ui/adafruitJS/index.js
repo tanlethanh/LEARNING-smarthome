@@ -4,8 +4,8 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
-const username = "soviteam";
-const key = "aio_gsLe23BYsR5XWosGwr2Ynj7JRhQH";
+const username = "pvbt2002";
+const key = "aio_qyCi55L35J5zcVd15j6gpfIYYwd7";
 
 const httpClient = new HTTPClient(username, key);
 
@@ -15,14 +15,13 @@ try {
     const feeds = await httpClient.Feeds.getFeeds();
     const feedData = await httpClient.Feeds.getFeedById(feeds[0].id);
     const resFeed = await httpClient.Feeds.createData(feeds[0].id, 9999);
-    console.log(resFeed);
+    console.log(feeds);
 
     await mqttClient.connect();
 
     console.log("started");
 
     await mqttClient.subcribeFeed(feeds[0].id);
-
     mqttClient.onMessage((topic, message) => {
         console.log(topic);
         console.log(message);
