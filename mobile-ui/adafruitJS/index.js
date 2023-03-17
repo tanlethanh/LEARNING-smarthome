@@ -1,15 +1,12 @@
-import { HTTPClient, MQTTClient } from "./client/index.js";
+import { HTTPClient, MQTTClient2 } from "./client/index.js";
 
 import * as dotenv from "dotenv";
 
 dotenv.config();
 
-const username = "soviteam";
-const key = "aio_gsLe23BYsR5XWosGwr2Ynj7JRhQH";
-
 const httpClient = new HTTPClient(username, key);
 
-const mqttClient = new MQTTClient(username, key);
+const mqttClient = new MQTTClient2(username, key);
 
 try {
     const feeds = await httpClient.Feeds.getFeeds();

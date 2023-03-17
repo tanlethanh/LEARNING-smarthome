@@ -2,7 +2,7 @@ import FanScreen from "./Fan";
 import AirConditionerScreen from "./AirConditioner";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import TabBar from "./TabBar";
-import { adafruitClient } from "../../hooks/adafruit";
+// import { adafruitClient } from "../../hooks/adafruit";
 import { useEffect } from "react";
 // import { Client } from "../../hooks/adafruit";
 
@@ -13,7 +13,7 @@ function DeviceScreen({ navigator }) {
         console.log("Hello world");
         // const adafruitClient = Client();
         // adafruitClient.helloWord();
-        console.log(adafruitClient)
+        // console.log(adafruitClient)
     }, []);
     return (
         <DeviceTab.Navigator

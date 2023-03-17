@@ -10,11 +10,52 @@ import {
     SignUpScreen
 } from "./screens";
 import { Logs } from "expo";
+import { HTTPClient, MQTTClient2 } from "./adafruitJS/client";
+import { useEffect } from "react";
 const Stack = createNativeStackNavigator();
 
-Logs.enableExpoCliLogging()
- 
-export default function App() {    
+Logs.enableExpoCliLogging();
+
+export default function App() {
+    useEffect(() => {
+        async function test() {
+            try {
+                const username = "soviteam";
+                const key = "";
+
+                const httpClient = new HTTPClient(username, key);
+
+                const mqttClient = new MQTTClient2(username, key);
+
+                const feeds = await httpClient.Feeds.getFeeds();
+                const feedData = await httpClient.Feeds.getFeedById(
+                    feeds[0].id
+                );
+                const resFeed = await httpClient.Feeds.createData(
+                    feeds[0].id,
+                    9999
+                );
+                console.log(resFeed);
+
+                await mqttClient.connect();
+
+                console.log("started");
+
+                await mqttClient.subcribeFeed(feeds[0].id);
+
+                mqttClient.onMessage((topic, message) => {
+                    console.log(topic);
+                    console.log(message);
+                });
+
+                const res = await mqttClient.publish(feeds[0].id, 99);
+                console.log(res);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        test();
+    }, []);
 
     return (
         <NavigationContainer>
