@@ -10,7 +10,7 @@ import {
     SignUpScreen
 } from "./screens";
 import { Logs } from "expo";
-import { HTTPClient, MQTTClient2 } from "./adafruitJS/client";
+import { HTTPClient, MQTTClient } from "./adafruitJS/client";
 import { useEffect } from "react";
 const Stack = createNativeStackNavigator();
 
@@ -21,11 +21,11 @@ export default function App() {
         async function test() {
             try {
                 const username = "soviteam";
-                const key = "";
+                const key = "aio_TlyU69nbmatgCtoF9cycE7jBR0IN";
 
                 const httpClient = new HTTPClient(username, key);
 
-                const mqttClient = new MQTTClient2(username, key);
+                const mqttClient = new MQTTClient(username, key);
 
                 const feeds = await httpClient.Feeds.getFeeds();
                 const feedData = await httpClient.Feeds.getFeedById(
@@ -33,23 +33,22 @@ export default function App() {
                 );
                 const resFeed = await httpClient.Feeds.createData(
                     feeds[0].id,
-                    9999
+                    100
                 );
                 console.log(resFeed);
 
-                await mqttClient.connect();
+                await mqttClient.connect(() => {
+                    console.log("started");
 
-                console.log("started");
+                    mqttClient.subcribeFeed(feeds[0].id);
 
-                await mqttClient.subcribeFeed(feeds[0].id);
+                    mqttClient.onMessage((message) => {
+                        console.log(message);
+                    });
 
-                mqttClient.onMessage((topic, message) => {
-                    console.log(topic);
-                    console.log(message);
+                    const res = mqttClient.publish(feeds[0].id, 99);
+                    console.log(res);
                 });
-
-                const res = await mqttClient.publish(feeds[0].id, 99);
-                console.log(res);
             } catch (error) {
                 console.log(error);
             }

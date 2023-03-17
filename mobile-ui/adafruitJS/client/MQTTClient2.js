@@ -14,11 +14,12 @@ class MQTTClient2 {
     }
 
     async connect() {
+        console.log("connecting")
         this.client = await MQTT.createClient({
             uri: "mqtts://io.adafruit.com:8883",
             auth: true,
-            user: username,
-            pass: apiKey
+            user: this.username,
+            pass: this.apiKey
         });
         this.client.connect();
         this.client.on("closed", function () {
@@ -34,6 +35,7 @@ class MQTTClient2 {
     }
 
     async subcribeFeed(feedId) {
+        console.log("subcribeFeed")
         await this.client.subscribe(`${this.username}/feeds/${feedId}`, 0);
     }
 
@@ -44,6 +46,7 @@ class MQTTClient2 {
     }
 
     async publish(feedId, value) {
+        console.log("publish")
         await this.client.publish(
             `${this.username}/feeds/${feedId}`,
             value,
