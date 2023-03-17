@@ -4,6 +4,8 @@ class MQTTClient {
     apiKey;
     client;
     listSubs;
+    connected = false;
+    conn = undefined;
 
     constructor(username, apiKey) {
         this.username = username;
@@ -13,21 +15,29 @@ class MQTTClient {
         // io.adafruit.com mqtts://io.adafruit.com:8883
     }
 
-    async connect(callback) {
-        this.client.connect({
-            onSuccess: () => {
-                console.log("Connected to MQTT broker.");
-                if (callback) {
-                    console.log("callback")
-                    callback()
-                }
-            },
-            onFailure: (error) => {
-                console.error("Failed to connect to MQTT broker: ", error);
-            },
-            userName: this.username,
-            password: this.apiKey
-        });
+    async connect() {
+        if (!this.connected) {
+            return new Promise((resolve, reject) => {
+                this.client.connect({
+                    onSuccess: (conn) => {
+                        console.log("Connected to MQTT broker.");
+                        this.conn = conn;
+                        this.connected = true;
+                        resolve(conn);
+                    },
+                    onFailure: (error) => {
+                        console.error(
+                            "Failed to connect to MQTT broker: ",
+                            error
+                        );
+                        reject(error);
+                    },
+                    userName: this.username,
+                    password: this.apiKey
+                });
+            });
+        }
+        return this.conn;
     }
 
     async subcribeFeed(feedId) {

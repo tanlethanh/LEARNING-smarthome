@@ -21,7 +21,7 @@ export default function App() {
         async function test() {
             try {
                 const username = "soviteam";
-                const key = "aio_TlyU69nbmatgCtoF9cycE7jBR0IN";
+                const key = "aio_qPwH91lNCZIj3AYLWkm5PJVQoora";
 
                 const httpClient = new HTTPClient(username, key);
 
@@ -37,18 +37,19 @@ export default function App() {
                 );
                 console.log(resFeed);
 
-                await mqttClient.connect(() => {
-                    console.log("started");
+                // Remember to put this line into try catch block
+                const conn = await mqttClient.connect();
+                console.log(conn);
+                console.log("started");
 
-                    mqttClient.subcribeFeed(feeds[0].id);
+                mqttClient.subcribeFeed(feeds[0].id);
 
-                    mqttClient.onMessage((message) => {
-                        console.log(message);
-                    });
-
-                    const res = mqttClient.publish(feeds[0].id, 99);
-                    console.log(res);
+                mqttClient.onMessage((message) => {
+                    console.log(message);
                 });
+
+                const res = mqttClient.publish(feeds[0].id, 99);
+                console.log(res);
             } catch (error) {
                 console.log(error);
             }
