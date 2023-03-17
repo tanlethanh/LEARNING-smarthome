@@ -65,9 +65,14 @@ class MQTTClient {
     }
 
     async publish(feedId, value) {
-        const message = new Paho.Message(JSON.stringify(value));
-        message.destinationName = `${this.username}/feeds/${feedId}`;
-        this.client.send(message);
+        if (this.client.isConnected()) {
+            const message = new Paho.Message(JSON.stringify(value));
+            message.destinationName = `${this.username}/feeds/${feedId}`;
+            this.client.send(message);
+        }
+        else {
+            console.log('MQTT is not connected');
+        }
     }
 }
 

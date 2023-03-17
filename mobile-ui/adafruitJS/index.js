@@ -9,7 +9,7 @@ const key = "aio_qyCi55L35J5zcVd15j6gpfIYYwd7";
 
 const httpClient = new HTTPClient(username, key);
 
-const mqttClient = new MQTTClient(username, key);
+// const mqttClient = new MQTTClient(username, key);
 
 try {
     const feeds = await httpClient.Feeds.getFeeds();
@@ -17,18 +17,18 @@ try {
     const resFeed = await httpClient.Feeds.createData(feeds[0].id, 9999);
     console.log(feeds);
 
-    await mqttClient.connect();
+    // await mqttClient.connect();
 
-    console.log("started");
+    // console.log("started");
 
-    await mqttClient.subcribeFeed(feeds[0].id);
-    mqttClient.onMessage((topic, message) => {
-        console.log(topic);
-        console.log(message);
-    });
+    // await mqttClient.subcribeFeed(feeds[0].id);
+    // mqttClient.onMessage((topic, message) => {
+    //     console.log(topic);
+    //     console.log(message);
+    // });
 
-    const res = await mqttClient.publish(feeds[0].id, 99);
-    console.log(res);
+    // const res = await mqttClient.publish(feeds[0].id, 99);
+    // console.log(res);
 } catch (error) {
     console.log(error);
 }
