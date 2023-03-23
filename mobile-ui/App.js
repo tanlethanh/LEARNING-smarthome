@@ -12,9 +12,11 @@ import {
 import { Logs } from "expo";
 import { HTTPClient, MQTTClient } from "./adafruitJS/client";
 import { useEffect } from "react";
-const Stack = createNativeStackNavigator();
 
-Logs.enableExpoCliLogging();
+const Stack = createNativeStackNavigator();
+// console.log(Config)
+
+
 
 export default function App() {
     // useEffect(() => {
@@ -56,7 +58,6 @@ export default function App() {
     //     }
     //     test();
     // }, []);
-
     return (
         <NavigationContainer>
             <Stack.Navigator

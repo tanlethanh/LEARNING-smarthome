@@ -6,11 +6,10 @@ import Slider from "@react-native-community/slider";
 function Fan({ powerState, callback }) {
     const [power, setPower] = useState(powerState)
     const handleToggle = () => {
-        console.log("toogle, powerstate: ",powerState);
         callback(powerState == 0 ? 2 : 0);
     }
     
-    useEffect(() => {console.log("hello"); setPower(powerState)}, [powerState])
+    useEffect(() => {setPower(powerState)}, [powerState])
     return (
         <View className="flex flex-col w-full h-full items-center bg-white py-2 px-3">
             <View className="flex flex-row justify-between items-center px-2.5 w-full">

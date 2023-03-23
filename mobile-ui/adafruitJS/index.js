@@ -5,7 +5,7 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 const username = "pvbt2002";
-const key = "aio_qyCi55L35J5zcVd15j6gpfIYYwd7";
+const key = "aio_fQgz28z4vEZnLRaqhWGIbxTOI6rZ";
 
 const httpClient = new HTTPClient(username, key);
 

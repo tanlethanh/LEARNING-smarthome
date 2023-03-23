@@ -3,21 +3,22 @@ import LampScreen from './Lamp'
 import AirConditionerScreen from "./AirConditioner";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import TabBar from "./TabBar";
-
+// import Config from 'react-native-config'
 import { useEffect, useState, useContext, createContext } from "react";
-// import { Client } from "../../hooks/adafruit";
 import { HTTPClient, MQTTClient } from "../../adafruitJS/client"
+import {REACT_APP_AIO_USERNAME, REACT_APP_AIO_KEY} from '@env';
 import mqtt from "sp-react-native-mqtt";
 const DeviceTab = createBottomTabNavigator();
 
-const username = "pvbt2002";
-const key = "aio_qyCi55L35J5zcVd15j6gpfIYYwd7";
+const username = REACT_APP_AIO_USERNAME;
+const key = REACT_APP_AIO_KEY;
+
+export const DeviceContext = createContext(null)
 const mqttClient = new MQTTClient(username, key);
 const httpClient = new HTTPClient(username, key);
-export const DeviceContext = createContext(null)
+
 console.log("Construct client");
 function DeviceScreen({ navigator }) {
-    const [message, setMessage] = useState(null)
     const [fanValue, setFanValue] = useState(2)
     const [lampValue, setLampValue] = useState(50)
     const [feeds, setFeeds] = useState([])
@@ -30,9 +31,16 @@ function DeviceScreen({ navigator }) {
         mqttClient: mqttClient,
         httpClient: httpClient,
     }
-
+    const handleOnMessage = (topic, message) => {
+        // console.log("topic: ",topic);
+        const destinationName = topic.destinationName;
+        // console.log(destinationName);
+        const arr = destinationName.split('/').at(-1)
+        console.log(arr);
+    }
     useEffect(() => {
         const getConnect = async() => {
+
             const feeds = await httpClient.Feeds.getFeeds();
             // console.log(feeds);
             setFeeds(feeds)
@@ -42,40 +50,16 @@ function DeviceScreen({ navigator }) {
             } catch (err) {
                 console.log(err);
             }
-            feedid = feeds.find(o => o.key == 'aiot-light').id
-            await mqttClient.subcribeFeed(feedid)
-            // feeds.map(async (feed)=> {
-            // if (feed.key === 'aiot-fan' || feed.key === 'aiot-fan') {
-            //     await mqttClient.subcribeFeed(feed.id);
-            //     console.log("Sub", feed.id);
-            //     }
-            // })
+            feeds.map(async (feed) => {
+                await mqttClient.subcribeFeed(feed.id)
+            })
+            // feedid = feeds.find(o => o.key == 'aiot-light').id;
+            // await mqttClient.subcribeFeed(feedid);
+            mqttClient.onMessage(handleOnMessage);
         }
         getConnect();
-        // const simulate = () => {
-        //     setInterval(() => {
-        //         const receivedData = Math.floor(Math.random() * 3);
-        //         console.log("New fan value: ", receivedData);
-        //         setFanValue(receivedData);
-        //         console.log("Current fan", fanValue);
-        //     }, 3000)
-        // }
-        // simulate();
-        mqttClient.onMessage((topic, message) => {
-            const arr = topic.split('/')
-            const id = arr.pop()
-            const deviceKey = feeds.find(object => object.id == id).key
-            if (deviceKey == 'aiot-fan') {
-                setFanValue(message)
-            }
-            // } else if (deviceKey == 'aiot-light') {
-            //     setLampValue(message)
-            // }
-        })
-        // return () => {
-        //     mqttClient.end();
-        // }
     }, []);
+    // useEffect(()=> {
     return (
         <DeviceContext.Provider value={device}>
             <DeviceTab.Navigator

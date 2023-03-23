@@ -10,7 +10,6 @@ export default function FanScreen({ navigation }) {
     const setFanvalue = deviceContext.setFanValue
     const mqttClient = deviceContext.mqttClient
     const feedid = deviceContext.feeds.find(o => o.key == 'aiot-fan').id
-    // console.log(feed);
     useEffect(() => {
         // console.log("assync: ", fanvalue);
         // console.log("rerender fan screen when fanvalue:", fanvalue);
