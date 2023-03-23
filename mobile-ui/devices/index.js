@@ -2,9 +2,10 @@ import { HTTPClient, MQTTClient } from "../adafruitJS/client";
 import { randInt } from "../utils/numberUtils";
 import { updateFan } from "./fan";
 import { store } from "../store";
+import { updateSample } from "./sample";
 
 const username = "soviteam";
-const key = "aio_pvjP63JJfAnTEVLFK04gUmKliTJS";
+const key = "";
 const httpClient = new HTTPClient(username, key);
 const mqttClient = new MQTTClient(username, key);
 
@@ -21,13 +22,17 @@ const initAllDevice = async () => {
         await mqttClient.subcribeFeed(feeds[0].id, (message) => {
             store.dispatch(updateFan(Number(message.payloadString)));
         });
-    
+
+        await mqttClient.subcribeFeed(feeds[1].id, (message) => {
+            store.dispatch(updateSample(Number(message.payloadString)));
+        });
+
         // Sample of public
-        for (let i = 0; i < 2; i++) {
-            const value = randInt(1, 10);
-            console.log("publish " + value);
-            await mqttClient.publish(feeds[0].id, value);
-        }
+        // for (let i = 0; i < 2; i++) {
+        //     const value = randInt(1, 10);
+        //     console.log("publish " + value);
+        //     await mqttClient.publish(feeds[0].id, value);
+        // }
     } catch (error) {
         console.log("Erorr: " + error);
     }
