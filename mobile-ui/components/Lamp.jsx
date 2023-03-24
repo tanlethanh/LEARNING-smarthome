@@ -10,7 +10,6 @@ function Lamp({ powerState, callback }) {
         callback(powerState == 0 ? 50 : 0);
     }
     useEffect(() => {
-        console.log("hello"); setpower(powerState)
     },
         [powerState])
 
