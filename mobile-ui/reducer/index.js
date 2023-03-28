@@ -28,22 +28,6 @@ const initAllDevice = async () => {
 
         })
 
-        // await mqttClient.subcribeFeed(feeds[1].id, (message) => {
-        //     store.dispatch(updateSample(Number(message.payloadString)));
-        // });
-        // feeds.map(async (feed) => {
-        //     await mqttClient.subcribeFeed(feed.id, (message) => {
-        //         store.dispatch(update)
-        //     })
-        // })
-
-
-        // Sample of public
-        // for (let i = 0; i < 2; i++) {
-        //     const value = randInt(1, 10);
-        //     console.log("publish " + value);
-        //     await mqttClient.publish(feeds[0].id, value);
-        // }
     } catch (error) {
         console.log("Erorr: " + error);
     }
