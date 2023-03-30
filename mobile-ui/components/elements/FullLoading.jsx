@@ -9,6 +9,6 @@ import Lottie from 'lottie-react-native'
 
 export const FullLoading = () => {
     return <View className="h-screen w-screen flex flex-col justify-center items-center">
-        <Lottie source={require('../../assets/smart-home.json')} autoPlay loop w={100} h={100}/>
+        <Lottie source={require('../../assets/smart-home.json')} autoPlay loop w={40} h={40}/>
     </View>
 }
