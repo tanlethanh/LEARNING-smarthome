@@ -1,26 +1,23 @@
-import { Alert, Image, Text, View, ViewBase } from 'react-native'
-import React, { useState } from 'react'
-import Slider from '@react-native-community/slider'
-import ToggleSwitch from 'toggle-switch-react-native'
 
-function Fan ({ powerState }) {
-    const [isOn, setIsOn] = useState(powerState)
-    const toggleState = () => {
-        if (isOn == true) {
-            setpower(0)
-        }
-        setIsOn((previousState) => !previousState)
+import { Text, View, ViewBase, Alert, Image } from "react-native";
+import React, { useState, useEffect } from "react";
+import ToggleSwitch from "toggle-switch-react-native";
+import Slider from "@react-native-community/slider";
 
-        // alert("Toggled")
+function Fan({ powerState, callback }) {
+    const [power, setPower] = useState(powerState)
+    const handleToggle = () => {
+        callback(powerState == 0 ? 2 : 0);
     }
-    const [power, setpower] = useState(0)
+    
+    useEffect(() => {setPower(powerState)}, [powerState])
     return (
         <View className="flex flex-col w-full h-full items-center bg-white py-2 px-3">
             <View className="flex flex-row justify-between items-center px-2.5 w-full">
                 <Text className="font-semibold text-gray-700 text-xl">
-                    {isOn ? 'On' : 'Off'}
+                    {powerState != 0 ? "On" : "Off"}
                 </Text>
-                <ToggleSwitch isOn={isOn} onToggle={toggleState}></ToggleSwitch>
+                <ToggleSwitch isOn={powerState != 0} onToggle={handleToggle}></ToggleSwitch>
             </View>
             <View className="flex justify-center items-center w-72 h-72">
                 <Image
@@ -35,11 +32,9 @@ function Fan ({ powerState }) {
                     style={{ width: 200, height: 40 }}
                     minimumValue={0}
                     maximumValue={3}
-                    value={power}
-                    onValueChange={(value) => {
-                        setpower(value)
-                    }}
-                    disabled={!isOn}
+                    value={powerState}
+                    onValueChange={(newValue) => { callback(newValue) }}
+                    disabled={powerState == 0}
                     step={1}
                 ></Slider>
                 <Text>High</Text>

@@ -12,7 +12,7 @@ module.exports = function (api) {
                     components: ['tamagui'],
                     config: './tamagui.config.js',
                     logTimings: true
-                }
+                },
             ],
             [
                 'transform-inline-environment-variables',
@@ -20,7 +20,17 @@ module.exports = function (api) {
                     include: 'TAMAGUI_TARGET'
                 }
             ],
-            'react-native-reanimated/plugin'
+            'react-native-reanimated/plugin',
+            [
+                "module:react-native-dotenv", {
+                     "envName": "APP_ENV",
+                      "moduleName": "@env",
+                      "path": ".env",
+                      "safe": false,
+                      "allowUndefined": true,
+                      "verbose": false
+                 }
+            ]
         ]
     }
 }

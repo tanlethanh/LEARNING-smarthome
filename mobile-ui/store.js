@@ -1,10 +1,11 @@
-import { configureStore } from '@reduxjs/toolkit'
-import fanReducer from './devices/fan'
-import sampleReducer from './devices/sample'
-
+import { configureStore } from "@reduxjs/toolkit";
+import fanReducer from "./reducer/fan";
+import deviceReducer from "./reducer/devices";
+import { mqttClient } from "./reducer";
+import  mqttMiddleWare  from "./mqttMiddleWare";
 export const store = configureStore({
     reducer: {
-        fan: fanReducer,
-        sample: sampleReducer
-    }
-})
+        devices: deviceReducer
+    },
+    middleware: [mqttMiddleWare(mqttClient)]
+});
