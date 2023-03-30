@@ -7,19 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { store } from "../../store";
 import { updateDeviceState , publishDeviceState} from "../../reducer/devices";
 export default  FanScreen = ({route, navigation })=> {
-    // const fanValue = useSelector(selectFan);
-    // const dispatch = useDispatch();
-    // const updateFanValue = (value) => {
-    //     console.log("Receive new value");
-    //     dispatch(updateFan(value));
-    //     if (value != fanValue) {
-    //         console.log("Publish value");
-    //         dispatch({type:"publish", payload: {
-    //             id: '',
-    //             value: 2,
-    //         }})``
-    //     }
-    // }
+
     const {deviceId} = route.params; 
     const fanValue = useSelector((state) => state.devices.devicesList.find((device)=> (Number(device.deviceId) == Number(deviceId))).value);
     const dispatch = useDispatch();
@@ -37,3 +25,4 @@ export default  FanScreen = ({route, navigation })=> {
         </DeviceLayout>
     );
 }
+

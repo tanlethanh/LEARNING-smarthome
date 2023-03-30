@@ -1,18 +1,16 @@
-import { View, Text, Button, StyleSheet } from "react-native";
-import { StatusBar } from "expo-status-bar";
-import { SafeAreaView } from "react-native-safe-area-context";
-import Lamp from "./Lamp";
-import Fan from "./Fan";
-function Device({ navigation , device}) {
-    if (device == "Fan"){
+import { Button, StyleSheet, Text, View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { StatusBar } from 'expo-status-bar'
+import Fan from './Fan'
+import Lamp from './Lamp'
+function Device ({ navigation, device }) {
+    if (device == 'Fan') {
         return <Fan powerState={false}></Fan>
-    }
-    else if (device =="Lamp") {
+    } else if (device == 'Lamp') {
         return (
             <Lamp powerState={false}></Lamp>
         )
-
     }
 }
 
-export default Device ;
+export default Device

@@ -1,3 +1,4 @@
+
 import { Text, View, ViewBase, Alert, Image } from "react-native";
 import React, { useState, useEffect } from "react";
 import ToggleSwitch from "toggle-switch-react-native";
@@ -21,7 +22,7 @@ function Fan({ powerState, callback }) {
             <View className="flex justify-center items-center w-72 h-72">
                 <Image
                     className="w-52 h-52 mix-blend-multiply"
-                    source={require("../assets/fan.png")}
+                    source={require('../assets/fan.png')}
                 ></Image>
             </View>
             <Text>Current level: {power}</Text>
@@ -39,6 +40,6 @@ function Fan({ powerState, callback }) {
                 <Text>High</Text>
             </View>
         </View>
-    );
+    )
 }
-export { Fan };
+export { Fan }

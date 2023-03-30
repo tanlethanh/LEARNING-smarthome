@@ -1,0 +1,17 @@
+name: Lint
+
+on: [push]
+
+jobs:
+  eslint:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install modules
+        run: |
+          cd mobile-ui
+          npm install
+      - name: Run ESLint
+        run: |
+          cd mobile-ui
+          npm run lint

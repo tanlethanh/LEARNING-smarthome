@@ -1,12 +1,12 @@
-import { Text, View, TouchableOpacity } from "react-native";
-import React, { Component } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { AuthLayout } from "../layouts";
-import { Input } from "../components";
-import { AuthButton } from "../components";
-import { TextInput } from "react-native-gesture-handler";
+import { AuthButton, Input } from '../components'
+import { AuthLayout } from '../layouts'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { Text, TouchableOpacity, View } from 'react-native'
+import React, { Component } from 'react'
 
-export function LoginScreen() {
+import { TextInput } from 'react-native-gesture-handler'
+
+export function LoginScreen () {
     return (
         <AuthLayout
             title="Smarthome Login"
@@ -30,5 +30,5 @@ export function LoginScreen() {
                 </Text>
             </TouchableOpacity>
         </AuthLayout>
-    );
+    )
 }

@@ -10,8 +10,7 @@ function Lamp({ powerState, callback }) {
         callback(powerState == 0 ? 50 : 0);
     }
     useEffect(() => {
-    },
-        [powerState])
+    }, [powerState])
 
     return (
         <View className="flex flex-col w-full h-full items-center bg-white py-5">
@@ -24,7 +23,7 @@ function Lamp({ powerState, callback }) {
             <View className="flex justify-center items-center w-72 h-72">
                 <Image
                     className="w-52 h-52 mix-blend-multiply"
-                    source={require("../assets/lamp.png")}
+                    source={require('../assets/lamp.png')}
                 ></Image>
             </View>
             <Text>Current level: {power}</Text>
@@ -39,9 +38,9 @@ function Lamp({ powerState, callback }) {
                     disabled={powerState == 0}
                     step={5}
                 ></Slider>
-                <Image source={require("../assets/lamp_on.png")}></Image>
+                <Image source={require('../assets/lamp_on.png')}></Image>
             </View>
         </View>
-    );
+    )
 }
-export { Lamp };
+export { Lamp }

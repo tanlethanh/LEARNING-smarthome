@@ -98,4 +98,4 @@ function DeviceScreen({ navigator }) {
     );
 }
 
-export { DeviceScreen };
+export { DeviceScreen }
