@@ -53,26 +53,28 @@ class MQTTClient {
             this.client.subscribe(subUrl, {
                 qos: 0,
                 onSuccess: (sub) => {
-                    console.log(`Subscribed to MQTT topic. ${subUrl}`);
-                    resolve(sub);
+                    console.log(`Subscribed to MQTT topic. ${subUrl}`)
+                    resolve(sub)
                 },
                 onFailure: (error) => {
-                    console.error("Failed to subscribe to MQTT topic: ", error);
-                    reject(error);
+                    console.error('Failed to subscribe to MQTT topic: ', error)
+                    reject(error)
                 }
-            });
-        });
+            })
+        })
+    }
 
     async onMessage (callback) {
         this.client.onMessageArrived = (message) => {
-            console.log("onMessage custom");
-            callback(message);
-            this.defautOnMessage(message);
-        };
+            console.log('onMessage custom')
+            callback(message)
+            this.defautOnMessage(message)
+        }
     }
+
     disconnect = () => {
         if (this.client) {
-            this.client.disconnect();
+            this.client.disconnect()
         }
     }
 

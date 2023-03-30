@@ -6,8 +6,8 @@ import ToggleSwitch from 'toggle-switch-react-native'
 function Lamp ({ powerState, callback }) {
     const [power, setpower] = useState(powerState)
     const handleToggle = () => {
-        console.log('toogle, powerstate: ', powerState)
-        callback(powerState == 0 ? 50 : 0)
+        const stateNumber = powerState == 0 ? 50 : 0
+        callback(stateNumber)
     }
     useEffect(() => {
     }, [powerState])

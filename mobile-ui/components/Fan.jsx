@@ -7,7 +7,8 @@ import ToggleSwitch from 'toggle-switch-react-native'
 function Fan ({ powerState, callback }) {
     const [power, setPower] = useState(powerState)
     const handleToggle = () => {
-        callback(powerState == 0 ? 2 : 0)
+        const stateNumber = powerState == 0 ? 2 : 0
+        callback(stateNumber)
     }
 
     useEffect(() => { setPower(powerState) }, [powerState])

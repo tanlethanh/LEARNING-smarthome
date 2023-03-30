@@ -29,6 +29,10 @@ module.exports = {
             ignoreCase: false,
             ignoreMemberSort: false,
             memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single']
-        }]
+        }],
+        'no-case-declarations': 'off',
+        'react/display-name': 'off',
+        'no-undef': 'off',
+        'array-callback-return': 'off'
     }
 }

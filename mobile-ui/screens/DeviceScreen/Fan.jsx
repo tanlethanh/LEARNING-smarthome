@@ -6,6 +6,7 @@ import { publishDeviceState, updateDeviceState } from '../../reducer/devices'
 import { store } from '../../store'
 import { useContext, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+
 export default FanScreen = ({ route, navigation }) => {
     const { deviceId } = route.params
     const fanValue = useSelector((state) => state.devices.devicesList.find((device) => (Number(device.deviceId) == Number(deviceId))).value)
