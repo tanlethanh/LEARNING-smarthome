@@ -1,12 +1,12 @@
-import { View, Text } from "react-native";
-import CardContainer from "./CardContainer";
+import { Text } from 'react-native'
+import CardContainer from './CardContainer'
 
-function AirConditioner() {
+function AirConditioner () {
     return (
         <CardContainer>
-            <Text className=''>Air conditionner</Text>
+            <Text className="">Air conditionner</Text>
         </CardContainer>
-    );
+    )
 }
 
-export { AirConditioner };
+export { AirConditioner }

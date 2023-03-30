@@ -1,8 +1,8 @@
-import { View, Text, Button } from "react-native";
-import { StatusBar } from "expo-status-bar";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Button, Text, View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { StatusBar } from 'expo-status-bar'
 
-function HomeScreen({ navigation }) {
+function HomeScreen ({ navigation }) {
     return (
         <SafeAreaView>
             <View className="flex items-center justify-center bg-slate-500 w-full h-full">
@@ -10,15 +10,15 @@ function HomeScreen({ navigation }) {
                 <StatusBar style="auto" />
                 <Button
                     title="Go to Details"
-                    onPress={() => navigation.navigate("Details")}
+                    onPress={() => navigation.navigate('Details')}
                 />
                 <Button
                     title="Go to Devices"
-                    onPress={() => navigation.navigate("Device")}
+                    onPress={() => navigation.navigate('Device')}
                 />
             </View>
         </SafeAreaView>
-    );
+    )
 }
 
-export { HomeScreen };
+export { HomeScreen }

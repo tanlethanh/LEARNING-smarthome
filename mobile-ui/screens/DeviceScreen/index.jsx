@@ -1,20 +1,20 @@
-import FanScreen from "./Fan";
-import AirConditionerScreen from "./AirConditioner";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import TabBar from "./TabBar";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import AirConditionerScreen from './AirConditioner'
+import FanScreen from './Fan'
+import TabBar from './TabBar'
 // import { adafruitClient } from "../../hooks/adafruit";
-import { useEffect } from "react";
+import { useEffect } from 'react'
 // import { Client } from "../../hooks/adafruit";
 
-const DeviceTab = createBottomTabNavigator();
+const DeviceTab = createBottomTabNavigator()
 
-function DeviceScreen({ navigator }) {
+function DeviceScreen ({ navigator }) {
     useEffect(() => {
-        console.log("Hello world");
+        console.log('Hello world')
         // const adafruitClient = Client();
         // adafruitClient.helloWord();
         // console.log(adafruitClient)
-    }, []);
+    }, [])
     return (
         <DeviceTab.Navigator
             initialRouteName="fan"
@@ -44,7 +44,7 @@ function DeviceScreen({ navigator }) {
                 component={FanScreen}
             ></DeviceTab.Screen>
         </DeviceTab.Navigator>
-    );
+    )
 }
 
-export { DeviceScreen };
+export { DeviceScreen }
