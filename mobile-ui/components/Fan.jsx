@@ -1,21 +1,21 @@
 
-import { Text, View, ViewBase, Alert, Image } from "react-native";
-import React, { useState, useEffect } from "react";
-import ToggleSwitch from "toggle-switch-react-native";
-import Slider from "@react-native-community/slider";
+import { Alert, Image, Text, View, ViewBase } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import Slider from '@react-native-community/slider'
+import ToggleSwitch from 'toggle-switch-react-native'
 
-function Fan({ powerState, callback }) {
+function Fan ({ powerState, callback }) {
     const [power, setPower] = useState(powerState)
     const handleToggle = () => {
-        callback(powerState == 0 ? 2 : 0);
+        callback(powerState == 0 ? 2 : 0)
     }
-    
-    useEffect(() => {setPower(powerState)}, [powerState])
+
+    useEffect(() => { setPower(powerState) }, [powerState])
     return (
         <View className="flex flex-col w-full h-full items-center bg-white py-2 px-3">
             <View className="flex flex-row justify-between items-center px-2.5 w-full">
                 <Text className="font-semibold text-gray-700 text-xl">
-                    {powerState != 0 ? "On" : "Off"}
+                    {powerState != 0 ? 'On' : 'Off'}
                 </Text>
                 <ToggleSwitch isOn={powerState != 0} onToggle={handleToggle}></ToggleSwitch>
             </View>

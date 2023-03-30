@@ -1,15 +1,15 @@
-import FanScreen from "./Fan";
-import LampScreen from "./Lamp";
-import AirConditionerScreen from "./AirConditioner";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import TabBar from "./TabBar";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import AirConditionerScreen from './AirConditioner'
+import FanScreen from './Fan'
+import LampScreen from './Lamp'
+import TabBar from './TabBar'
 // import Config from 'react-native-config'
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Fan } from "../../components";
+import { Fan } from '../../components'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect, useState } from 'react'
 // import { HTTPClient, MQTTClient } from "../../adafruitJS/client"
 // import {REACT_APP_AIO_USERNAME, REACT_APP_AIO_KEY} from '@env';
-const DeviceTab = createBottomTabNavigator();
+const DeviceTab = createBottomTabNavigator()
 
 // const username = REACT_APP_AIO_USERNAME;
 // const key = REACT_APP_AIO_KEY;
@@ -19,7 +19,7 @@ const DeviceTab = createBottomTabNavigator();
 // const httpClient = new HTTPClient(username, key);
 
 // console.log("Construct client");
-function DeviceScreen({ navigator }) {
+function DeviceScreen ({ navigator }) {
     // const [fanValue, setFanValue] = useState(2)
     // const [lampValue, setLampValue] = useState(50)
     // const [feeds, setFeeds] = useState([])
@@ -62,10 +62,10 @@ function DeviceScreen({ navigator }) {
     // }, []);
     // // useEffect(()=> {
     const customCompare = (oldList, newList) => oldList === newList
-    const devices = useSelector((state) => state.devices.devicesList, customCompare);
+    const devices = useSelector((state) => state.devices.devicesList, customCompare)
     return (
-        <>{(devices.length != 0) ?
-            <DeviceTab.Navigator
+        <>{(devices.length != 0)
+            ? <DeviceTab.Navigator
                 // initialRouteName="fan"
                 screenOptions={{
                     headerShown: false
@@ -73,19 +73,19 @@ function DeviceScreen({ navigator }) {
                 tabBar={(props) => <TabBar {...props} />}
             >
                 {devices.map((device) => {
-                    if (device.deviceName === "AIOT_FAN") {
+                    if (device.deviceName === 'AIOT_FAN') {
                         return (<DeviceTab.Screen
                             key={device.deviceId}
                             name={device.deviceName + device.deviceId + device.key}
                             component={FanScreen}
-                            initialParams={{deviceId: device.deviceId}}
+                            initialParams={{ deviceId: device.deviceId }}
                         ></DeviceTab.Screen>)
                     } else if (device.deviceName === 'AIOT_LIGHT') {
                         return (<DeviceTab.Screen
                             key={device.deviceId}
                             name={device.deviceName + device.deviceId + device.key}
                             component={LampScreen}
-                            initialParams={{deviceId: device.deviceId}}
+                            initialParams={{ deviceId: device.deviceId }}
                         ></DeviceTab.Screen>)
                     }
                 }
@@ -95,7 +95,7 @@ function DeviceScreen({ navigator }) {
             : <></>
         }
         </>
-    );
+    )
 }
 
 export { DeviceScreen }
