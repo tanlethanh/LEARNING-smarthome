@@ -29,7 +29,7 @@ class MQTTClient {
                         resolve(conn)
                     },
                     onFailure: (error) => {
-                        console.error(
+                        console.log(
                             'Failed to connect to MQTT broker: ',
                             error
                         )

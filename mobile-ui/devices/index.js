@@ -34,7 +34,7 @@ const initAllDevice = async () => {
         //     await mqttClient.publish(feeds[0].id, value);
         // }
     } catch (error) {
-        console.log('Erorr: ' + error)
+        console.log('Error: ' + error)
     }
 }
 
