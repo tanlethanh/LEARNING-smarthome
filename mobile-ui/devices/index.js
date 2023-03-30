@@ -1,31 +1,31 @@
-import { HTTPClient, MQTTClient } from "../adafruitJS/client";
-import { randInt } from "../utils/numberUtils";
-import { updateFan } from "./fan";
-import { store } from "../store";
-import { updateSample } from "./sample";
+import { HTTPClient, MQTTClient } from '../adafruitJS/client'
+import { randInt } from '../utils/numberUtils'
+import { store } from '../store'
+import { updateFan } from './fan'
+import { updateSample } from './sample'
 
-const username = "soviteam";
-const key = "";
-const httpClient = new HTTPClient(username, key);
-const mqttClient = new MQTTClient(username, key);
+const username = 'soviteam'
+const key = ''
+const httpClient = new HTTPClient(username, key)
+const mqttClient = new MQTTClient(username, key)
 
 const initAllDevice = async () => {
     try {
         // Get all feeds
-        const feeds = await httpClient.Feeds.getFeeds();
+        const feeds = await httpClient.Feeds.getFeeds()
 
         // Remember to put this line into try catch block
-        const conn = await mqttClient.connect();
-        console.log("started");
+        const conn = await mqttClient.connect()
+        console.log('started')
 
         // Subcribe Fan feeds and register dispatch function on message
         await mqttClient.subcribeFeed(feeds[0].id, (message) => {
-            store.dispatch(updateFan(Number(message.payloadString)));
-        });
+            store.dispatch(updateFan(Number(message.payloadString)))
+        })
 
         await mqttClient.subcribeFeed(feeds[1].id, (message) => {
-            store.dispatch(updateSample(Number(message.payloadString)));
-        });
+            store.dispatch(updateSample(Number(message.payloadString)))
+        })
 
         // Sample of public
         // for (let i = 0; i < 2; i++) {
@@ -34,8 +34,8 @@ const initAllDevice = async () => {
         //     await mqttClient.publish(feeds[0].id, value);
         // }
     } catch (error) {
-        console.log("Erorr: " + error);
+        console.log('Erorr: ' + error)
     }
-};
+}
 
-export default initAllDevice;
+export default initAllDevice
