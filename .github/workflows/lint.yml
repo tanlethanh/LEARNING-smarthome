@@ -13,4 +13,5 @@ jobs:
           npm install
       - name: Run ESLint
         run: |
+          cd mobile-ui
           npm run lint
