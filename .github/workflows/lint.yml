@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   eslint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v1
       - name: Install modules
@@ -13,5 +13,4 @@ jobs:
           npm install
       - name: Run ESLint
         run: |
-          cd mobile-ui
           eslint . --ext .js,.jsx,.ts,.tsx
