@@ -9,6 +9,7 @@ import {
 } from './screens'
 import { Logs } from 'expo'
 import { NavigationContainer } from '@react-navigation/native'
+import { Paragraph, Spacer, TamaguiProvider, Theme, YStack } from 'tamagui'
 import { Provider } from 'react-redux'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { store } from './store'
@@ -30,10 +31,6 @@ export default function App () {
         InterBold: require('@tamagui/font-inter/otf/Inter-Bold.otf')
     })
 
-    if (!loaded) {
-        return null
-    }
-
     useEffect(() => {
         initAllDevice()
     }, [])
@@ -44,7 +41,7 @@ export default function App () {
                 <Provider store={store}>
                     <NavigationContainer>
                         <Stack.Navigator
-                            initialRouteName="DeviceScreen"
+                            initialRouteName="Home"
                             screenOptions={{
                                 headerShown: false
                             }}
