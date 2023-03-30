@@ -9,11 +9,12 @@ import {
 } from './screens'
 import { Logs } from 'expo'
 import { NavigationContainer } from '@react-navigation/native'
-import { Paragraph, Spacer, TamaguiProvider, Theme, YStack } from 'tamagui'
 import { Provider } from 'react-redux'
+import { TamaguiProvider, Theme } from 'tamagui'
+import { Text, useColorScheme } from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { store } from './store'
-import { useColorScheme } from 'react-native'
+
 import { useEffect } from 'react'
 import { useFonts } from 'expo-font'
 import config from './tamagui.config'
@@ -36,37 +37,39 @@ export default function App () {
     }, [])
 
     return (
-        <TamaguiProvider config={config}>
-            <Theme name={colorScheme === 'dark' ? 'dark' : 'light'}>
-                <Provider store={store}>
-                    <NavigationContainer>
-                        <Stack.Navigator
-                            initialRouteName="Home"
-                            screenOptions={{
-                                headerShown: false
-                            }}
-                        >
-                            <Stack.Screen name="Home" component={HomeScreen} />
-                            <Stack.Screen
-                                name="Details"
-                                component={DetailsScreen}
-                            />
-                            <Stack.Screen
-                                name="Login"
-                                component={LoginScreen}
-                            />
-                            <Stack.Screen
-                                name="SignUp"
-                                component={SignUpScreen}
-                            />
-                            <Stack.Screen
-                                name="DeviceScreen"
-                                component={DeviceScreen}
-                            />
-                        </Stack.Navigator>
-                    </NavigationContainer>
-                </Provider>
-            </Theme>
-        </TamaguiProvider>
+        loaded
+            ? <TamaguiProvider config={config}>
+                <Theme name={colorScheme === 'dark' ? 'dark' : 'light'}>
+                    <Provider store={store}>
+                        <NavigationContainer>
+                            <Stack.Navigator
+                                initialRouteName="Home"
+                                screenOptions={{
+                                    headerShown: false
+                                }}
+                            >
+                                <Stack.Screen name="Home" component={HomeScreen} />
+                                <Stack.Screen
+                                    name="Details"
+                                    component={DetailsScreen}
+                                />
+                                <Stack.Screen
+                                    name="Login"
+                                    component={LoginScreen}
+                                />
+                                <Stack.Screen
+                                    name="SignUp"
+                                    component={SignUpScreen}
+                                />
+                                <Stack.Screen
+                                    name="DeviceScreen"
+                                    component={DeviceScreen}
+                                />
+                            </Stack.Navigator>
+                        </NavigationContainer>
+                    </Provider>
+                </Theme>
+            </TamaguiProvider>
+            : <Text>Loading</Text>
     )
 }
