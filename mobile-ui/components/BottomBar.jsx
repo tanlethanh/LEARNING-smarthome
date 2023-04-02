@@ -1,11 +1,12 @@
-import { Image, Text, TouchableOpacity, View } from 'react-native'
-// import { SvgUri } from 'react-native-svg'
-// import HomeSvg from '../assets/home.svg'
+import { Button } from 'tamagui'
 import { HomeIcon, UserIcon } from 'react-native-heroicons/solid'
-import { Path, Svg } from 'react-native-svg'
+import { Image, TouchableOpacity, View } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 import React from 'react'
 
 export default function BottomBar () {
+    const navigation = useNavigation()
+
     return (
         <View className="h-[100px] flex flex-row justify-center">
             <TouchableOpacity className="h-24 absolute top-[-6px]">
@@ -16,11 +17,22 @@ export default function BottomBar () {
                 <Image source={require('../assets/left-bt-bar.png')} className="w-[150px]" />
                 <Image source={require('../assets/right-bt-bar.png')} className="w-[150px]" />
             </View>
-            <View className="absolute top-10 left-8">
-                <HomeIcon size={28} fill={'white'}/>
+            <View className="absolute top-8 left-8">
+                <Button
+                    icon={<HomeIcon size={28} fill={'white'}/>}
+                    className="p-0 bg-transparent "
+                    circular={true}
+                    onPress={() => {
+                        navigation.navigate('Home')
+                    }}
+                ></Button>
             </View>
-            <View className="absolute top-10 right-8">
-                <UserIcon size={28} fill={'white'}/>
+            <View className="absolute top-8 right-8">
+                <Button
+                    icon={<UserIcon size={28} fill={'white'}/>}
+                    className="p-0 bg-transparent "
+                    circular={true}
+                ></Button>
             </View>
         </View>
     )
