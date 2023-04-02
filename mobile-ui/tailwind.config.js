@@ -8,7 +8,11 @@ module.exports = {
         './layouts/**/*.{js,jsx,ts,tsx}'
     ],
     theme: {
-        extend: {}
+        extend: {
+            colors: {
+                'main-white': '#EFF1F5'
+            }
+        }
     },
     plugins: []
 }
