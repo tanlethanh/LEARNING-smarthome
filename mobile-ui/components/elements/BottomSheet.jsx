@@ -1,5 +1,6 @@
 import { Button, H1, H2, Input, Paragraph, Text, XStack } from 'tamagui'
 import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker'
 import { Text as RNText, View } from 'react-native'
 import { Sheet } from '@tamagui/sheet'
 import { useState } from 'react'
@@ -65,6 +66,40 @@ export const SheetDemo = ({ children, overlay = true }) => {
 }
 
 function InnerSheet (props) {
+    const setDate = (event, date) => {
+        console.log(date)
+        const {
+            type,
+            nativeEvent: { timestamp }
+        } = event
+    }
+
+    //  New version
+    const [date, setDate2] = useState(new Date())
+
+    const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate
+        setDate2(currentDate)
+    }
+
+    const showMode = (currentMode) => {
+        DateTimePickerAndroid.open({
+            value: date,
+            onChange,
+            mode: currentMode,
+            is24Hour: true
+        })
+    }
+
+    const showDatepicker = () => {
+        showMode('date')
+    }
+
+    const showTimepicker = () => {
+        console.log('Here')
+        showMode('time')
+    }
+
     return (
         <Sheet modal snapPoints={[90]} dismissOnSnapToBottom {...props}>
             <Sheet.Overlay />
@@ -80,6 +115,16 @@ function InnerSheet (props) {
                     />
                     <H1>Hello world</H1>
                     <H2>You can scroll me</H2>
+                    {/* <RNDateTimePicker
+                        onChange={setDate}
+                        value={new Date()}
+                        mode='time'
+                    /> */}
+                    <View>
+                        {/* <Button onPress={showDatepicker} title="Show date picker!" /> */}
+                        <Button onPress={() => { showTimepicker() }} title="Show time picker!">Time</Button>
+                        <Text>selected: {date.toLocaleString()}</Text>
+                    </View>
                     {[1, 2, 3].map((i) => (
                         <Paragraph key={i} size="$10">
               Eu officia sunt ipsum nisi dolore labore est laborum laborum in esse ad
