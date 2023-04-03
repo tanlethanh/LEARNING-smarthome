@@ -64,7 +64,7 @@ export default function App () {
                                         component={SignUpScreen}
                                     />
                                     <Stack.Screen
-                                        name="DeviceScreen"
+                                        name="Device"
                                         component={DeviceScreen}
                                     />
                                 </Stack.Navigator>
