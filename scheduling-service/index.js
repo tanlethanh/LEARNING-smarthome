@@ -3,7 +3,7 @@ import cors from 'cors'
 import * as dotenv from 'dotenv'
 import mongoose from 'mongoose'
 import bodyParser from 'body-parser'
-import * as cronJob from './providers/cronJob.js'
+import { getAllSchedulings, addNewSchedulings, getSchedulingById } from './controllers/cronJob.js'
 
 const app = express()
 
@@ -32,27 +32,18 @@ mongoose.connect(process.env.DB_URI).then((conn) => {
 const schedulingApi = express.Router('/scheduling')
 
 schedulingApi
-    .get((req, res) => {
-        return res.json({
-            message: 'Hello world'
-        })
-    })
-    .post((req, res) => {
-        return res.json({
-            message: 'Hello world'
-        })
-    })
+    .get(getAllSchedulings)
+    .post(addNewSchedulings)
     .delete('/:jobId', (req, res) => {
         return res.json({
             message: 'Hello world'
         })
-    }).get('/:jobId', (req, res) => {
-        return res.json({
-            message: 'Hello world'
-        })
-    })
+    }).get('/:jobId', getSchedulingById)
 
 app.use('/api/v1', schedulingApi)
+
+// Revert on change when restart server
+console.log('Restart all scheduling')
 
 // Lanch app
 const PORT = process.env.PORT || 8080
