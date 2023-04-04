@@ -41,7 +41,7 @@ schedulingApi
     .post(addNewScheduling)
 
 schedulingApi
-    .route('/:jobId')
+    .route('/:schedulingId')
     .delete((req, res) => {
         return res.json({
             message: 'Hello world'
