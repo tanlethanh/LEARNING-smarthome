@@ -18,7 +18,7 @@ const scheduling = new Schema({
     },
     status: {
         type: String,
-        enum: ['INIT', 'DONE', 'FAIL'],
+        enum: ['INIT', 'DONE', 'FAIL', 'CANCEL'],
         default: 'INIT'
     }
 })
