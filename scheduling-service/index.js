@@ -8,7 +8,7 @@ import {
     getAllSchedulings,
     getSchedulingById,
     deleteScheduling
-} from './controllers/cronJob.js'
+} from './controllers/schedulingController.js'
 import morgan from 'morgan'
 import { StatusCodes } from 'http-status-codes'
 
