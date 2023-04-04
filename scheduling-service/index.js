@@ -3,7 +3,7 @@ import cors from 'cors'
 import * as dotenv from 'dotenv'
 import mongoose from 'mongoose'
 import bodyParser from 'body-parser'
-import { addNewScheduling, getSchedulingById } from './controllers/cronJob.js'
+import { addNewScheduling, getAllSchedulings, getSchedulingById } from './controllers/cronJob.js'
 import morgan from 'morgan'
 import { StatusCodes } from 'http-status-codes'
 
@@ -33,23 +33,23 @@ mongoose.connect(process.env.DB_URI).then((conn) => {
 
 // API Route
 
-const schedulingApi = express.Router('/scheduling')
+const schedulingApi = express.Router()
 
 schedulingApi
-    .get('/', (req, res) => {
-        console.log('Here')
-        return res.status(StatusCodes.OK).json({
-            message: 'Hello world'
-        })
-    })
+    .route('/')
+    .get(getAllSchedulings)
     .post(addNewScheduling)
-    .delete('/:jobId', (req, res) => {
+
+schedulingApi
+    .route('/:jobId')
+    .delete((req, res) => {
         return res.json({
             message: 'Hello world'
         })
-    }).get('/:jobId', getSchedulingById)
+    })
+    .get(getSchedulingById)
 
-app.use('/api/v1', schedulingApi)
+app.use('/api/v1/scheduling', schedulingApi)
 
 app.use('*', (req, res) => {
     res.status(StatusCodes.NOT_FOUND).json({
