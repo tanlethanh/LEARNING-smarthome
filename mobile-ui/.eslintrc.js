@@ -33,6 +33,7 @@ module.exports = {
         'no-case-declarations': 'off',
         'react/display-name': 'off',
         'no-undef': 'off',
-        'array-callback-return': 'off'
+        'array-callback-return': 'off',
+        'multiline-ternary': ['error', 'always-multiline']
     }
 }

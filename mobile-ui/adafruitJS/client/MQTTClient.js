@@ -29,10 +29,7 @@ class MQTTClient {
                         resolve(conn)
                     },
                     onFailure: (error) => {
-                        console.log(
-                            'Failed to connect to MQTT broker: ',
-                            error
-                        )
+                        console.log('Failed to connect to MQTT broker: ', error)
                         reject(error)
                     },
                     userName: this.username,

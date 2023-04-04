@@ -45,7 +45,7 @@ export default function App () {
                         <Provider store={store}>
                             <NavigationContainer>
                                 <Stack.Navigator
-                                    initialRouteName="Home"
+                                    initialRouteName="Devices"
                                     screenOptions={{
                                         headerShown: false
                                     }}
@@ -64,7 +64,7 @@ export default function App () {
                                         component={SignUpScreen}
                                     />
                                     <Stack.Screen
-                                        name="DeviceScreen"
+                                        name="Devices"
                                         component={DeviceScreen}
                                     />
                                 </Stack.Navigator>

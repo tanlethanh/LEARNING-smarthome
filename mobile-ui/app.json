@@ -25,6 +25,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "permission": {
+      "android": [
+        "ACCESS_FINE_LOCATION"
+      ]
     }
   }
 }

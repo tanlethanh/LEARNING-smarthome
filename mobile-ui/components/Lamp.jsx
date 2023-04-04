@@ -13,7 +13,7 @@ function Lamp ({ powerState, callback }) {
     }, [powerState])
 
     return (
-        <View className="flex flex-col w-full h-full items-center bg-white py-5">
+        <View className="flex flex-col w-full h-full items-center py-5">
             <View className="flex flex-row justify-between items-center px-2.5 w-full">
                 <Text className="font-semibold text-gray-700 text-xl">
                     {powerState == 1 ? 'On' : 'Off'}

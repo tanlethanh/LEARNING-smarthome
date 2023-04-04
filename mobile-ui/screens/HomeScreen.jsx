@@ -16,7 +16,7 @@ function HomeScreen ({ navigation }) {
                 />
                 <Button
                     title="Go to Devices"
-                    onPress={() => navigation.navigate('Device')}
+                    onPress={() => navigation.navigate('Devices')}
                 />
                 <SheetDemo></SheetDemo>
                 <ToastDemo></ToastDemo>

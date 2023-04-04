@@ -3,7 +3,7 @@ import { DeviceLayout } from '../../layouts'
 import { selectSample, updateSample } from '../../devices/sample'
 import { useDispatch, useSelector } from 'react-redux'
 
-function AirConditionerScreen () {
+const AirConditionerScreen = ({ navigation }) => {
     const dispatch = useDispatch()
     const sampleValue = useSelector(selectSample)
 
@@ -15,4 +15,4 @@ function AirConditionerScreen () {
     )
 }
 
-export default AirConditionerScreen
+export { AirConditionerScreen }

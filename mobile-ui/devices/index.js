@@ -1,11 +1,11 @@
 import { HTTPClient, MQTTClient } from '../adafruitJS/client'
+import { REACT_APP_AIO_KEY, REACT_APP_AIO_USERNAME } from '@env'
 import { randInt } from '../utils/numberUtils'
 import { store } from '../store'
 import { updateFan } from './fan'
 import { updateSample } from './sample'
-
-const username = 'soviteam'
-const key = ''
+const username = REACT_APP_AIO_USERNAME
+const key = REACT_APP_AIO_KEY
 const httpClient = new HTTPClient(username, key)
 const mqttClient = new MQTTClient(username, key)
 
