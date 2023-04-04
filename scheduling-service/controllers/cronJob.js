@@ -2,30 +2,17 @@ import { CronJob } from 'cron'
 import { StatusCodes } from 'http-status-codes'
 import Scheduling from '../models/scheduling.js'
 
-const ALL_JOBS = []
+export const ALL_JOBS = []
 
 class Job {
-    jobId
+    schedulingId
     cronJob
 
-    constructor (jobId, cronJob) {
-        this.jobId = jobId
+    constructor (schedulingId, cronJob) {
+        this.schedulingId = schedulingId
         this.cronJob = cronJob
     }
 }
-
-// const cronTime = new CronTime(new Date())
-
-// console.log(cronTime)
-
-// const timeD = new Date()
-// timeD.setSeconds(timeD.getSeconds() + 2)
-
-// const job = new CronJob(timeD, () => {
-//     console.log('hello world')
-// }, null, true)
-
-// job.stop()
 
 export const getAllSchedulings = (req, res) => {
     return res.status(StatusCodes.OK).json({
@@ -42,7 +29,11 @@ export const addNewScheduling = async (req, res) => {
         })
     }
 
-    const triggerTime = new Date(time)
+    const triggerTime = new Date()
+    triggerTime.setSeconds(triggerTime.getSeconds() + 1)
+
+    // const triggerTime = new Date(time)
+
     console.log(triggerTime.getTime(), Date.now())
 
     if (triggerTime.getTime() < Date.now()) {
@@ -58,9 +49,24 @@ export const addNewScheduling = async (req, res) => {
         value
     })
 
-    const cronJob = new CronJob(triggerTime, () => {
-        console.log('Trigger JOB')
-    }, null, true)
+    const cronJob = new CronJob(
+        triggerTime,
+        function () {
+            console.log('Trigger Job')
+            this.stop()
+        },
+        async function () {
+            // Release job after completing job
+            const jobIndex = ALL_JOBS.findIndex(job => job.cronJob === this)
+
+            await Scheduling.updateOne({
+                _id: ALL_JOBS[jobIndex].schedulingId
+            }, { status: 'DONE' })
+
+            ALL_JOBS.splice(jobIndex, 1)
+            console.log(ALL_JOBS.map(ele => ele.schedulingId))
+            // return ALL_JOBS
+        }, true)
 
     ALL_JOBS.push(new Job(scheduling._id, cronJob))
 
@@ -71,6 +77,14 @@ export const addNewScheduling = async (req, res) => {
 }
 
 export const deleteScheduling = (req, res) => {
+    const { schedulingId } = req.params
+
+    if (!schedulingId) {
+        res.status(StatusCodes.BAD_REQUEST).json({
+            message: 'Invalid scheduling id ' + schedulingId
+        })
+    }
+
     return res.status(StatusCodes.OK).json({
         message: 'Hello world'
     })
