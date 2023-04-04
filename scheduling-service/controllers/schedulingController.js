@@ -1,7 +1,6 @@
 import { CronJob } from 'cron'
 import { StatusCodes } from 'http-status-codes'
 import Scheduling from '../models/scheduling.js'
-import { Types } from 'mongoose'
 
 export const ALL_JOBS = []
 
