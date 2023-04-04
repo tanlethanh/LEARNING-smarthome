@@ -6,14 +6,15 @@ const scheduling = new Schema({
     },
     feed_id: {
         type: String,
-        require: true
+        required: true
     },
     value: {
-        require: true
+        type: String,
+        required: true
     },
     trigger_time: {
         type: Date,
-        require: true
+        required: true
     },
     status: {
         type: String,

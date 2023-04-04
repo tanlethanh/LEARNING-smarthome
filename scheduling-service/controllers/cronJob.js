@@ -1,6 +1,6 @@
 import { CronJob, CronTime } from 'cron'
 import { StatusCodes } from 'http-status-codes'
-import Scheduling from '../models/scheduling'
+import Scheduling from '../models/scheduling.js'
 
 const ALL_JOBS = []
 
@@ -14,7 +14,7 @@ class Job {
     }
 }
 
-const cronTime = new CronTime(new Date())
+// const cronTime = new CronTime(new Date())
 
 // console.log(cronTime)
 
@@ -28,10 +28,12 @@ const job = new CronJob(timeD, () => {
 // job.stop()
 
 export const getAllSchedulings = (req, res) => {
-
+    return res.status(StatusCodes.OK).json({
+        message: 'Hello world'
+    })
 }
 
-export const addNewSchedulings = async (req, res) => {
+export const addNewScheduling = async (req, res) => {
     const { feedId, value, time } = req.body
     if (!feedId || !value || !time) {
         return res.status(StatusCodes.BAD_REQUEST).json({

@@ -3,11 +3,15 @@ import cors from 'cors'
 import * as dotenv from 'dotenv'
 import mongoose from 'mongoose'
 import bodyParser from 'body-parser'
-import { getAllSchedulings, addNewSchedulings, getSchedulingById } from './controllers/cronJob.js'
+import { addNewScheduling, getSchedulingById } from './controllers/cronJob.js'
+import morgan from 'morgan'
+import { StatusCodes } from 'http-status-codes'
 
 const app = express()
 
 dotenv.config()
+
+app.use(morgan('tiny'))
 
 // Cors setup
 const corsOptions = {
@@ -32,8 +36,13 @@ mongoose.connect(process.env.DB_URI).then((conn) => {
 const schedulingApi = express.Router('/scheduling')
 
 schedulingApi
-    .get(getAllSchedulings)
-    .post(addNewSchedulings)
+    .get('/', (req, res) => {
+        console.log('Here')
+        return res.status(StatusCodes.OK).json({
+            message: 'Hello world'
+        })
+    })
+    .post(addNewScheduling)
     .delete('/:jobId', (req, res) => {
         return res.json({
             message: 'Hello world'
@@ -41,6 +50,12 @@ schedulingApi
     }).get('/:jobId', getSchedulingById)
 
 app.use('/api/v1', schedulingApi)
+
+app.use('*', (req, res) => {
+    res.status(StatusCodes.NOT_FOUND).json({
+        message: 'Not found this api'
+    })
+})
 
 // Revert on change when restart server
 console.log('Restart all scheduling')
