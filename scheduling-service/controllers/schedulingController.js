@@ -1,6 +1,7 @@
 import { CronJob } from 'cron'
 import { StatusCodes } from 'http-status-codes'
 import Scheduling from '../models/scheduling.js'
+import { Types } from 'mongoose'
 
 export const ALL_JOBS = []
 
@@ -118,7 +119,10 @@ export const addNewScheduling = async (req, res) => {
 export const deleteScheduling = (req, res) => {
     const { schedulingId } = req.params
 
-    if (!schedulingId) {
+    try {
+        // eslint-disable-next-line no-unused-vars
+        const id = new Types.ObjectId(schedulingId)
+    } catch {
         res.status(StatusCodes.BAD_REQUEST).json({
             message: 'Invalid scheduling id ' + schedulingId
         })
@@ -140,10 +144,18 @@ export const deleteScheduling = (req, res) => {
     })
 }
 
-export const getSchedulingById = (req, res) => {
+export const getSchedulingById = async (req, res) => {
+    const { schedulingId } = req.params
+    let id
+    try {
+        id = new Types.ObjectId(schedulingId)
+    } catch {
+        return res.status(StatusCodes.BAD_REQUEST).json({
+            message: 'Invalid scheduling id ' + schedulingId
+        })
+    }
+
     return res.status(StatusCodes.OK).json({
-        message: 'Hello getSchedulingById'
+        scheduling: await Scheduling.findById(id)
     })
 }
-
-// export { job }
