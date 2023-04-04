@@ -1,5 +1,12 @@
 import { Schema, model } from 'mongoose'
 
+export const SchedulingStatus = {
+    INIT: 'INIT',
+    DONE: 'DONE',
+    FAIL: 'FAIL',
+    CANCEL: 'CANCEL'
+}
+
 const scheduling = new Schema({
     user_id: {
         type: String
@@ -18,7 +25,7 @@ const scheduling = new Schema({
     },
     status: {
         type: String,
-        enum: ['INIT', 'DONE', 'FAIL', 'CANCEL'],
+        enum: Object.values(SchedulingStatus),
         default: 'INIT'
     }
 })

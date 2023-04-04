@@ -21,9 +21,31 @@ class Job {
     }
 }
 
-export const getAllSchedulings = (req, res) => {
+export const getAllSchedulings = async (req, res) => {
+    const feedId = req.query['feed-id']
+    const status = req.query['scheduling-status']
+
+    let schedulings = []
+
+    if (!feedId && !status) {
+        schedulings = await Scheduling.find()
+    } else if (!status) {
+        schedulings = await Scheduling.find({
+            feed_id: feedId
+        })
+    } else if (!feedId) {
+        schedulings = await Scheduling.find({
+            status
+        })
+    } else {
+        schedulings = await Scheduling.find({
+            feed_id: feedId,
+            status
+        })
+    }
+
     return res.status(StatusCodes.OK).json({
-        message: 'Hello world'
+        schedulings
     })
 }
 
