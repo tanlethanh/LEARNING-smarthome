@@ -1,16 +1,24 @@
 import { CronJob } from 'cron'
 import { StatusCodes } from 'http-status-codes'
 import Scheduling from '../models/scheduling.js'
+import { Types } from 'mongoose'
 
 export const ALL_JOBS = []
+
+const StopStatus = {
+    CANCEL: 0,
+    DONE: 1
+}
 
 class Job {
     schedulingId
     cronJob
+    stopStatus
 
     constructor (schedulingId, cronJob) {
         this.schedulingId = schedulingId
         this.cronJob = cronJob
+        this.stopStatus = StopStatus.DONE
     }
 }
 
@@ -30,7 +38,7 @@ export const addNewScheduling = async (req, res) => {
     }
 
     const triggerTime = new Date()
-    triggerTime.setSeconds(triggerTime.getSeconds() + 1)
+    triggerTime.setSeconds(triggerTime.getSeconds() + 10)
 
     // const triggerTime = new Date(time)
 
@@ -59,9 +67,19 @@ export const addNewScheduling = async (req, res) => {
             // Release job after completing job
             const jobIndex = ALL_JOBS.findIndex(job => job.cronJob === this)
 
-            await Scheduling.updateOne({
-                _id: ALL_JOBS[jobIndex].schedulingId
-            }, { status: 'DONE' })
+            if (jobIndex === -1) {
+                throw Error('Not found jobIndex, internal error')
+            }
+
+            if (ALL_JOBS[jobIndex].stopStatus === StopStatus.CANCEL) {
+                await Scheduling.updateOne({
+                    _id: ALL_JOBS[jobIndex].schedulingId
+                }, { status: 'CANCEL' })
+            } else {
+                await Scheduling.updateOne({
+                    _id: ALL_JOBS[jobIndex].schedulingId
+                }, { status: 'DONE' })
+            }
 
             ALL_JOBS.splice(jobIndex, 1)
             console.log(ALL_JOBS.map(ele => ele.schedulingId))
@@ -85,8 +103,19 @@ export const deleteScheduling = (req, res) => {
         })
     }
 
+    const jobIndex = ALL_JOBS.findIndex(job => job.schedulingId?.toString() === schedulingId)
+
+    if (jobIndex === -1) {
+        return res.status(StatusCodes.BAD_REQUEST).json({
+            message: 'Not found this job'
+        })
+    }
+
+    ALL_JOBS[jobIndex].stopStatus = StopStatus.CANCEL
+    ALL_JOBS[jobIndex].cronJob.stop()
+
     return res.status(StatusCodes.OK).json({
-        message: 'Hello world'
+        message: 'Delete scheduling successfully'
     })
 }
 

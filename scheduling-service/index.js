@@ -3,7 +3,12 @@ import cors from 'cors'
 import * as dotenv from 'dotenv'
 import mongoose from 'mongoose'
 import bodyParser from 'body-parser'
-import { addNewScheduling, getAllSchedulings, getSchedulingById } from './controllers/cronJob.js'
+import {
+    addNewScheduling,
+    getAllSchedulings,
+    getSchedulingById,
+    deleteScheduling
+} from './controllers/cronJob.js'
 import morgan from 'morgan'
 import { StatusCodes } from 'http-status-codes'
 
@@ -42,11 +47,7 @@ schedulingApi
 
 schedulingApi
     .route('/:schedulingId')
-    .delete((req, res) => {
-        return res.json({
-            message: 'Hello world'
-        })
-    })
+    .delete(deleteScheduling)
     .get(getSchedulingById)
 
 app.use('/api/v1/scheduling', schedulingApi)
