@@ -8,14 +8,14 @@ export default function BottomBar () {
     const navigation = useNavigation()
 
     return (
-        <View className="h-[100px] flex flex-row justify-center">
+        <View className="h-[90px] flex flex-row justify-center">
             <TouchableOpacity className="h-24 absolute top-[-6px]">
                 <Image source={require('../assets/mic-icon.png')} className="flex-1 w-[null] h-[null]" resizeMode='contain'></Image>
             </TouchableOpacity>
 
             <View className="flex flex-row justify-between w-screen absolute bottom-0 z-0">
-                <Image source={require('../assets/left-bt-bar.png')} className="w-[150px]" />
-                <Image source={require('../assets/right-bt-bar.png')} className="w-[150px]" />
+                <Image source={require('../assets/left-bt-bar.png')} className="h-[80px] w-[150px]" />
+                <Image source={require('../assets/right-bt-bar.png')} className="h-[80px] w-[150px]" />
             </View>
             <View className="absolute top-8 left-8">
                 <Button

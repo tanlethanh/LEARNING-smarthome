@@ -47,7 +47,15 @@ const DeviceCard = (props = defaultProps) => {
         return <Lock size="$2"/>
     }
     return (
-        <Pressable className = {'flex flex-col justify-between min-h-[190px] min-w-[180px] h-[190px] w-[190px] rounded-[20px] p-4'} style = {{ backgroundColor: theme[props.theme].bgColor }} onPress={props.onPress} >
+        <Pressable
+            className = {'flex flex-col justify-between min-h-[190px] min-w-[180px] h-[190px] w-[170px] rounded-[20px] p-4'}
+            style = {{
+                backgroundColor: theme[props.theme].bgColor,
+                elevation: 4,
+                shadowColor: 'black'
+            }}
+            onPress={props.onPress}
+        >
             <View className="flex-row justify-between items-center">
                 <View className="flex flex-col items-start justify-start gap-2">
                     <View className="w-[45px] h-[45px] rounded-[100px] flex items-center justify-center bg-[#DADADA]">

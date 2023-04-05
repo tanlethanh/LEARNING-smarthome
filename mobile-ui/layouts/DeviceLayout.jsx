@@ -1,5 +1,6 @@
-import { Button } from 'tamagui'
+import { Button, Main } from 'tamagui'
 import { ChevronDown, ChevronLeft, Settings } from '@tamagui/lucide-icons'
+import { MainLayout } from './mainLayout'
 import { Modal, Pressable, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useSelector } from 'react-redux'
@@ -19,8 +20,8 @@ function DeviceLayout ({ children, deviceName, navigation }) {
     ]
     const [modalVisible, setModalVisible] = useState(false)
     return (
-        <SafeAreaView>
-            <View className="flex flex-col h-full w-full items-center pb-4">
+        <MainLayout>
+            <View className="flex-1 flex flex-col h-full w-full items-center pb-4">
                 <View className="flex flex-row justify-between items-center w-full h-[fit] m-3 px-3">
                     <Button
                         width="$5"
@@ -100,14 +101,8 @@ function DeviceLayout ({ children, deviceName, navigation }) {
                     </Button>
 
                 </View>
-                {/* <View className="flex justify-center items-center w-60 h-60">
-                    <Image
-                        className="w-52 h-52 mix-blend-multiply"
-                        source={require('../assets/fan.png')}
-                    ></Image>
-                </View> */}
             </View>
-        </SafeAreaView>
+        </MainLayout>
     )
 }
 export { DeviceLayout }
