@@ -122,7 +122,7 @@ function InnerSheet (props) {
                     /> */}
                     <View>
                         {/* <Button onPress={showDatepicker} title="Show date picker!" /> */}
-                        <Button onPress={() => { showTimepicker() }} title="Show time picker!">Time</Button>
+                        <Button onPress={() => { showDatepicker() }} title="Show time picker!">Time</Button>
                         <Text>selected: {date.toLocaleString()}</Text>
                     </View>
                     {[1, 2, 3].map((i) => (
