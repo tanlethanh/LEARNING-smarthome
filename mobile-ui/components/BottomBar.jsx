@@ -8,7 +8,7 @@ export default function BottomBar () {
     const navigation = useNavigation()
 
     return (
-        <View className="h-[100px] flex flex-row justify-center">
+        <View className="h-[100px] w-full flex flex-row justify-center">
             <TouchableOpacity className="h-24 absolute top-[-6px]">
                 <Image source={require('../assets/mic-icon.png')} className="flex-1 w-[null] h-[null]" resizeMode='contain'></Image>
             </TouchableOpacity>
