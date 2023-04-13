@@ -1,33 +1,37 @@
-import { HTTPClient, MQTTClient } from '../adafruitJS/client'
-import { REACT_APP_AIO_KEY, REACT_APP_AIO_USERNAME } from '@env'
-import { addDevice, updateDeviceState } from './devices'
-import { store } from '../store'
-import { updateFan } from './fan'
+import { AIO_KEY, AIO_USERNAME } from "@env";
+import { HTTPClient, MQTTClient } from "../adafruitJS/client";
+import { addDevice, updateDeviceState } from "./devices";
+import { store } from "../store";
 
-const username = REACT_APP_AIO_USERNAME
-const key = REACT_APP_AIO_KEY
+const username = AIO_USERNAME;
+const key = AIO_KEY;
 
-const httpClient = new HTTPClient(username, key)
-const mqttClient = new MQTTClient(username, key)
-export { mqttClient }
+export const httpClient = new HTTPClient(username, key);
+export const mqttClient = new MQTTClient(username, key);
+
 const initAllDevice = async () => {
     try {
         // Get all feeds
-        const feeds = await httpClient.Feeds.getFeeds()
+        const feeds = await httpClient.Feeds.getFeeds();
+
         // Remember to put this line into try catch block
-        const conn = await mqttClient.connect()
-        console.log('started')
+        const conn = await mqttClient.connect();
+        console.log("started", conn);
 
         // Subcribe Fan feeds and register dispatch function on message
         feeds.map(async (feed) => {
             await mqttClient.subcribeFeed(feed.id, (message) => {
-                store.dispatch(updateDeviceState(feed.id, Number(message.payloadString)))
-            })
-            store.dispatch(addDevice(feed.id, feed.key, feed.name))
-        })
-    } catch (error) {
-        console.log('Erorr: ' + error)
-    }
-}
+                // Update state of device to newest
+                store.dispatch(
+                    updateDeviceState(feed.id, Number(message.payloadString)),
+                );
+            });
 
-export default initAllDevice
+            store.dispatch(addDevice(feed.id, feed.key, feed.name));
+        });
+    } catch (error) {
+        console.log("Init device error: " + error);
+    }
+};
+
+export default initAllDevice;

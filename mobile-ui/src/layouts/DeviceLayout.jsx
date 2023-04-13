@@ -1,25 +1,24 @@
-import { Button } from 'tamagui'
-import { ChevronDown, ChevronLeft, Settings } from '@tamagui/lucide-icons'
-import { Modal, Pressable, ScrollView, Text, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { Button } from "tamagui";
+import { ChevronDown, ChevronLeft, Settings } from "@tamagui/lucide-icons";
+import { Modal, Pressable, ScrollView, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-import { useSelector } from 'react-redux'
-import BottomBar from '../components/BottomBar'
-import React, { useState } from 'react'
-function DeviceLayout ({ children, deviceName, navigation }) {
-    const customCompare = (oldList, newList) => oldList === newList
+import { useSelector } from "react-redux";
+import BottomBar from "../components/BottomBar";
+import React, { useState } from "react";
+function DeviceLayout({ children, deviceName, navigation }) {
+    const customCompare = (oldList, newList) => oldList === newList;
     // const devices = useSelector(
     //     (state) => state.devices.devicesList,
     //     customCompare
     // )
     const devices = [
-        { name: 'Fan', screen: 'FanScreen' },
-        { name: 'Lamp', screen: 'FanScreen' },
-        { name: 'Lock', screen: 'LampScreen' },
-        { name: 'Home', screen: 'DeviceHome' }
-
-    ]
-    const [modalVisible, setModalVisible] = useState(false)
+        { name: "Fan", screen: "FanScreen" },
+        { name: "Lamp", screen: "FanScreen" },
+        { name: "Lock", screen: "LampScreen" },
+        { name: "Home", screen: "DeviceHome" },
+    ];
+    const [modalVisible, setModalVisible] = useState(false);
     return (
         <SafeAreaView className="flex bg-[#EFF1F5]">
             <View className="flex flex-col h-full w-full items-center pb-4">
@@ -27,44 +26,40 @@ function DeviceLayout ({ children, deviceName, navigation }) {
                     <Button
                         width="$5"
                         height="$5"
-                        backgroundColor={'transparent'}
+                        backgroundColor={"transparent"}
                         icon={ChevronLeft}
                         scaleIcon={2.3}
-                        onPress={() => navigation.navigate('DeviceHome')}
+                        onPress={() => navigation.navigate("DeviceHome")}
                     />
                     <View className="flex flex-col justify-center items-center">
-                        <Text>
-                            Room
-                        </Text>
+                        <Text>Room</Text>
                         <Text className="text-2xl font-medium">
-                            {deviceName || 'No name'}
+                            {deviceName || "No name"}
                         </Text>
                     </View>
                     <Button
                         width="$5"
                         height="$5"
-                        backgroundColor={'transparent'}
-                        borderRadius={'$4'}
+                        backgroundColor={"transparent"}
+                        borderRadius={"$4"}
                         icon={Settings}
                         scaleIcon={2}
                     />
                 </View>
-                <ScrollView className="flex-1 w-full">
-                    {children}
-                </ScrollView>
+                <ScrollView className="flex-1 w-full">{children}</ScrollView>
                 <View className="flex flex-row justify-center items-center w-full pb-1">
                     <Button
-                        width={'$18'}
+                        width={"$18"}
                         height="$4"
-                        backgroundColor={'#DEE2E7'}
-                        borderColor='white'
-                        borderRadius={'$7'}
+                        backgroundColor={"#DEE2E7"}
+                        borderColor="white"
+                        borderRadius={"$7"}
                         iconAfter={ChevronDown}
                         scaleIcon={2}
-                        display='flex'
-                        flexDirection='row'
-                        justifyContent='flex-end'
-                        alignItems='center'
+                        display="flex"
+                        flexDirection="row"
+                        justifyContent="flex-end"
+                        alignItems="center"
                         onPress={() => setModalVisible(!modalVisible)}
                         zIndex={12}
                     >
@@ -74,24 +69,34 @@ function DeviceLayout ({ children, deviceName, navigation }) {
                             transparent={true}
                             visible={modalVisible}
                         >
-                            <Pressable className="flex-1 relative" onPress={() => setModalVisible(!modalVisible)}>
+                            <Pressable
+                                className="flex-1 relative"
+                                onPress={() => setModalVisible(!modalVisible)}
+                            >
                                 <View className=" absolute bottom-[70px] self-center bg-white rounded-[25px]  items-center shadow-[#000] w-[80%] h-fit overflow-hidden">
                                     <View className="flex flex-col w-full h-full justify-center items-center ">
                                         {devices.map((device, index) => {
                                             return (
-                                                <View key ={index} className='border-b border-b-[#363636]/10 w-full h-[50px]'>
+                                                <View
+                                                    key={index}
+                                                    className="border-b border-b-[#363636]/10 w-full h-[50px]"
+                                                >
                                                     <Button
-                                                        className='w-full h-full'
-                                                        borderRadius='$0'
-                                                        backgroundColor='transparent'
-                                                        onPress={() => { navigation.push(device.screen) }}
+                                                        className="w-full h-full"
+                                                        borderRadius="$0"
+                                                        backgroundColor="transparent"
+                                                        onPress={() => {
+                                                            navigation.push(
+                                                                device.screen,
+                                                            );
+                                                        }}
                                                     >
                                                         <Text className="w-full h-fit font-bold text-[16px] text-[#363636]/90">
                                                             {device.name}
                                                         </Text>
                                                     </Button>
                                                 </View>
-                                            )
+                                            );
                                         })}
                                     </View>
                                 </View>
@@ -102,6 +107,6 @@ function DeviceLayout ({ children, deviceName, navigation }) {
                 <BottomBar></BottomBar>
             </View>
         </SafeAreaView>
-    )
+    );
 }
-export { DeviceLayout }
+export { DeviceLayout };
