@@ -9,7 +9,7 @@ const deviceSlice = createSlice({
     initialState,
     reducers: {
         addNewDevice(state, action) {
-            const { id, metadata } = action.payload;
+            const { key, metadata } = action.payload;
 
             const classifiedFields = metadata.name.split("_");
             // console.log(classifiedFields);
@@ -17,11 +17,10 @@ const deviceSlice = createSlice({
             if (classifiedFields.length >= 2) {
                 const room = classifiedFields[0];
                 const type = classifiedFields[1];
-
-                state.devicesMap[id] = {
-                    id,
+                state.devicesMap[key] = {
+                    key,
                     name: metadata.name,
-                    value: 0,
+                    value: Number(metadata.last_value) || 0,
                     room,
                     type,
                     metadata,
@@ -29,11 +28,12 @@ const deviceSlice = createSlice({
             }
         },
         updateDeviceState(state, action) {
-            const { id, value } = action.payload;
-            if (!id || !value) throw Error("Require both id and value");
+            const { key, value } = action.payload;
+            if (key == undefined || value == undefined)
+                throw Error("Require both id and value");
 
             // Update value of device
-            state.devicesMap[id].value = value;
+            state.devicesMap[key].value = value;
         },
     },
 });

@@ -16,17 +16,18 @@ export const initAllDevice = async () => {
             // Add new device into store
             store.dispatch(
                 addNewDevice({
-                    id: feed.id,
+                    key: feed.key,
                     metadata: feed,
                 }),
             );
 
-            await mqttClient.subcribeFeed(feed.id, (message) => {
+            await mqttClient.subcribeFeed(feed.key, (message) => {
                 // Update state of device to newest
                 store.dispatch(
                     updateDeviceState({
-                        id: feed.id,
+                        key: feed.key,
                         value: Number(message.payloadString),
+                        notPublish: true,
                     }),
                 );
             });
