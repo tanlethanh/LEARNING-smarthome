@@ -10,10 +10,22 @@ const deviceSlice = createSlice({
     reducers: {
         addNewDevice(state, action) {
             const { id, metadata } = action.payload;
-            state.devicesMap[id] = {
-                value: 0,
-                metadata,
-            };
+
+            const classifiedFields = metadata.name.split("_");
+            // console.log(classifiedFields);
+
+            if (classifiedFields.length >= 2) {
+                const room = classifiedFields[0];
+                const type = classifiedFields[1];
+
+                state.devicesMap[id] = {
+                    name: metadata.name,
+                    value: 0,
+                    room,
+                    type,
+                    metadata,
+                };
+            }
         },
         updateDeviceState(state, action) {
             const { id, value } = action.payload;
