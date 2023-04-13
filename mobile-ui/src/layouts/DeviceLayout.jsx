@@ -4,7 +4,7 @@ import { Modal, Pressable, Text, View } from "react-native";
 
 import React, { useState } from "react";
 
-function DeviceLayout({ children, deviceName, navigation }) {
+function DeviceLayout({ children, roomName, deviceName, navigation }) {
     const devices = [
         { name: "Fan", screen: "FanScreen" },
         { name: "Lamp", screen: "FanScreen" },
@@ -24,7 +24,7 @@ function DeviceLayout({ children, deviceName, navigation }) {
                     onPress={() => navigation.goBack()}
                 />
                 <View className="flex flex-col justify-center items-center">
-                    <Text>Room</Text>
+                    <Text>{roomName || "Room"}</Text>
                     <Text className="text-2xl font-medium">
                         {deviceName || "No name"}
                     </Text>
