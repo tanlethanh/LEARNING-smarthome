@@ -53,11 +53,14 @@ class MQTTClient {
             this.client.subscribe(subUrl, {
                 qos: 0,
                 onSuccess: (sub) => {
-                    console.log(`Subscribed to MQTT topic. ${subUrl}`);
+                    console.log(`ADA -> Subscribed to MQTT topic. ${subUrl}`);
                     resolve(sub);
                 },
                 onFailure: (error) => {
-                    console.error("Failed to subscribe to MQTT topic: ", error);
+                    console.error(
+                        "ADA -> Failed to subscribe to MQTT topic: ",
+                        error,
+                    );
                     reject(error);
                 },
             });
@@ -78,15 +81,16 @@ class MQTTClient {
         }
     };
 
-    async publish(feedId, value) {
+    async publish(feedKey, value) {
+        console.log(`ADA -> Publish: [key]: ${feedKey} - [value]: ${value}\n`);
         const message = new Paho.Message(JSON.stringify(value));
-        message.destinationName = `${this.username}/feeds/${feedId}`;
+        message.destinationName = `${this.username}/feeds/${feedKey}`;
         this.client.send(message);
     }
 
     defautOnMessage(message) {
         console.log(
-            `onMessage: [topic]: ${message.topic} - [value]: ${message.payloadString}`,
+            `ADA -> On Message: [topic]: ${message.topic} - [value]: ${message.payloadString}\n`,
         );
         const feedCb = this.subcribers[message.topic];
         if (feedCb && typeof feedCb === "function") {
