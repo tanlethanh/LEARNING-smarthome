@@ -1,9 +1,9 @@
 import { AirConditioner } from "../../components";
-import { DeviceLayout } from "../../layouts";
+import { DeviceLayout, MainLayout } from "../../layouts";
 // import { publishDeviceState, updateDeviceState } from "../../states";
 import { useDispatch, useSelector } from "react-redux";
 
-export function AirConditionerScreen({ route, navigation }) {
+export default function AirConditionerScreen({ route, navigation }) {
     const { deviceId } = route.params | undefined;
     const AirValue = deviceId
         ? useSelector(
@@ -21,11 +21,13 @@ export function AirConditionerScreen({ route, navigation }) {
         }
     };
     return (
-        <DeviceLayout deviceName="Air Device" navigation={navigation}>
-            <AirConditioner
-                powerState={AirValue}
-                callback={updateAirValue}
-            ></AirConditioner>
-        </DeviceLayout>
+        <MainLayout>
+            <DeviceLayout deviceName="Air Device" navigation={navigation}>
+                <AirConditioner
+                    powerState={AirValue}
+                    callback={updateAirValue}
+                ></AirConditioner>
+            </DeviceLayout>
+        </MainLayout>
     );
 }

@@ -1,4 +1,4 @@
-import { DeviceLayout } from "../../layouts";
+import { DeviceLayout, MainLayout } from "../../layouts";
 import { publishDeviceState, updateDeviceState } from "../../states/devices";
 import { useDispatch, useSelector } from "react-redux";
 import Lock from "../../components/Lock";
@@ -21,8 +21,10 @@ export default function LockScreen({ route, navigation }) {
         }
     };
     return (
-        <DeviceLayout deviceName="Lock" navigation={navigation}>
-            <Lock LockState={lockValue} callback={updateLockValue}></Lock>
-        </DeviceLayout>
+        <MainLayout>
+            <DeviceLayout deviceName="Lock" navigation={navigation}>
+                <Lock LockState={lockValue} callback={updateLockValue}></Lock>
+            </DeviceLayout>
+        </MainLayout>
     );
 }

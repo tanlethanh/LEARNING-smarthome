@@ -1,4 +1,4 @@
-import { DeviceLayout } from "../../layouts";
+import { DeviceLayout, MainLayout } from "../../layouts";
 import { Lamp } from "../../components";
 import { useState } from "react";
 
@@ -8,8 +8,10 @@ export default function LampScreen({ route, navigation }) {
         setlampValue(value);
     };
     return (
-        <DeviceLayout deviceName="Lamp Device" navigation={navigation}>
-            <Lamp powerState={lampValue} callback={updatelampValue}></Lamp>
-        </DeviceLayout>
+        <MainLayout>
+            <DeviceLayout deviceName="Lamp Device" navigation={navigation}>
+                <Lamp powerState={lampValue} callback={updatelampValue}></Lamp>
+            </DeviceLayout>
+        </MainLayout>
     );
 }
