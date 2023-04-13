@@ -16,7 +16,7 @@ import { useColorScheme } from 'react-native'
 import { FullLoading } from './components/elements/FullLoading'
 import { useEffect } from 'react'
 import { useFonts } from 'expo-font'
-import config from './tamagui.config'
+import config from '../tamagui.config'
 import initAllDevice from './devices'
 
 const Stack = createNativeStackNavigator()
