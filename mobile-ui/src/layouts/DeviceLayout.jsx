@@ -2,10 +2,7 @@ import { Button, Main } from "tamagui";
 import { ChevronDown, ChevronLeft, Settings } from "@tamagui/lucide-icons";
 import { MainLayout } from "./MainLayout";
 import { Modal, Pressable, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useSelector } from "react-redux";
 
-import BottomBar from "../components/BottomBar";
 import React, { useState } from "react";
 
 function DeviceLayout({ children, deviceName, navigation }) {

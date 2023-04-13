@@ -1,148 +1,19 @@
-import { AirConditionerScreen } from "./AirConditioner";
 import { DevicesScreen } from "./Devices";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { selectDevices } from "../../states";
 import { useSelector } from "react-redux";
-import FanScreen from "./Fan";
-import LampScreen from "./Lamp";
-import LockScreen from "./Lock";
 
 const DeviceStack = createNativeStackNavigator();
 
 function DeviceScreen({ navigator }) {
-    const customCompare = (oldList, newList) => oldList === newList;
-    let devices = useSelector(
-        (state) => state.devices.devicesList,
-        customCompare,
-    );
-    // UseSelector to get list devices
-    devices = [
-        {
-            deviceName: "AIOT_FAN",
-            key: "1",
-            deviceId: "1234",
-            type: "lamp",
-            favorite: true,
-            name: "Lamp",
-            status: false,
-            screenName: "AIOT_FAN",
-            roomId: 1,
-        },
-        {
-            deviceName: "AIOT_FAN",
-            key: "2",
-            deviceId: "12355",
-            type: "fan",
-            name: "Fan",
-            status: true,
-            screenName: "AIOT_FAN",
-            roomId: 1,
-        },
-        {
-            deviceName: "AIOT_FAN",
-            key: "3",
-            deviceId: "1234",
-            type: "air",
-            name: "Air condition",
-            status: true,
-            screenName: "AIOT_FAN",
-            roomId: 1,
-        },
-        {
-            deviceName: "AIOT_FAN",
-            key: "4",
-            deviceId: "1234",
-            type: "lock",
-            name: "Lock",
-            favorite: true,
-            status: true,
-            screenName: "AIOT_FAN",
-            roomId: 1,
-        },
-        {
-            deviceName: "AIOT_FAN",
-            key: "5",
-            deviceId: "1234",
-            type: "lamp",
-            favorite: true,
-            name: "Lamp",
-            status: false,
-            screenName: "AIOT_FAN",
-            roomId: 2,
-        },
-        {
-            deviceName: "AIOT_FAN",
-            key: "6",
-            deviceId: "125412",
-            type: "fan",
-            name: "Fan",
-            status: true,
-            screenName: "AIOT_FAN",
-            roomId: 2,
-        },
-        {
-            deviceName: "AIOT_FAN",
-            key: "7",
-            deviceId: "1234",
-            type: "air",
-            name: "Air condition",
-            status: true,
-            screenName: "AIOT_FAN",
-            roomId: 2,
-        },
-        {
-            deviceName: "AIOT_FAN",
-            key: "8",
-            deviceId: "1234",
-            type: "lock",
-            name: "Lock",
-            favorite: true,
-            status: true,
-            screenName: "AIOT_FAN",
-            roomId: 2,
-        },
-        {
-            deviceName: "AIOT_FAN",
-            key: "9",
-            deviceId: "1234",
-            type: "lamp",
-            favorite: true,
-            name: "Lamp",
-            status: false,
-            screenName: "AIOT_FAN",
-            roomId: 2,
-        },
-        {
-            deviceName: "AIOT_FAN",
-            key: "10",
-            deviceId: "122524",
-            type: "fan",
-            name: "Fan",
-            status: true,
-            screenName: "AIOT_FAN",
-            roomId: 3,
-        },
-        {
-            deviceName: "AIOT_FAN",
-            key: "11",
-            deviceId: "1234",
-            type: "air",
-            name: "Air condition",
-            status: true,
-            screenName: "AIOT_FAN",
-            roomId: 3,
-        },
-    ];
+    // const customCompare = (oldList, newList) => oldList === newList;
+    const devices = useSelector(selectDevices);
+    const temp = Object.values(useSelector(selectDevices))
+        .filter((ele) => ele.room === "LR")
+        .map((ele) => ele.name);
 
-    const getScreen = (device) => {
-        if (device.type == "fan") {
-            return FanScreen;
-        } else if (device.type == "air") {
-            return AirConditionerScreen;
-        } else if (device.type == "lamp") {
-            return LampScreen;
-        }
-        return LockScreen;
-    };
+    console.log("-->", temp);
+
     return (
         <DeviceStack.Navigator initialRouteName="DeviceHome">
             <DeviceStack.Screen
@@ -150,7 +21,7 @@ function DeviceScreen({ navigator }) {
                 options={{ headerShown: false }}
                 component={DevicesScreen}
             />
-            {devices.map((device, index) => (
+            {/* {devices.map((device, index) => (
                 <DeviceStack.Screen
                     key={"screen" + index}
                     name={device.deviceName + device.key}
@@ -160,7 +31,7 @@ function DeviceScreen({ navigator }) {
                         deviceId: device.deviceId,
                     }}
                 />
-            ))}
+            ))} */}
         </DeviceStack.Navigator>
     );
 }

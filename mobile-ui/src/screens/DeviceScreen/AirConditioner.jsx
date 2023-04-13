@@ -1,6 +1,6 @@
 import { AirConditioner } from "../../components";
 import { DeviceLayout } from "../../layouts";
-import { publishDeviceState, updateDeviceState } from "../../reducer/devices";
+// import { publishDeviceState, updateDeviceState } from "../../states";
 import { useDispatch, useSelector } from "react-redux";
 
 export function AirConditionerScreen({ route, navigation }) {
@@ -16,8 +16,8 @@ export function AirConditionerScreen({ route, navigation }) {
     const dispatch = useDispatch();
     const updateAirValue = (value) => {
         if (deviceId != undefined) {
-            dispatch(updateDeviceState(deviceId, value));
-            dispatch(publishDeviceState(deviceId, value));
+            // dispatch(updateDeviceState(deviceId, value));
+            // dispatch(publishDeviceState(deviceId, value));
         }
     };
     return (
