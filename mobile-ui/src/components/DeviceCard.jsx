@@ -1,5 +1,7 @@
 import { AirVent, Fan, Lamp, Lock } from "@tamagui/lucide-icons";
 import { Pressable, Text, View } from "react-native";
+import { deviceTypes, updateDeviceState } from "../states";
+import { useDispatch } from "react-redux";
 import React, { useEffect, useState } from "react";
 import ToggleSwitch from "toggle-switch-react-native";
 const theme = {
@@ -27,25 +29,23 @@ const defaultProps = {
     },
 };
 const DeviceCard = (props = defaultProps) => {
-    const [status, setStatus] = useState(
-        props.device && props.device.status ? props.device.status : true,
-    );
-    useEffect(() => {
-        setStatus(props.status);
-    }, [props.status]);
-    const handleToggle = () => {
-        setStatus((value) => !value);
-    };
+    const dispatch = useDispatch();
+
+    const isOn = props.device.value !== 0;
+
     const getIcon = (type) => {
-        if (type === "lamp") {
+        if (type === "LIGHT") {
             return <Lamp size={"$2"} />;
-        } else if (type === "air") {
+        } else if (type === "AIRCOND") {
             return <AirVent size="$2" />;
-        } else if (type === "fan") {
+        } else if (type === "FAN") {
             return <Fan size="$2" />;
         }
         return <Lock size="$2" />;
     };
+
+    const deviceType = deviceTypes.find((ele) => ele.key === props.device.type);
+
     return (
         <Pressable
             className={
@@ -72,9 +72,7 @@ const DeviceCard = (props = defaultProps) => {
                             className={"text-[#363636] text-[17px] font-[600]"}
                             style={{ color: theme[props.theme].textColor }}
                         >
-                            {props.device && props.device.name
-                                ? props.device.name
-                                : "Lamp"}
+                            {deviceType ? deviceType.name : "Unknown"}
                         </Text>
                         <Text
                             className={"text-[13px] font-[400]"}
@@ -93,11 +91,27 @@ const DeviceCard = (props = defaultProps) => {
                     className={"text-[14px]"}
                     style={{ color: theme[props.theme].textColor }}
                 >
-                    {status ? "On" : "Off"}
+                    {isOn ? "On" : "Off"}
                 </Text>
                 <ToggleSwitch
-                    isOn={status}
-                    onToggle={() => handleToggle()}
+                    isOn={isOn}
+                    onToggle={() => {
+                        if (isOn) {
+                            dispatch(
+                                updateDeviceState({
+                                    key: props.device.key,
+                                    value: 0,
+                                }),
+                            );
+                        } else {
+                            dispatch(
+                                updateDeviceState({
+                                    key: props.device.key,
+                                    value: props.device.defaultValue || 1,
+                                }),
+                            );
+                        }
+                    }}
                     offColor={theme[props.theme].offColor}
                     onColor={theme[props.theme].onColor}
                 />
