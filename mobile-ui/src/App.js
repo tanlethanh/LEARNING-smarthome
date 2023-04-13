@@ -1,5 +1,3 @@
-/* eslint-disable react/react-in-jsx-scope */
-/* eslint-disable react/jsx-no-undef */
 import {
     DetailsScreen,
     DeviceScreen,
@@ -7,13 +5,13 @@ import {
     LoginScreen,
     SignUpScreen
 } from './screens'
-import { Logs } from 'expo'
+import { Logs, registerRootComponent } from 'expo'
 import { NavigationContainer } from '@react-navigation/native'
 import { Provider } from 'react-redux'
 import { TamaguiProvider, Theme, ToastProvider } from 'tamagui'
-import { Text, useColorScheme } from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { store } from './store'
+import { useColorScheme } from 'react-native'
 
 import { FullLoading } from './components/elements/FullLoading'
 import { useEffect } from 'react'
@@ -76,3 +74,5 @@ export default function App () {
             : <FullLoading></FullLoading>
     )
 }
+
+registerRootComponent(App)
