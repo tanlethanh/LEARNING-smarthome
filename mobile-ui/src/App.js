@@ -10,14 +10,13 @@ import { NavigationContainer } from "@react-navigation/native";
 import { Provider } from "react-redux";
 import { TamaguiProvider, Theme, ToastProvider } from "tamagui";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { store } from "./states/store";
 import { useColorScheme } from "react-native";
 
 import { FullLoading } from "./components/elements/FullLoading";
+import { initAllDevice, store } from "./states";
 import { useEffect } from "react";
 import { useFonts } from "expo-font";
 import config from "../tamagui.config";
-import initAllDevice from "./states/devices";
 
 const Stack = createNativeStackNavigator();
 

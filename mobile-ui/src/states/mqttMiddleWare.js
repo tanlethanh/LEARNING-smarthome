@@ -1,4 +1,4 @@
-import { publishDeviceStateAction } from "./actions/device";
+import { publishDeviceStateAction } from "./devices";
 
 const mqttMiddleWare = (client) => (store) => (next) => (action) => {
     if (action.type === publishDeviceStateAction) {

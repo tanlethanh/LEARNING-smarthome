@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { mqttClient } from "./reducer";
-import deviceReducer from "./reducer/devices";
+import { deviceReducer } from "./devices";
+import { mqttClient } from "./adafruit";
 import mqttMiddleWare from "./mqttMiddleWare";
 
 export const store = configureStore({
