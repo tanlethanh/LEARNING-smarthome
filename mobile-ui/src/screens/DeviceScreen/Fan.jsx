@@ -8,21 +8,23 @@ import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export default FanScreen = ({ route, navigation }) => {
-    const { deviceId } = route.params;
-    const fanValue = useSelector(
-        (state) =>
-            state.devices.devicesList.find(
-                (device) => Number(device.deviceId) == Number(deviceId),
-            ).value,
-    );
-    const dispatch = useDispatch();
+    const { deviceId } = route.params
+    // const fanValue = useSelector((state) => state.devices.devicesList.find((device) => (Number(device.deviceId) == Number(deviceId))).value)
+    // const dispatch = useDispatch()
+    // const updateFanValue = (value) => {
+    //     console.log('Update: ', value)
+    //     dispatch(updateDeviceState(deviceId, value))
+    //     dispatch(publishDeviceState(deviceId, value))
+    // }
+    const [fanValue, setFanValue] = useState(1)
     const updateFanValue = (value) => {
-        console.log("Update: ", value);
-        dispatch(updateDeviceState(deviceId, value));
-        dispatch(publishDeviceState(deviceId, value));
-    };
+        setFanValue(value)
+    }
     return (
-        <DeviceLayout deviceName="Fan Device">
+        <DeviceLayout deviceName="Fan Device"
+            navigation={navigation}
+        >
+
             {/* <Text>Device: {deviceId}</Text> */}
             {/* <Text>FanValue: {fanValue}</Text> */}
             <Fan powerState={fanValue} callback={updateFanValue}></Fan>

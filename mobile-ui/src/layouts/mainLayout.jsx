@@ -8,7 +8,9 @@ import BottomBar from "../components/BottomBar";
 function MainLayout({ children }) {
     return (
         <SafeAreaView className="flex-1 bg-[#EFF1F5]">
-            <ScrollView>{children}</ScrollView>
+            {/* <ScrollView> */}
+            {children}
+            {/* </ScrollView> */}
             <BottomBar></BottomBar>
         </SafeAreaView>
     );
