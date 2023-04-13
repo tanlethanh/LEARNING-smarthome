@@ -1,10 +1,8 @@
-import { Button, ScrollView, Text, View } from "react-native";
-import { MainLayout } from "../layouts/mainLayout";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Button, Text, View } from "react-native";
+import { MainLayout } from "../layouts/MainLayout";
 import { SheetDemo } from "../components/elements/BottomSheet";
 import { StatusBar } from "expo-status-bar";
 import { ToastDemo } from "../components/elements/Toast";
-import BottomBar from "../components/BottomBar";
 
 function HomeScreen({ navigation }) {
     return (

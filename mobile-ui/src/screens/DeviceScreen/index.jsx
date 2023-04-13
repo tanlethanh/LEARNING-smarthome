@@ -1,21 +1,11 @@
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import React, { useEffect, useState } from "react";
-import TabBar from "./TabBar";
-// import Config from 'react-native-config'
-import { AirConditionerScreen } from "./AirConditioner";
 import { DevicesScreen } from "./Devices";
-import { Fan } from "../../components";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import FanScreen from "./Fan";
 import LampScreen from "./Lamp";
-import LockScreen from "./Lock";
-// import { HTTPClient, MQTTClient } from "../../adafruitJS/client"
-// import {REACT_APP_AIO_USERNAME, REACT_APP_AIO_KEY} from '@env';
-const DeviceTab = createBottomTabNavigator();
+
 const DeviceStack = createNativeStackNavigator();
 
-const DeviceScreen = () => {
+function DeviceScreen({ navigator }) {
     const customCompare = (oldList, newList) => oldList === newList;
     let devices = useSelector(
         (state) => state.devices.devicesList,
@@ -170,6 +160,6 @@ const DeviceScreen = () => {
             ))}
         </DeviceStack.Navigator>
     );
-};
+}
 
 export { DeviceScreen };

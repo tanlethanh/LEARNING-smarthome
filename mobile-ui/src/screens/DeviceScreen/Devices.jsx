@@ -8,7 +8,7 @@ import {
     View,
     useWindowDimensions,
 } from "react-native";
-import { MainLayout } from "../../layouts/mainLayout";
+import { MainLayout } from "../../layouts/MainLayout";
 import { Settings } from "@tamagui/lucide-icons";
 import { WeatherWidget } from "../../components/WeatherWidget";
 import { useDispatch, useSelector } from "react-redux";
