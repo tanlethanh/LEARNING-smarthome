@@ -17,7 +17,10 @@ export function AirConditionerScreen ({ route, navigation }) {
     }
     return (
 
-        <DeviceLayout deviceName="Air Device" navigation={navigation}>
+        <DeviceLayout
+            deviceName="Air Device"
+            navigation={navigation}
+        >
             <AirConditioner powerState={AirValue} callback={updateAirValue}></AirConditioner>
         </DeviceLayout>
 
