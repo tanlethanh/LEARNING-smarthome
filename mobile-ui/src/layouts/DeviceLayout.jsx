@@ -1,10 +1,9 @@
-import { Button } from "tamagui";
+import { Button, Main } from "tamagui";
 import { ChevronDown, ChevronLeft, Settings } from "@tamagui/lucide-icons";
-import { Modal, Pressable, ScrollView, Text, View } from "react-native";
+import { MainLayout } from "./mainLayout";
+import { Modal, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
 import { useSelector } from "react-redux";
-import BottomBar from "../components/BottomBar";
 import React, { useState } from "react";
 function DeviceLayout({ children, deviceName, navigation }) {
     const customCompare = (oldList, newList) => oldList === newList;
@@ -20,9 +19,9 @@ function DeviceLayout({ children, deviceName, navigation }) {
     ];
     const [modalVisible, setModalVisible] = useState(false);
     return (
-        <SafeAreaView className="flex bg-[#EFF1F5]">
-            <View className="flex flex-col h-full w-full items-center pb-4">
-                <View className="flex flex-row justify-between items-center w-full h-fit m-3 px-3">
+        <MainLayout>
+            <View className="flex-1 flex flex-col h-full w-full items-center pb-4">
+                <View className="flex flex-row justify-between items-center w-full h-[fit] m-3 px-3">
                     <Button
                         width="$5"
                         height="$5"
@@ -46,8 +45,8 @@ function DeviceLayout({ children, deviceName, navigation }) {
                         scaleIcon={2}
                     />
                 </View>
-                <ScrollView className="flex-1 w-full">{children}</ScrollView>
-                <View className="flex flex-row justify-center items-center w-full pb-1">
+                <View className="flex-1 w-full">{children}</View>
+                <View className="flex flex-row justify-center items-center w-full">
                     <Button
                         width={"$18"}
                         height="$4"
@@ -99,14 +98,14 @@ function DeviceLayout({ children, deviceName, navigation }) {
                                             );
                                         })}
                                     </View>
+                                    <View className="flex flex-row justify-between items-center p-3 gap-[10px]"></View>
                                 </View>
                             </Pressable>
                         </Modal>
                     </Button>
                 </View>
-                <BottomBar></BottomBar>
             </View>
-        </SafeAreaView>
+        </MainLayout>
     );
 }
 export { DeviceLayout };

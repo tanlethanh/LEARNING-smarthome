@@ -6,7 +6,7 @@ import { selectSample, updateSample } from "../../devices/sample";
 import { useDispatch, useSelector } from "react-redux";
 import Lock from "../../components/Lock";
 
-export function LockScreen({ route, navigation }) {
+export default function LockScreen({ route, navigation }) {
     const { deviceId } = route.params | undefined;
     const lockValue = deviceId
         ? useSelector(
