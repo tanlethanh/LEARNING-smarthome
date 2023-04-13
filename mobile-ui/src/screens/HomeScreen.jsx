@@ -10,17 +10,17 @@ import { FlatList, Text, View } from "react-native";
 import { MainLayout } from "../layouts";
 import { Settings } from "@tamagui/lucide-icons";
 
-import { rooms, selectDevices } from "../states";
+import { roomTypes, selectDevices } from "../states";
 import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/core";
 import { useSelector } from "react-redux";
 
 export function HomeScreen() {
-    const naviation = useNavigation();
+    const navigation = useNavigation();
 
     const devicesMap = useSelector(selectDevices);
 
-    const [currentRoom, setCurrentRoom] = useState(rooms[0]);
+    const [currentRoom, setCurrentRoom] = useState(roomTypes[0]);
 
     const renderRoom = ({ item, index }) => {
         return (
@@ -80,7 +80,7 @@ export function HomeScreen() {
                 <View className="first:h-fit w-full flex flex-row justify-between items-center ">
                     <FlatList
                         className="h-fit w-full px-[15px]"
-                        data={rooms}
+                        data={roomTypes}
                         horizontal
                         renderItem={renderRoom}
                         contentContainerStyle={{
@@ -100,8 +100,11 @@ export function HomeScreen() {
                                         device={ele}
                                         theme={"light"}
                                         onPress={() => {
-                                            naviation.navigate("Device", {
-                                                screen: String(ele.id),
+                                            navigation.navigate("Device", {
+                                                screen: ele.type,
+                                                params: {
+                                                    deviceKey: ele.key,
+                                                },
                                             });
                                         }}
                                     />
@@ -110,7 +113,6 @@ export function HomeScreen() {
                         })}
                 </View>
 
-                {/* Footer */}
                 <View className="flex flex-row justify-between items-start px-5 mb-6 w-full ">
                     <Text>Monday, 20 April</Text>
                     <View className="flex flex-col justify-center items-end">
