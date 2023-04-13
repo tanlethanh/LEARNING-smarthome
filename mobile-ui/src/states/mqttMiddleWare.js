@@ -1,9 +1,12 @@
-import { publishDeviceStateAction } from "./devices";
+import { updateDeviceState } from "./devices";
 
 const mqttMiddleWare = (client) => (store) => (next) => (action) => {
-    if (action.type === publishDeviceStateAction) {
-        console.log("publish", action.payload);
-        client.publish(action.payload.deviceId, action.payload.state);
+    if (action.type === updateDeviceState.type) {
+        const { notPublish, key, value } = action.payload;
+        if (!notPublish) {
+            console.log("publish", action.payload);
+            client.publish(key, value);
+        }
     }
     return next(action);
 };
