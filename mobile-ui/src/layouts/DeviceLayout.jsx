@@ -1,12 +1,12 @@
-import { Button, Main } from 'tamagui'
-import { ChevronDown, ChevronLeft, Settings } from '@tamagui/lucide-icons'
-import { MainLayout } from './mainLayout'
-import { Modal, Pressable, Text, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { useSelector } from 'react-redux'
-import React, { useState } from 'react'
-function DeviceLayout ({ children, deviceName, navigation }) {
-    const customCompare = (oldList, newList) => oldList === newList
+import { Button, Main } from "tamagui";
+import { ChevronDown, ChevronLeft, Settings } from "@tamagui/lucide-icons";
+import { MainLayout } from "./mainLayout";
+import { Modal, Pressable, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useSelector } from "react-redux";
+import React, { useState } from "react";
+function DeviceLayout({ children, deviceName, navigation }) {
+    const customCompare = (oldList, newList) => oldList === newList;
     // const devices = useSelector(
     //     (state) => state.devices.devicesList,
     //     customCompare
@@ -45,9 +45,7 @@ function DeviceLayout ({ children, deviceName, navigation }) {
                         scaleIcon={2}
                     />
                 </View>
-                <View className="flex-1 w-full">
-                    {children}
-                </View>
+                <View className="flex-1 w-full">{children}</View>
                 <View className="flex flex-row justify-center items-center w-full">
                     <Button
                         width={"$18"}
@@ -100,16 +98,14 @@ function DeviceLayout ({ children, deviceName, navigation }) {
                                             );
                                         })}
                                     </View>
-                                    <View className="flex flex-row justify-between items-center p-3 gap-[10px]">
-                                    </View>
+                                    <View className="flex flex-row justify-between items-center p-3 gap-[10px]"></View>
                                 </View>
                             </Pressable>
                         </Modal>
                     </Button>
-
                 </View>
             </View>
         </MainLayout>
-    )
+    );
 }
 export { DeviceLayout };
