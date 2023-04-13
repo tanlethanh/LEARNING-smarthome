@@ -2,7 +2,7 @@ import { DeviceLayout } from "../../layouts";
 import { Fan } from "../../components";
 import { useState } from "react";
 
-export default FanScreen = ({ route, navigation }) => {
+export const FanScreen = ({ route, navigation }) => {
     const [fanValue, setFanValue] = useState(1);
     const updateFanValue = (value) => {
         setFanValue(value);
@@ -13,3 +13,5 @@ export default FanScreen = ({ route, navigation }) => {
         </DeviceLayout>
     );
 };
+
+export default FanScreen;

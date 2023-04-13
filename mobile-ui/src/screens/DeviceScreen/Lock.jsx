@@ -1,4 +1,5 @@
 import { DeviceLayout } from "../../layouts";
+import { publishDeviceState, updateDeviceState } from "../../reducer/devices";
 import { useDispatch, useSelector } from "react-redux";
 import Lock from "../../components/Lock";
 

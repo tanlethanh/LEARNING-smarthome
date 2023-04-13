@@ -42,7 +42,7 @@ export default function App() {
                     <Provider store={store}>
                         <NavigationContainer>
                             <Stack.Navigator
-                                initialRouteName="Home"
+                                initialRouteName="Device"
                                 screenOptions={{
                                     headerShown: false,
                                 }}

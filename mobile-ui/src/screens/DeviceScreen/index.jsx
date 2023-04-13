@@ -1,8 +1,10 @@
+import { AirConditionerScreen } from "./AirConditioner";
 import { DevicesScreen } from "./Devices";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useSelector } from "react-redux";
 import FanScreen from "./Fan";
 import LampScreen from "./Lamp";
+import LockScreen from "./Lock";
 
 const DeviceStack = createNativeStackNavigator();
 
