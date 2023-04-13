@@ -21,7 +21,7 @@ function DeviceLayout({ children, deviceName, navigation }) {
                     backgroundColor={"transparent"}
                     icon={ChevronLeft}
                     scaleIcon={2.3}
-                    onPress={() => navigation.navigate("DeviceHome")}
+                    onPress={() => navigation.goBack()}
                 />
                 <View className="flex flex-col justify-center items-center">
                     <Text>Room</Text>
