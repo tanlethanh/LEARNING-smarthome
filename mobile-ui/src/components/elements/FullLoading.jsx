@@ -14,8 +14,10 @@ export const FullLoading = () => {
                 source={require("../../assets/smart-home.json")}
                 autoPlay
                 loop
-                w={30}
-                h={30}
+                style={{
+                    width: 200,
+                    height: 200,
+                }}
             />
         </View>
     );
