@@ -1,37 +1,44 @@
-import { DevicesScreen } from "./Devices";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { selectDevices } from "../../states";
 import { useSelector } from "react-redux";
+import AirConditionerScreen from "./AirConditioner";
+import FanScreen from "./Fan";
+import LampScreen from "./Lamp";
+import LockScreen from "./Lock";
 
 const DeviceStack = createNativeStackNavigator();
 
-function DeviceScreen({ navigator }) {
-    // const customCompare = (oldList, newList) => oldList === newList;
+function DeviceScreen() {
     const devices = useSelector(selectDevices);
-    const temp = Object.values(useSelector(selectDevices))
-        .filter((ele) => ele.room === "LR")
-        .map((ele) => ele.name);
 
-    console.log("-->", temp);
+    const getScreen = (deviceType) => {
+        console.log(deviceType, "<-- type");
+        if (deviceType == "LIGHT") {
+            return LampScreen;
+        } else if (deviceType == "AIRCOND") {
+            return AirConditionerScreen;
+        } else if (deviceType == "LOCK") {
+            return LockScreen;
+        } else if (deviceType == "FAN") {
+            return FanScreen;
+        } else {
+            return FanScreen;
+        }
+    };
 
     return (
-        <DeviceStack.Navigator initialRouteName="DeviceHome">
-            <DeviceStack.Screen
-                name="DeviceHome"
-                options={{ headerShown: false }}
-                component={DevicesScreen}
-            />
-            {/* {devices.map((device, index) => (
-                <DeviceStack.Screen
-                    key={"screen" + index}
-                    name={device.deviceName + device.key}
-                    options={{ headerShown: false }}
-                    component={getScreen(device)}
-                    initialParams={{
-                        deviceId: device.deviceId,
-                    }}
-                />
-            ))} */}
+        <DeviceStack.Navigator>
+            {Object.values(devices).map((device, index) => {
+                console.log(device.id, "<--");
+                return (
+                    <DeviceStack.Screen
+                        key={index}
+                        name={String(device.id)}
+                        options={{ headerShown: false }}
+                        component={getScreen(device.type)}
+                    />
+                );
+            })}
         </DeviceStack.Navigator>
     );
 }
