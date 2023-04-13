@@ -1,50 +1,25 @@
-import {
-    Alert,
-    Animated,
-    Easing,
-    Image,
-    Modal,
-    ScrollView,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
-    ViewBase,
-} from "react-native";
 import { Button } from "tamagui";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
+import { Image, Modal, Text, TouchableOpacity, View } from "react-native";
 import { RadialSlider } from "react-native-radial-slider";
-import { SheetDemo } from "./elements/BottomSheet";
 
-// import { Picker } from 'react-native-picker'
-import { pow } from "react-native-reanimated";
-import Lottie from "lottie-react-native";
-import React, { useEffect, useRef, useState } from "react";
-import Slider from "@react-native-community/slider";
-import ToggleSwitch from "toggle-switch-react-native";
+import React, { useRef, useState } from "react";
 // import PowerIcon
 import { ClockIcon, CogIcon, PowerIcon } from "react-native-heroicons/outline";
 
-function AirConditioner({ powerState, callback }) {
+function AirConditioner({ updateValue, device }) {
     const [schedule, setSchedule] = useState(0);
-    const [power, setPower] = useState(powerState);
-    // const [threshold, setThreshold] = useState(0)
     const [auto, setAuto] = useState(0);
     const [timer, setTimer] = useState(false);
-    const [modalVisible, setModalVisible] = useState(false);
     const [second, setSecond] = useState(0);
     const [minute, setMinute] = useState(0);
     const [hour, setHour] = useState(0);
-    const minuteInput = useRef();
-    const secondInput = useRef();
-    const handleTogglePower = () => {
-        setPower(power == 0 ? 25 : 0);
-    };
+
     const handleToggleAuto = () => {
         setAuto(!auto);
     };
+
     const handleSetTimer = (newValue) => {
-        handleSetPower(newValue == 0 ? 0 : 2);
         const sValue = newValue % 60;
         const mValue = Math.floor(newValue / 60) % 60;
         const hValue = Math.floor(newValue / 3600);
@@ -52,19 +27,6 @@ function AirConditioner({ powerState, callback }) {
         setMinute(() => parseInt(mValue));
         setHour(() => parseInt(hValue));
         setTimer(newValue != 0);
-    };
-    const handleTimerTimeout = () => {
-        handleSetPower(0);
-    };
-    const handleSetPower = (value) => {
-        setPower(value);
-    };
-    useEffect(() => {
-        setPower(powerState);
-    }, [powerState]);
-    const handleSubmit = () => {
-        setModalVisible((value) => !value);
-        setTimer(true);
     };
 
     const [date, setDate2] = useState(new Date());
@@ -96,20 +58,20 @@ function AirConditioner({ powerState, callback }) {
         <View className="flex flex-col w-full h-full p-3 gap-1 items-center">
             <View className="w-[250px] h-[220px] items-center">
                 <RadialSlider
-                    value={power}
+                    value={device.value}
                     min={15}
                     max={30}
                     onChange={(newValue) => {
-                        handleSetPower(newValue);
+                        updateValue(newValue);
                     }}
                     unit={"\u00b0C"}
-                    subTitle={power == 0 ? "Turn Off" : "Cooling"}
+                    subTitle={device.value == 0 ? "Turn Off" : "Cooling"}
                     sliderTrackColor="#cccccc"
                     lineColor="#cccccc"
                     thumbColor="#0088cc"
                     thumbBorderColor="#b3e0ff"
-                    isHideValue={power === 0}
-                    isHideSlider={power === 0}
+                    isHideValue={device.value === 0}
+                    isHideSlider={device.value === 0}
                 />
             </View>
 
@@ -117,21 +79,27 @@ function AirConditioner({ powerState, callback }) {
                 <View className="flex flex-col items-center justify-center h-full w-[100px]">
                     <TouchableOpacity
                         className="rounded-xl items-center"
-                        onPress={handleTogglePower}
+                        onPress={() => {
+                            if (device.value == 0) {
+                                updateValue(device.defaultValue || 25);
+                            } else {
+                                updateValue(0);
+                            }
+                        }}
                     >
                         <Image
                             className="w-[80px] h-[80px] left-[2.5px]"
                             source={
-                                power != 0
+                                device.value != 0
                                     ? require("../assets/button-air-on.png")
                                     : require("../assets/button-air-off.png")
                             }
                         ></Image>
                         <PowerIcon
-                            color={power == 0 ? "black" : "white"}
+                            color={device.value == 0 ? "black" : "white"}
                             size={28}
                             position={"absolute"}
-                            top={power == 0 ? 22 : 23}
+                            top={device.value == 0 ? 22 : 23}
                         />
                     </TouchableOpacity>
 
