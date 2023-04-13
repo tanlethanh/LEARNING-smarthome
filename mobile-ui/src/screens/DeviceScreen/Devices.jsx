@@ -14,9 +14,7 @@ import { WeatherWidget } from "../../components/WeatherWidget";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 function DevicesScreen({ navigation }) {
-    const size = useWindowDimensions();
     const [currentRoom, setCurrentRoom] = useState(1);
-    // console.log(size)
     const rooms = [
         {
             key: 1,
@@ -31,11 +29,6 @@ function DevicesScreen({ navigation }) {
             name: "Study Room",
         },
     ];
-    const customCompare = (oldList, newList) => oldList === newList;
-    // const devices = uaseSelector(
-    //     (state) => state.devices.devicesList,
-    //     customCompare
-    // )
     const devices = [
         {
             deviceName: "AIOT_FAN",

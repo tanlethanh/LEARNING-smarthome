@@ -9,7 +9,7 @@ const key = AIO_KEY;
 export const httpClient = new HTTPClient(username, key);
 export const mqttClient = new MQTTClient(username, key);
 
-const initAllDevice = async () => {
+export const initAllDevice = async () => {
     try {
         // Get all feeds
         const feeds = await httpClient.Feeds.getFeeds();
@@ -33,5 +33,3 @@ const initAllDevice = async () => {
         console.log("Init device error: " + error);
     }
 };
-
-export default initAllDevice;
