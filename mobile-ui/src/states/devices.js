@@ -19,6 +19,7 @@ const deviceSlice = createSlice({
                 const type = classifiedFields[1];
 
                 state.devicesMap[id] = {
+                    id,
                     name: metadata.name,
                     value: 0,
                     room,
