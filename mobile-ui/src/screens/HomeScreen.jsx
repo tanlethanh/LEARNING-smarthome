@@ -12,9 +12,12 @@ import { Settings } from "@tamagui/lucide-icons";
 
 import { rooms, selectDevices } from "../states";
 import { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/core";
 import { useSelector } from "react-redux";
 
-export function HomeScreen({ navigation }) {
+export function HomeScreen() {
+    const naviation = useNavigation();
+
     const devicesMap = useSelector(selectDevices);
 
     const [currentRoom, setCurrentRoom] = useState(rooms[0]);
@@ -36,7 +39,7 @@ export function HomeScreen({ navigation }) {
         <MainLayout withScrollView>
             <View className="flex-1 flex flex-col w-full h-full items-center justify-between gap-y-1">
                 <View className="flex flex-row w-full justify-between items-center px-4 h-[80px]">
-                    <View className="px-[40px]">
+                    <View className="">
                         <Text className="font-bold text-3xl h-[30px]">
                             Hi Sovi
                         </Text>
@@ -74,7 +77,6 @@ export function HomeScreen({ navigation }) {
                     </View>
                 </View>
 
-                {/*  */}
                 <View className="first:h-fit w-full flex flex-row justify-between items-center ">
                     <FlatList
                         className="h-fit w-full px-[15px]"
@@ -88,16 +90,24 @@ export function HomeScreen({ navigation }) {
                     />
                 </View>
 
-                <View className="flex-1 w-full flex flex-col justify-center items-center px-[10px]">
-                    {/* <FlatList
-                        data={devices.filter((device) => {
-                            return device.roomId == currentRoom;
+                <View className="w-full h-full flex-row flex-wrap justify-around">
+                    {Object.values(devicesMap)
+                        .filter((ele) => ele.room === currentRoom.key)
+                        .map((ele, index) => {
+                            return (
+                                <View key={index} className="mt-4">
+                                    <DeviceCard
+                                        device={ele}
+                                        theme={"light"}
+                                        onPress={() => {
+                                            naviation.navigate("Device", {
+                                                screen: String(ele.id),
+                                            });
+                                        }}
+                                    />
+                                </View>
+                            );
                         })}
-                        showsVerticalScrollIndicator={false}
-                        numColumns={2}
-                        renderItem={renderItem}
-                        className="w-full h-full"
-                    ></FlatList> */}
                 </View>
 
                 {/* Footer */}
