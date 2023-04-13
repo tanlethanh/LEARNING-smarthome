@@ -1,36 +1,37 @@
-process.env.TAMAGUI_TARGET = 'native'
+process.env.TAMAGUI_TARGET = "native";
 
 module.exports = function (api) {
-    api.cache(true)
+    api.cache(true);
     return {
-        presets: ['babel-preset-expo'],
+        presets: ["babel-preset-expo"],
         plugins: [
-            'nativewind/babel',
+            "nativewind/babel",
             [
-                '@tamagui/babel-plugin',
+                "@tamagui/babel-plugin",
                 {
-                    components: ['tamagui'],
-                    config: './tamagui.config.js',
-                    logTimings: true
-                }
+                    components: ["tamagui"],
+                    config: "./tamagui.config.js",
+                    logTimings: true,
+                },
             ],
             [
-                'transform-inline-environment-variables',
+                "transform-inline-environment-variables",
                 {
-                    include: 'TAMAGUI_TARGET'
-                }
+                    include: "TAMAGUI_TARGET",
+                },
             ],
-            'react-native-reanimated/plugin',
+            "react-native-reanimated/plugin",
             [
-                'module:react-native-dotenv', {
-                    envName: 'APP_ENV',
-                    moduleName: '@env',
-                    path: '.env',
+                "module:react-native-dotenv",
+                {
+                    envName: "APP_ENV",
+                    moduleName: "@env",
+                    path: "../.env",
                     safe: false,
                     allowUndefined: true,
-                    verbose: false
-                }
-            ]
-        ]
-    }
-}
+                    verbose: false,
+                },
+            ],
+        ],
+    };
+};

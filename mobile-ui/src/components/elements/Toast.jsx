@@ -7,13 +7,13 @@ import {
     ToastNativePlatform,
     XStack,
     YStack,
-    useToast
-} from 'tamagui'
-import { Check } from '@tamagui/lucide-icons'
-import React from 'react'
+    useToast,
+} from "tamagui";
+import { Check } from "@tamagui/lucide-icons";
+import React from "react";
 
 export const ToastDemo = () => {
-    const [native, setNative] = React.useState([])
+    const [native, setNative] = React.useState([]);
 
     return (
         <YStack space="$5">
@@ -24,13 +24,13 @@ export const ToastDemo = () => {
 
             <NativeOptions native={native} setNative={setNative} />
         </YStack>
-    )
-}
+    );
+};
 
 const CurrentToast = () => {
-    const { currentToast } = useToast()
+    const { currentToast } = useToast();
 
-    if (!currentToast || currentToast.isHandledNatively) return null
+    if (!currentToast || currentToast.isHandledNatively) return null;
     return (
         <Toast
             key={currentToast.id}
@@ -45,42 +45,41 @@ const CurrentToast = () => {
             <YStack>
                 <Toast.Title>{currentToast.title}</Toast.Title>
                 {!!currentToast.message && (
-                    <Toast.Description>{currentToast.message}</Toast.Description>
+                    <Toast.Description>
+                        {currentToast.message}
+                    </Toast.Description>
                 )}
             </YStack>
         </Toast>
-    )
-}
+    );
+};
 
 const ToastControl = () => {
-    const toast = useToast()
+    const toast = useToast();
     return (
         <XStack space="$2" jc="center">
             <Button
                 onPress={() => {
-                    toast.show('Successfully saved!', {
-                        message: "Don't worry, we've got your data."
-                    })
+                    toast.show("Successfully saved!", {
+                        message: "Don't worry, we've got your data.",
+                    });
                 }}
             >
-        Show
+                Show
             </Button>
             <Button
                 onPress={() => {
-                    toast.hide()
+                    toast.hide();
                 }}
             >
-        Hide
+                Hide
             </Button>
         </XStack>
-    )
-}
+    );
+};
 
-const NativeOptions = ({
-    native,
-    setNative
-}) => {
-    const supportedNativePlatforms = ['web', 'mobile']
+const NativeOptions = ({ native, setNative }) => {
+    const supportedNativePlatforms = ["web", "mobile"];
 
     return (
         <XStack space>
@@ -90,8 +89,11 @@ const NativeOptions = ({
                         id={platform}
                         checked={native?.includes(platform)}
                         onCheckedChange={(checked) => {
-                            if (checked) setNative([...native, platform])
-                            else setNative(native.filter((val) => val !== platform))
+                            if (checked) setNative([...native, platform]);
+                            else
+                                setNative(
+                                    native.filter((val) => val !== platform),
+                                );
                         }}
                         size="$3"
                     >
@@ -100,10 +102,10 @@ const NativeOptions = ({
                         </Checkbox.Indicator>
                     </Checkbox>
                     <Label size="$3" htmlFor={platform}>
-            Native {platform} toast
+                        Native {platform} toast
                     </Label>
                 </XStack>
             ))}
         </XStack>
-    )
-}
+    );
+};

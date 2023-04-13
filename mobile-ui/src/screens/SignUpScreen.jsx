@@ -1,9 +1,9 @@
-import { AuthLayout } from '../layouts'
-import { Text, TouchableOpacity, View } from 'react-native'
-import { TextInput } from 'react-native-gesture-handler'
-import React, { Component } from 'react'
+import { AuthLayout } from "../layouts";
+import { Text, TouchableOpacity, View } from "react-native";
+import { TextInput } from "react-native-gesture-handler";
+import React, { Component } from "react";
 
-export function SignUpScreen () {
+export function SignUpScreen() {
     return (
         <AuthLayout
             title="Smarthome Register"
@@ -31,5 +31,5 @@ export function SignUpScreen () {
                 </Text>
             </TouchableOpacity>
         </AuthLayout>
-    )
+    );
 }

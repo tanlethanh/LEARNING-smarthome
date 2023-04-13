@@ -1,13 +1,13 @@
-import { HTTPClient, MQTTClient } from '../adafruitJS/client'
-import { randInt } from '../utils/numberUtils'
-import { store } from '../store'
-import { updateFan } from './fan'
-import { updateSample } from './sample'
+import { HTTPClient, MQTTClient } from "../adafruitJS/client";
+import { randInt } from "../utils/numberUtils";
+import { store } from "../store";
+import { updateFan } from "./fan";
+import { updateSample } from "./sample";
 
-const username = 'soviteam'
-const key = ''
-const httpClient = new HTTPClient(username, key)
-const mqttClient = new MQTTClient(username, key)
+const username = "soviteam";
+const key = "";
+const httpClient = new HTTPClient(username, key);
+const mqttClient = new MQTTClient(username, key);
 
 const initAllDevice = async () => {
     try {
@@ -16,7 +16,7 @@ const initAllDevice = async () => {
 
         // Remember to put this line into try catch block
         // const conn = await mqttClient.connect()
-        console.log('started')
+        console.log("started");
 
         // Subcribe Fan feeds and register dispatch function on message
         // await mqttClient.subcribeFeed(feeds[0].id, (message) => {
@@ -34,8 +34,8 @@ const initAllDevice = async () => {
         //     await mqttClient.publish(feeds[0].id, value);
         // }
     } catch (error) {
-        console.log('Error: ' + error)
+        console.log("Error: " + error);
     }
-}
+};
 
-export default initAllDevice
+export default initAllDevice;

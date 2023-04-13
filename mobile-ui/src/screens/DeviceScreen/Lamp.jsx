@@ -1,9 +1,9 @@
-import { DeviceLayout } from '../../layouts'
-import { Lamp } from '../../components'
-import { Text } from 'react-native'
-import { publishDeviceState, updateDeviceState } from '../../reducer/devices'
-import { useDispatch, useSelector } from 'react-redux'
-import { useEffect, useState } from 'react'
+import { DeviceLayout } from "../../layouts";
+import { Lamp } from "../../components";
+import { Text } from "react-native";
+import { publishDeviceState, updateDeviceState } from "../../reducer/devices";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 
 export default function LampScreen ({ route, navigation }) {
     const { deviceId } = route.params
@@ -25,5 +25,5 @@ export default function LampScreen ({ route, navigation }) {
         >
             <Lamp powerState={lampValue} callback={updatelampValue}></Lamp>
         </DeviceLayout>
-    )
+    );
 }

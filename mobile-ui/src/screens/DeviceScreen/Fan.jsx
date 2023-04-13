@@ -1,11 +1,11 @@
-import { DeviceContext } from '../index'
-import { DeviceLayout } from '../../layouts'
-import { Fan } from '../../components'
-import { Text } from 'react-native'
-import { publishDeviceState, updateDeviceState } from '../../reducer/devices'
-import { store } from '../../store'
-import { useContext, useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { DeviceContext } from "../index";
+import { DeviceLayout } from "../../layouts";
+import { Fan } from "../../components";
+import { Text } from "react-native";
+import { publishDeviceState, updateDeviceState } from "../../reducer/devices";
+import { store } from "../../store";
+import { useContext, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export default FanScreen = ({ route, navigation }) => {
     const { deviceId } = route.params
@@ -29,5 +29,5 @@ export default FanScreen = ({ route, navigation }) => {
             {/* <Text>FanValue: {fanValue}</Text> */}
             <Fan powerState={fanValue} callback={updateFanValue}></Fan>
         </DeviceLayout>
-    )
-}
+    );
+};

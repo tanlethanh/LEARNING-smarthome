@@ -176,4 +176,4 @@ const DeviceScreen = () => {
     )
 }
 
-export { DeviceScreen }
+export { DeviceScreen };
