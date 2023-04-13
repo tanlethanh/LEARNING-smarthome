@@ -229,7 +229,6 @@ function DeviceLayout ({ children, deviceName, navigation }) {
                             </Pressable>
                         </Modal>
                     </Button>
-
                 </View>
             </View>
         </MainLayout>
