@@ -1,17 +1,16 @@
-import { Button, Main } from "tamagui";
+import { Button, Main, Sheet, SheetFrame } from "tamagui";
 import { ChevronDown, ChevronLeft, Settings } from "@tamagui/lucide-icons";
 import { Modal, Pressable, Text, View } from "react-native";
-
+import { StarIcon } from "react-native-heroicons/solid";
+import { deviceTypes, roomTypes, selectDevices } from "../states";
+import { useSelector } from "react-redux";
 import React, { useState } from "react";
 
 function DeviceLayout({ children, roomName, deviceName, navigation }) {
-    const devices = [
-        { name: "Fan", screen: "FanScreen" },
-        { name: "Lamp", screen: "FanScreen" },
-        { name: "Lock", screen: "LampScreen" },
-        { name: "Home", screen: "DeviceHome" },
-    ];
-    const [modalVisible, setModalVisible] = useState(false);
+    const devicesMap = useSelector(selectDevices);
+    const [open, setOpen] = useState(false);
+    const [position, setPosition] = useState(0);
+    const [show, setShow] = useState(roomName);
     return (
         <View className="flex-1 flex flex-col h-full w-full items-center pb-4">
             <View className="flex flex-row justify-between items-center w-full h-[fit] m-3 px-3">
@@ -52,49 +51,142 @@ function DeviceLayout({ children, roomName, deviceName, navigation }) {
                     flexDirection="row"
                     justifyContent="flex-end"
                     alignItems="center"
-                    onPress={() => setModalVisible(!modalVisible)}
+                    onPress={() => setOpen(!open)}
                     zIndex={12}
                 >
                     {deviceName}
-                    <Modal
-                        animationType="slide"
-                        transparent={true}
-                        visible={modalVisible}
+                    <Sheet
+                        forceRemoveScrollEnabled={open}
+                        modal={true}
+                        open={open}
+                        onOpenChange={setOpen}
+                        snapPoints={[60, 40, 20]}
+                        dismissOnSnapToBottom
+                        position={position}
+                        onPositionChange={setPosition}
+                        zIndex={100_000}
+                        animation="bouncy" // for the css driver
                     >
-                        <Pressable
-                            className="flex-1 relative"
-                            onPress={() => setModalVisible(!modalVisible)}
+                        <Sheet.Overlay />
+                        <Sheet.Handle />
+                        <Sheet.Frame
+                            f={1}
+                            p="$4"
+                            jc="center"
+                            ai="center"
+                            space="$5"
+                            backgroundColor={"white"}
                         >
-                            <View className=" absolute bottom-[70px] self-center bg-white rounded-[25px]  items-center shadow-[#000] w-[80%] h-fit overflow-hidden">
-                                <View className="flex flex-col w-full h-full justify-center items-center ">
-                                    {devices.map((device, index) => {
-                                        return (
-                                            <View
-                                                key={index}
-                                                className="border-b border-b-[#363636]/10 w-full h-[50px]"
-                                            >
+                            <View className="flex flex-col rounded-xl border border-slate-200 h-full w-full overflow-hidden">
+                                {Object.values(roomTypes).map((ele, index) => {
+                                    return (
+                                        <View key={index}>
+                                            <View className="bg-zinc-100 border-b border-b-[#363636]/10 w-full h-[50px]">
                                                 <Button
-                                                    className="w-full h-full"
+                                                    className=" flex-row flex justify-between w-full h-full"
                                                     borderRadius="$0"
                                                     backgroundColor="transparent"
                                                     onPress={() => {
-                                                        navigation.push(
-                                                            device.screen,
+                                                        setShow(
+                                                            show === ele.name
+                                                                ? ""
+                                                                : ele.name,
                                                         );
                                                     }}
                                                 >
-                                                    <Text className="w-full h-fit font-bold text-[16px] text-[#363636]/90">
-                                                        {device.name}
+                                                    <Text className="w-[200px] h-fit font-bold text-[16px] text-[#363636]/90">
+                                                        {ele.name}
                                                     </Text>
+                                                    <ChevronLeft></ChevronLeft>
                                                 </Button>
                                             </View>
-                                        );
-                                    })}
+                                            {/* {() => {
+                                                return <View></View>;
+                                            }} */}
+                                            {show === ele.name ? (
+                                                Object.values(devicesMap)
+                                                    .filter(
+                                                        (device) =>
+                                                            device.room ===
+                                                            ele.key,
+                                                    )
+                                                    .map((device, index) => {
+                                                        return (
+                                                            <View
+                                                                key={index}
+                                                                className="border-b border-b-[#363636]/10 w-full h-[50px]"
+                                                            >
+                                                                <Button
+                                                                    className=" flex-row flex justify-between w-full h-full"
+                                                                    borderRadius="$0"
+                                                                    backgroundColor="transparent"
+                                                                    onPress={() => {
+                                                                        navigation.push(
+                                                                            "Device",
+                                                                            {
+                                                                                screen: device.type,
+                                                                                params: {
+                                                                                    deviceKey:
+                                                                                        device.key,
+                                                                                },
+                                                                            },
+                                                                        );
+                                                                        setOpen(
+                                                                            false,
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <Text className="px-5 w-[200px] h-fit font-bold text-[16px] text-[#363636]/90">
+                                                                        {
+                                                                            deviceTypes.find(
+                                                                                (
+                                                                                    ele,
+                                                                                ) =>
+                                                                                    ele.key ===
+                                                                                    device.type,
+                                                                            )
+                                                                                .name
+                                                                        }
+                                                                    </Text>
+                                                                    {/* {deviceName === ? () :} */}
+                                                                </Button>
+                                                            </View>
+                                                        );
+                                                    })
+                                            ) : (
+                                                <></>
+                                            )}
+                                        </View>
+                                    );
+                                })}
+                                <View className="self-center w-full items-center h-[50px] overflow-hidden">
+                                    {/* <View className="flex flex-col w-full h-full justify-center items-center ">
+                                        {devices.map((device, index) => {
+                                            return (
+                                                <View
+                                                    key={index}
+                                                    className="border-b border-b-[#363636]/10 w-full h-[50px]"
+                                                >
+                                                    <Button
+                                                        className="w-full h-full"
+                                                        borderRadius="$0"
+                                                        backgroundColor="transparent"
+                                                        onPress={() => {
+
+                                                        }}
+                                                    >
+                                                        <Text className="w-full h-fit font-bold text-[16px] text-[#363636]/90">
+                                                            {device.name}
+                                                        </Text>
+                                                    </Button>
+                                                </View>
+                                            );
+                                        })}
+                                    </View> */}
                                 </View>
-                                <View className="flex flex-row justify-between items-center p-3 gap-[10px]"></View>
                             </View>
-                        </Pressable>
-                    </Modal>
+                        </Sheet.Frame>
+                    </Sheet>
                 </Button>
             </View>
         </View>
