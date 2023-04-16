@@ -6,38 +6,124 @@ import {
     View,
     ViewBase,
 } from "react-native";
+import { Button } from "tamagui";
+import { ClockIcon } from "react-native-heroicons/outline";
+import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import React, { useEffect, useState } from "react";
 import Slider from "@react-native-community/slider";
 import ToggleSwitch from "toggle-switch-react-native";
 
 export default function Lock({ updateValue, device }) {
+    const [schedule, setSchedule] = useState(0);
+    const [date, setDate2] = useState(new Date());
+
+    const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate;
+        setDate2(currentDate);
+    };
+
+    const showMode = (currentMode) => {
+        DateTimePickerAndroid.open({
+            value: date,
+            onChange,
+            mode: currentMode,
+            is24Hour: true,
+        });
+    };
+
+    const showDatepicker = () => {
+        showMode("date");
+    };
+
+    const showTimepicker = () => {
+        console.log("Here");
+        showMode("time");
+    };
+
     return (
-        <View className="flex flex-col w-full h-full items-center py-full">
-            <TouchableOpacity
-                className="items-center"
-                onPress={() => {
-                    if (device.value == 0) {
-                        updateValue(1);
-                    } else {
-                        updateValue(0);
-                    }
-                }}
-            >
-                <Image
-                    className="w-[300px] h-[315px] rounded-full static top-10"
-                    source={require("../assets/lock-button.png")}
-                    resizeMode="stretch"
-                ></Image>
-                <Image
-                    className="h-[150px] w-[150px] absolute top-24 "
-                    source={
-                        device.value
-                            ? require("../assets/lock.png")
-                            : require("../assets/unlock.png")
-                    }
-                    resizeMode="stretch"
-                ></Image>
-            </TouchableOpacity>
+        <View className="flex flex-col w-full h-full p-3 gap-1 items-center">
+            <View className="w-[250px] h-[330px] items-center">
+                <TouchableOpacity
+                    className="items-center"
+                    onPress={() => {
+                        if (device.value == 0) {
+                            updateValue(1);
+                        } else {
+                            updateValue(0);
+                        }
+                    }}
+                >
+                    <Image
+                        className="w-[300px] h-[315px] rounded-full top-10"
+                        source={require("../assets/lock-button.png")}
+                        resizeMode="stretch"
+                    ></Image>
+                    <Image
+                        className="h-[150px] w-[150px] absolute top-24 "
+                        source={
+                            device.value
+                                ? require("../assets/lock.png")
+                                : require("../assets/unlock.png")
+                        }
+                        resizeMode="stretch"
+                    ></Image>
+                </TouchableOpacity>
+            </View>
+
+            <View className="flex flex-row justify-center h-[100px] items-start w-full overflow-hidden px-3">
+                <View className="flex items-center justify-center h-full w-[100px]">
+                    <TouchableOpacity
+                        className="rounded-xl items-center"
+                        onPress={() => {
+                            setSchedule(!schedule);
+                        }}
+                    >
+                        <Image
+                            className="w-[80px] h-[80px] left-[2.5px]"
+                            source={
+                                schedule != 0
+                                    ? require("../assets/button-air-on.png")
+                                    : require("../assets/button-air-off.png")
+                            }
+                        ></Image>
+                        <ClockIcon
+                            color={schedule == 0 ? "black" : "white"}
+                            size={28}
+                            position={"absolute"}
+                            top={schedule == 0 ? 22 : 23}
+                        />
+                    </TouchableOpacity>
+
+                    <Text className="text-small text-center font-medium text-black absolute bottom-2">
+                        Schedule
+                    </Text>
+                </View>
+            </View>
+            {schedule == 1 ? (
+                <View className="flex flex-col items-center justify-center gap-1">
+                    <Button
+                        onPress={() => {
+                            showDatepicker();
+                        }}
+                        title="Show time picker!"
+                        backgroundColor={"#cccccc"}
+                    >
+                        Date
+                    </Button>
+                    <Button
+                        onPress={() => {
+                            showTimepicker();
+                        }}
+                        title="Show time picker!"
+                        backgroundColor={"#cccccc"}
+                    >
+                        Time
+                    </Button>
+                    <Text>Schedule: {date.toLocaleString()}</Text>
+                </View>
+            ) : (
+                <></>
+            )}
         </View>
     );
 }
