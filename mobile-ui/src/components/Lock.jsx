@@ -6,9 +6,10 @@ import {
     View,
     ViewBase,
 } from "react-native";
-import { Button } from "tamagui";
+import { Button, Sheet, SheetFrame } from "tamagui";
 import { ClockIcon } from "react-native-heroicons/outline";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
+import { DeviceSheet } from "./elements/BottomSheet";
 import React, { useEffect, useState } from "react";
 import Slider from "@react-native-community/slider";
 import ToggleSwitch from "toggle-switch-react-native";
@@ -17,6 +18,10 @@ export default function Lock({ updateValue, device }) {
     const [schedule, setSchedule] = useState(0);
     const [date, setDate2] = useState(new Date());
 
+    const [position, setPosition] = useState(0);
+    const [open, setOpen] = useState(false);
+    const [modal, setModal] = useState(false);
+    const [innerOpen, setInnerOpen] = useState(false);
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate;
         setDate2(currentDate);
@@ -47,8 +52,10 @@ export default function Lock({ updateValue, device }) {
                     className="items-center"
                     onPress={() => {
                         if (device.value == 0) {
+                            setOpen(true);
                             updateValue(1);
                         } else {
+                            setOpen(true);
                             updateValue(0);
                         }
                     }}
@@ -124,6 +131,24 @@ export default function Lock({ updateValue, device }) {
             ) : (
                 <></>
             )}
+            <Sheet
+                forceRemoveScrollEnabled={open}
+                modal={true}
+                open={open}
+                onOpenChange={setOpen}
+                snapPoints={[60, 40, 20]}
+                dismissOnSnapToBottom
+                position={position}
+                onPositionChange={setPosition}
+                zIndex={100_000}
+                animation="bouncy" // for the css driver
+            >
+                <Sheet.Overlay />
+                <Sheet.Handle />
+                <Sheet.Frame f={1} p="$4" jc="center" ai="center" space="$5">
+                    <View className="border border-slate-200 h-full w-full"></View>
+                </Sheet.Frame>
+            </Sheet>
         </View>
     );
 }
