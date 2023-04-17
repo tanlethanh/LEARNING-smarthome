@@ -11,10 +11,10 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import nltk
 from nltk.stem import WordNetLemmatizer
 
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout
-from tensorflow.keras.optimizers import SGD
-from tensorflow.keras.models import load_model
+from tensorflow.python.keras.models import Sequential
+from tensorflow.python.keras.layers import Dense, Dropout
+from tensorflow.python.keras.optimizers import gradient_descent_v2
+from tensorflow.python.keras.models import load_model
 
 nltk.download('punkt', quiet=True)
 nltk.download('wordnet', quiet=True)
@@ -106,7 +106,7 @@ class GenericAssistant(IAssistant):
         self.model.add(Dropout(0.5))
         self.model.add(Dense(len(train_y[0]), activation='softmax'))
 
-        sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
+        sgd = gradient_descent_v2.SGD(learning_rate=0.01, momentum=0.9, nesterov=True)
         self.model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'])
 
         self.hist = self.model.fit(np.array(train_x), np.array(train_y), epochs=200, batch_size=5, verbose=1)
