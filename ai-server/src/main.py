@@ -7,6 +7,10 @@ import os
 
 dir = os.path.dirname(__file__)
 
+model_dir = os.path.join(dir, "../model")
+if not os.path.exists(model_dir):
+    os.makedirs(model_dir)
+
 from neuralintents import GenericAssistant
 
 class Assistant:
@@ -18,6 +22,8 @@ class Assistant:
         
         self.assistant = GenericAssistant(os.path.join(dir, "./intents.json"),intent_methods={"file": self.create_file})
         self.assistant.train_model()
+        
+        self.assistant.save_model()
         
         self.root = tk.Tk()
         self.label = tk.Label(text="Hello world", font=("Arial", 120, "bold"))
