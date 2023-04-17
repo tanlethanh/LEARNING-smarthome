@@ -3,7 +3,7 @@ import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { Image, Modal, Text, TouchableOpacity, View } from "react-native";
 import { RadialSlider } from "react-native-radial-slider";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 // import PowerIcon
 import { ClockIcon, CogIcon, PowerIcon } from "react-native-heroicons/outline";
 
@@ -14,6 +14,11 @@ function AirConditioner({ updateValue, device }) {
     const [second, setSecond] = useState(0);
     const [minute, setMinute] = useState(0);
     const [hour, setHour] = useState(0);
+    const [value, setValue] = useState(device.value);
+
+    useEffect(() => {
+        updateValue(value);
+    }, [value]);
 
     const handleToggleAuto = () => {
         setAuto(!auto);
@@ -62,7 +67,7 @@ function AirConditioner({ updateValue, device }) {
                     min={15}
                     max={30}
                     onChange={(newValue) => {
-                        updateValue(newValue);
+                        setValue(newValue);
                     }}
                     unit={"\u00b0C"}
                     subTitle={device.value == 0 ? "Turn Off" : "Cooling"}
