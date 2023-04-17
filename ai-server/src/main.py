@@ -3,6 +3,9 @@ import pyttsx3 as tts
 import tkinter as tk
 import threading
 import sys
+import os
+
+dir = os.path.dirname(__file__)
 
 from neuralintents import GenericAssistant
 
@@ -13,7 +16,7 @@ class Assistant:
         self.speaker = tts.init()
         self.speaker.setProperty('rate', 150)
         
-        self.assistant = GenericAssistant("intents.json",intent_methods={"file": self.create_file})
+        self.assistant = GenericAssistant(os.path.join(dir, "./intents.json"),intent_methods={"file": self.create_file})
         self.assistant.train_model()
         
         self.root = tk.Tk()
