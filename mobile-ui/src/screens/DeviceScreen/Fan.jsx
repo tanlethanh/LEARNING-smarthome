@@ -1,19 +1,46 @@
 import { DeviceLayout, MainLayout } from "../../layouts";
 import { Fan } from "../../components";
-import { useState } from "react";
+import { Text } from "react-native";
+import {
+    deviceTypes,
+    roomTypes,
+    selectDevices,
+    updateDeviceState,
+} from "../../states";
+import { useDispatch, useSelector } from "react";
+export default function FanScreen({ route, navigation }) {
+    const { deviceKey } = route.params;
+    const FanDevice = useSelector(selectDevices)[deviceKey];
+    const dispatch = useDispatch();
 
-export const FanScreen = ({ route, navigation }) => {
-    const [fanValue, setFanValue] = useState(1);
     const updateFanValue = (value) => {
-        setFanValue(value);
+        if (FanDevice != undefined) {
+            dispatch(
+                updateDeviceState({
+                    key: deviceKey,
+                    value,
+                }),
+            );
+        }
     };
+
     return (
         <MainLayout>
-            <DeviceLayout deviceName="Fan Device" navigation={navigation}>
-                <Fan powerState={fanValue} callback={updateFanValue}></Fan>
+            <DeviceLayout
+                roomName={
+                    roomTypes.find((ele) => ele.key === FanDevice.room).name
+                }
+                deviceName={
+                    deviceTypes.find((ele) => ele.key === FanDevice.type).name
+                }
+                navigation={navigation}
+            >
+                {FanDevice ? (
+                    <Fan updateValue={updateFanValue} device={FanDevice}></Fan>
+                ) : (
+                    <Text>Not found this device</Text>
+                )}
             </DeviceLayout>
         </MainLayout>
     );
-};
-
-export default FanScreen;
+}

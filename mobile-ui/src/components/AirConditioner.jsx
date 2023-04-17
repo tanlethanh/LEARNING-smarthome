@@ -168,7 +168,7 @@ function AirConditioner({ updateValue, device }) {
                 </View>
             </View>
             <View className="flex flex-row justify-between h-[95px] items-start w-full overflow-hidden px-3">
-                <View className="bg-[#d9d9d9] shadow-md shadow-black w-[110px] h-[80px] items-center justify-center rounded-[20px]">
+                <View className="bg-[#d9d9d9] shadow-md shadow-black w-[105px] h-[80px] items-center justify-center rounded-[20px]">
                     <Text className="font-semibold text-gray-700">
                         Temp Indoor
                     </Text>
