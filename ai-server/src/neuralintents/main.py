@@ -8,6 +8,8 @@ import os
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
+cur_dir = os.path.dirname(__file__)
+
 import nltk
 from nltk.stem import WordNetLemmatizer
 
@@ -59,19 +61,31 @@ class GenericAssistant(IAssistant):
 
     def train_model(self):
 
+        # Store all word tokens
         self.words = []
+        
+        # Store all tags
         self.classes = []
+        
+        # Store tuples (word, tag)
         documents = []
+        
+        
         ignore_letters = ['!', '?', ',', '.']
 
         for intent in self.intents['intents']:
             for pattern in intent['patterns']:
+                # Detach token from sentence input
                 word = nltk.word_tokenize(pattern)
+                
                 self.words.extend(word)
                 documents.append((word, intent['tag']))
                 if intent['tag'] not in self.classes:
                     self.classes.append(intent['tag'])
 
+        # print("documents", documents)
+
+        # This step is used for simplify word form
         self.words = [self.lemmatizer.lemmatize(w.lower()) for w in self.words if w not in ignore_letters]
         self.words = sorted(list(set(self.words)))
 
@@ -83,18 +97,26 @@ class GenericAssistant(IAssistant):
         output_empty = [0] * len(self.classes)
 
         for doc in documents:
+            # Bag is a binary pattern for a sentence
+            # 1 stand for current work is in dictionary self.words (which is containing all words of our intents)
+            # otherwise 0
             bag = []
+            
             word_patterns = doc[0]
+            # print("word_patterns", word_patterns)
             word_patterns = [self.lemmatizer.lemmatize(word.lower()) for word in word_patterns]
             for word in self.words:
                 bag.append(1) if word in word_patterns else bag.append(0)
 
             output_row = list(output_empty)
+            
+            # Output row is a binary pattern for tag (class) which sentence is in
             output_row[self.classes.index(doc[1])] = 1
+            
             training.append([bag, output_row])
 
         random.shuffle(training)
-        training = np.array(training)
+        training = np.array(training, dtype=object)
 
         train_x = list(training[:, 0])
         train_y = list(training[:, 1])
@@ -112,20 +134,26 @@ class GenericAssistant(IAssistant):
         self.hist = self.model.fit(np.array(train_x), np.array(train_y), epochs=200, batch_size=5, verbose=1)
 
     def save_model(self, model_name=None):
+        
+        prefix = os.path.join(cur_dir, "../model/" + self.model_name)
+        
         if model_name is None:
-            self.model.save(f"{self.model_name}.h5", self.hist)
-            pickle.dump(self.words, open(f'{self.model_name}_words.pkl', 'wb'))
-            pickle.dump(self.classes, open(f'{self.model_name}_classes.pkl', 'wb'))
+            self.model.save(f"{prefix}.h5", self.hist)
+            pickle.dump(self.words, open(f'{prefix}_words.pkl', 'wb'))
+            pickle.dump(self.classes, open(f'{prefix}_classes.pkl', 'wb'))
         else:
             self.model.save(f"{model_name}.h5", self.hist)
             pickle.dump(self.words, open(f'{model_name}_words.pkl', 'wb'))
             pickle.dump(self.classes, open(f'{model_name}_classes.pkl', 'wb'))
 
     def load_model(self, model_name=None):
+
+        prefix = os.path.join(cur_dir, "../model/" + self.model_name)
+        
         if model_name is None:
-            self.words = pickle.load(open(f'{self.model_name}_words.pkl', 'rb'))
-            self.classes = pickle.load(open(f'{self.model_name}_classes.pkl', 'rb'))
-            self.model = load_model(f'{self.model_name}.h5')
+            self.words = pickle.load(open(f'{prefix}_words.pkl', 'rb'))
+            self.classes = pickle.load(open(f'{prefix}_classes.pkl', 'rb'))
+            self.model = load_model(f'{prefix}.h5')
         else:
             self.words = pickle.load(open(f'{model_name}_words.pkl', 'rb'))
             self.classes = pickle.load(open(f'{model_name}_classes.pkl', 'rb'))
