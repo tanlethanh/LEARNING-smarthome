@@ -10,13 +10,16 @@ import { Button, Sheet, SheetFrame } from "tamagui";
 import { ClockIcon } from "react-native-heroicons/outline";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { DeviceSheet } from "./elements/BottomSheet";
+import { RNSVGSvg } from "react-native-svg";
 import React, { useEffect, useState } from "react";
 import Slider from "@react-native-community/slider";
 import ToggleSwitch from "toggle-switch-react-native";
 
 export default function Lock({ updateValue, device }) {
+    const password = ["1", "0", "0", "6", "0", "2"];
     const [schedule, setSchedule] = useState(0);
     const [date, setDate2] = useState(new Date());
+    const [passcode, setPass] = useState(["", "", "", "", "", ""]);
 
     const [position, setPosition] = useState(0);
     const [open, setOpen] = useState(false);
@@ -45,19 +48,50 @@ export default function Lock({ updateValue, device }) {
         showMode("time");
     };
 
+    const number = [
+        { id: "1" },
+        { id: "2" },
+        { id: "3" },
+        { id: "4" },
+        { id: "5" },
+        { id: "6" },
+        { id: "7" },
+        { id: "8" },
+        { id: "9" },
+        { id: "Cancel" },
+        { id: "0" },
+        { id: "OK" },
+    ];
+
+    const onPressNumber = (num) => {
+        if (num == "OK") {
+            CheckPass();
+            return;
+        }
+        let i = 0;
+        const tempCode = passcode.map((x) => x);
+        for (i = 0; i < tempCode.length; i++) {
+            if (tempCode[i] == "") {
+                tempCode[i] = num;
+                break;
+            }
+        }
+        setPass(tempCode);
+    };
+
+    const CheckPass = () => {
+        if (passcode.every((digit, index) => digit == password[index]))
+            updateValue(device.value ? 0 : 1);
+        setPass(["", "", "", "", "", ""]);
+        setOpen(false);
+    };
     return (
         <View className="flex flex-col w-full h-full p-3 gap-1 items-center">
             <View className="w-[250px] h-[330px] items-center">
                 <TouchableOpacity
                     className="items-center"
                     onPress={() => {
-                        if (device.value == 0) {
-                            setOpen(true);
-                            updateValue(1);
-                        } else {
-                            setOpen(true);
-                            updateValue(0);
-                        }
+                        setOpen(true);
                     }}
                 >
                     <Image
@@ -68,7 +102,7 @@ export default function Lock({ updateValue, device }) {
                     <Image
                         className="h-[150px] w-[150px] absolute top-24 "
                         source={
-                            device.value
+                            device.value == 1
                                 ? require("../assets/lock.png")
                                 : require("../assets/unlock.png")
                         }
@@ -146,7 +180,40 @@ export default function Lock({ updateValue, device }) {
                 <Sheet.Overlay />
                 <Sheet.Handle />
                 <Sheet.Frame f={1} p="$4" jc="center" ai="center" space="$5">
-                    <View className="border border-slate-200 h-full w-full"></View>
+                    <View className="flex flex-col border border-slate-200  h-full w-full items-center gap-[20px]">
+                        <View className="flex flex-row mt-[20px] shadow-md border-[#b2b5d2] border-2 shadow-black items-center justify-around rounded-[30px] bg-slate-300 w-[70%] h-[50px]">
+                            {Object.values(passcode).map((letter, index) => {
+                                return letter !== "" ? (
+                                    <View
+                                        key={index}
+                                        className="h-[15px] w-[15px] bg-black rounded-[7.5px]"
+                                    ></View>
+                                ) : (
+                                    <View
+                                        key={index}
+                                        className="h-[15px] w-[15px] bg-transparent rounded-[7.5px]"
+                                    ></View>
+                                );
+                            })}
+                        </View>
+                        <View className="flex flex-row flex-wrap items-center justify-around rounded-[30px] w-[90%] h-[45%] gap-2">
+                            {Object.values(number).map((num, index) => {
+                                return (
+                                    <TouchableOpacity
+                                        key={index}
+                                        className="h-[80px] w-[80px] bg-[#949cc4] items-center justify-center rounded-[30px] overflow-hidden"
+                                        onPress={() => {
+                                            onPressNumber(num.id);
+                                        }}
+                                    >
+                                        <Text className="text-base font-bold">
+                                            {num.id}
+                                        </Text>
+                                    </TouchableOpacity>
+                                );
+                            })}
+                        </View>
+                    </View>
                 </Sheet.Frame>
             </Sheet>
         </View>

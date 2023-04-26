@@ -7,7 +7,7 @@ import {
     selectDevices,
     updateDeviceState,
 } from "../../states";
-import { useDispatch, useSelector } from "react";
+import { useDispatch, useSelector } from "react-redux";
 export default function FanScreen({ route, navigation }) {
     const { deviceKey } = route.params;
     const FanDevice = useSelector(selectDevices)[deviceKey];
