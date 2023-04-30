@@ -14,7 +14,9 @@ import { StatusCodes } from 'http-status-codes'
 
 const app = express()
 
-dotenv.config()
+dotenv.config({
+    path: '../.env'
+})
 
 app.use(morgan('tiny'))
 
@@ -30,7 +32,7 @@ app.use(bodyParser.json())
 // Database setup
 mongoose.set('strictQuery', false)
 
-mongoose.connect(process.env.DB_URI).then((conn) => {
+mongoose.connect(process.env.SCHE_DB_URI).then((conn) => {
     return console.log('Database connected')
 }).catch((error) => {
     console.log('Database connection fail', error)
@@ -62,7 +64,7 @@ app.use('*', (req, res) => {
 console.log('Restart all scheduling')
 
 // Lanch app
-const PORT = process.env.PORT || 8080
-app.listen(process.env.PORT || 8080, () =>
+const PORT = process.env.SCHE_PORT || 8080
+app.listen(process.env.SCHE_PORT || 8080, () =>
     console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`)
 ).on('error', (error) => console.log('Error: ', error))
