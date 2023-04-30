@@ -3,6 +3,11 @@ import { StatusCodes } from 'http-status-codes'
 import Scheduling from '../models/scheduling.js'
 import { Types } from 'mongoose'
 
+import { createRequire } from 'module'
+
+import { updateFeedValue } from '../services/updatingService.js'
+const require = createRequire(import.meta.url)
+
 export const ALL_JOBS = []
 
 const StopStatus = {
@@ -59,12 +64,17 @@ export const addNewScheduling = async (req, res) => {
         })
     }
 
-    const triggerTime = new Date()
-    triggerTime.setSeconds(triggerTime.getSeconds() + 10)
+    // Reload config
+    const settings = require('../settings.json')
 
-    // const triggerTime = new Date(time)
-
-    console.log(triggerTime.getTime(), Date.now())
+    let triggerTime
+    if (settings.mode === 'dev') {
+        console.log('We are in development mode for this api service. \n\t- Simulated job will be triggered after 2s')
+        triggerTime = new Date()
+        triggerTime.setSeconds(triggerTime.getSeconds() + 2)
+    } else {
+        triggerTime = new Date(time)
+    }
 
     if (triggerTime.getTime() < Date.now()) {
         return res.status(StatusCodes.BAD_REQUEST).json({
@@ -81,8 +91,22 @@ export const addNewScheduling = async (req, res) => {
 
     const cronJob = new CronJob(
         triggerTime,
-        function () {
+        async function () {
             console.log('Trigger Job')
+            const jobIndex = ALL_JOBS.findIndex(job => job.cronJob === this)
+
+            if (jobIndex === -1) {
+                throw Error('Not found jobIndex, internal error')
+            }
+
+            const scheduling = await Scheduling.findById(ALL_JOBS[jobIndex].schedulingId)
+
+            try {
+                await updateFeedValue(scheduling.feed_id, scheduling.value)
+            } catch (error) {
+                console.log(`Update error: ${error.message}`)
+            }
+
             this.stop()
         },
         async function () {
