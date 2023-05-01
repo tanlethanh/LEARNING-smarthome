@@ -6,6 +6,7 @@ import { RadialSlider } from "react-native-radial-slider";
 import React, { useEffect, useRef, useState } from "react";
 // import PowerIcon
 import { ClockIcon, CogIcon, PowerIcon } from "react-native-heroicons/outline";
+import { Schedule } from "./Schedule";
 
 function AirConditioner({ updateValue, device }) {
     const [schedule, setSchedule] = useState(0);
@@ -14,12 +15,14 @@ function AirConditioner({ updateValue, device }) {
     const [second, setSecond] = useState(0);
     const [minute, setMinute] = useState(0);
     const [hour, setHour] = useState(0);
-    const [value, setValue] = useState(device.value);
+    const [value, setValue] = useState(0);
 
+    useEffect(() => {
+        setValue(device.value);
+    }, [device.value]);
     useEffect(() => {
         updateValue(value);
     }, [value]);
-
     const handleToggleAuto = () => {
         setAuto(!auto);
     };
@@ -58,25 +61,24 @@ function AirConditioner({ updateValue, device }) {
         console.log("Here");
         showMode("time");
     };
-
     return (
         <View className="flex flex-col w-full h-full p-3 gap-1 items-center">
             <View className="w-[250px] h-[220px] items-center">
                 <RadialSlider
-                    value={device.value}
+                    value={value}
                     min={15}
                     max={30}
-                    onChange={(newValue) => {
-                        setValue(newValue);
+                    onChange={(value) => {
+                        setValue(value);
                     }}
                     unit={"\u00b0C"}
-                    subTitle={device.value == 0 ? "Turn Off" : "Cooling"}
+                    subTitle={value == 0 ? "Turn Off" : "Cooling"}
                     sliderTrackColor="#cccccc"
                     lineColor="#cccccc"
                     thumbColor="#0088cc"
                     thumbBorderColor="#b3e0ff"
-                    isHideValue={device.value === 0}
-                    isHideSlider={device.value === 0}
+                    isHideValue={value === 0}
+                    isHideSlider={value === 0}
                 />
             </View>
 
@@ -85,26 +87,24 @@ function AirConditioner({ updateValue, device }) {
                     <TouchableOpacity
                         className="rounded-xl items-center"
                         onPress={() => {
-                            if (device.value == 0) {
-                                updateValue(device.defaultValue || 25);
-                            } else {
-                                updateValue(0);
-                            }
+                            setValue((value) =>
+                                value == 0 ? device.defaultValue || 25 : 0,
+                            );
                         }}
                     >
                         <Image
                             className="w-[80px] h-[80px] left-[2.5px]"
                             source={
-                                device.value != 0
+                                value != 0
                                     ? require("../assets/button-air-on.png")
                                     : require("../assets/button-air-off.png")
                             }
                         ></Image>
                         <PowerIcon
-                            color={device.value == 0 ? "black" : "white"}
+                            color={value == 0 ? "black" : "white"}
                             size={28}
                             position={"absolute"}
-                            top={device.value == 0 ? 22 : 23}
+                            top={value == 0 ? 22 : 23}
                         />
                     </TouchableOpacity>
 
@@ -194,28 +194,29 @@ function AirConditioner({ updateValue, device }) {
                 </View>
             </View>
             {schedule == 1 ? (
-                <View className="flex flex-col items-center justify-center gap-1">
-                    <Button
-                        onPress={() => {
-                            showDatepicker();
-                        }}
-                        title="Show time picker!"
-                        backgroundColor={"#cccccc"}
-                    >
-                        Date
-                    </Button>
-                    <Button
-                        onPress={() => {
-                            showTimepicker();
-                        }}
-                        title="Show time picker!"
-                        backgroundColor={"#cccccc"}
-                    >
-                        Time
-                    </Button>
-                    <Text>Schedule: {date.toLocaleString()}</Text>
-                </View>
+                <Schedule />
             ) : (
+                // <View className="flex flex-col items-center justify-center gap-1">
+                //     <Button
+                //         onPress={() => {
+                //             showDatepicker();
+                //         }}
+                //         title="Show time picker!"
+                //         backgroundColor={"#cccccc"}
+                //     >
+                //         Date
+                //     </Button>
+                //     <Button
+                //         onPress={() => {
+                //             showTimepicker();
+                //         }}
+                //         title="Show time picker!"
+                //         backgroundColor={"#cccccc"}
+                //     >
+                //         Time
+                //     </Button>
+                //     <Text>Schedule: {date.toLocaleString()}</Text>
+                // </View>
                 <></>
             )}
         </View>
