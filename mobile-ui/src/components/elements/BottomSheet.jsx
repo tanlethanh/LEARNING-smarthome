@@ -5,7 +5,7 @@ import { Text as RNText, View } from "react-native";
 import { Sheet } from "@tamagui/sheet";
 import { useState } from "react";
 
-export const SheetDemo = ({ children, overlay = true }) => {
+export const SheetDemo = ({ children, openSheet, overlay = true }) => {
     const [position, setPosition] = useState(0);
     const [open, setOpen] = useState(false);
     const [modal, setModal] = useState(false);

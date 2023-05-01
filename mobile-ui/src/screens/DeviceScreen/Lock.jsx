@@ -1,29 +1,49 @@
 import { DeviceLayout, MainLayout } from "../../layouts";
-import { publishDeviceState, updateDeviceState } from "../../states/devices";
+import { Text } from "react-native";
+import {
+    deviceTypes,
+    roomTypes,
+    selectDevices,
+    updateDeviceState,
+} from "../../states";
 import { useDispatch, useSelector } from "react-redux";
 import Lock from "../../components/Lock";
 
 export default function LockScreen({ route, navigation }) {
-    const { deviceId } = route.params | undefined;
-    const lockValue = deviceId
-        ? useSelector(
-              (state) =>
-                  state.devices.devicesList.find(
-                      (device) => Number(device.deviceId) == Number(deviceId),
-                  ).value,
-          )
-        : 0;
+    const { deviceKey } = route.params;
+    const LockDevice = useSelector(selectDevices)[deviceKey];
     const dispatch = useDispatch();
+
     const updateLockValue = (value) => {
-        if (deviceId != undefined) {
-            dispatch(updateDeviceState(deviceId, value));
-            dispatch(publishDeviceState(deviceId, value));
+        if (LockDevice != undefined) {
+            dispatch(
+                updateDeviceState({
+                    key: deviceKey,
+                    value,
+                }),
+            );
         }
     };
+
     return (
         <MainLayout>
-            <DeviceLayout deviceName="Lock" navigation={navigation}>
-                <Lock LockState={lockValue} callback={updateLockValue}></Lock>
+            <DeviceLayout
+                roomName={
+                    roomTypes.find((ele) => ele.key === LockDevice.room).name
+                }
+                deviceName={
+                    deviceTypes.find((ele) => ele.key === LockDevice.type).name
+                }
+                navigation={navigation}
+            >
+                {LockDevice ? (
+                    <Lock
+                        updateValue={updateLockValue}
+                        device={LockDevice}
+                    ></Lock>
+                ) : (
+                    <Text>Not found this device</Text>
+                )}
             </DeviceLayout>
         </MainLayout>
     );
