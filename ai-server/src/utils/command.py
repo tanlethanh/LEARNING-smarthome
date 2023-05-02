@@ -29,11 +29,13 @@ def processing_text(text: str):
     return text.split()    
 
 def parse_command(tokens: list[str]):
-    res = cp.parse_one(tokens)
-
-    if isinstance(res, Tree):
-        json_str = "".join(res.label()['SEM'])
-        print(json_str)
-        return json.loads(json_str)
+    try:
+        res = cp.parse_one(tokens)
+        if isinstance(res, Tree):
+            json_str = "".join(res.label()['SEM'])
+            print(json_str)
+            return json.loads(json_str) 
+    except Exception as e:
+        print("Cannot parse ", e)
 
     return None
