@@ -26,4 +26,4 @@ Pos[SEM='"living_room"'] -> 'living'
 Pos[SEM='"bed_room"'] -> 'bed_room'
 Pos[SEM='"bed_room"'] -> 'bed'
 
-Timing -> 'hello_world'
+Timing[SEM=('"Ti":' + '_')] -> 'hello_world'
