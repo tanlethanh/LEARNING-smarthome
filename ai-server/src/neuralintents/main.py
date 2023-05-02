@@ -18,8 +18,12 @@ from tensorflow.python.keras.layers import Dense, Dropout
 from tensorflow.python.keras.optimizers import gradient_descent_v2
 from tensorflow.python.keras.models import load_model
 
-nltk.download('punkt', quiet=True)
-nltk.download('wordnet', quiet=True)
+print("Loading data")
+
+print(nltk.download('punkt', quiet=True))
+print(nltk.download('wordnet', quiet=True))
+
+print("Import in intents assistant done!")
 
 class IAssistant(metaclass=ABCMeta):
 
@@ -128,7 +132,7 @@ class GenericAssistant(IAssistant):
         self.model.add(Dropout(0.5))
         self.model.add(Dense(len(train_y[0]), activation='softmax'))
 
-        sgd = gradient_descent_v2.SGD(learning_rate=0.01, momentum=0.9, nesterov=True)
+        sgd = gradient_descent_v2.SGD(learning_rate=0.001, momentum=0.9, nesterov=True)
         self.model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'])
 
         self.hist = self.model.fit(np.array(train_x), np.array(train_y), epochs=200, batch_size=5, verbose=1)
@@ -188,6 +192,7 @@ class GenericAssistant(IAssistant):
     def _get_response(self, ints, intents_json):
         try:
             tag = ints[0]['intent']
+            print("intents: {}".format(ints))
             list_of_intents = intents_json['intents']
             for i in list_of_intents:
                 if i['tag']  == tag:
