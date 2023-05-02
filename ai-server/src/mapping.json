@@ -1,10 +1,10 @@
 {
     "actions": {
-        "Turn_on": {
+        "turn_on": {
             "value": 1
         },
-        "Turn_off": {
-            "value": 1
+        "turn_off": {
+            "value": 0
         }
     },
     "rooms": {
