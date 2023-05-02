@@ -1,5 +1,6 @@
 import {
     Alert,
+    Dimensions,
     Image,
     Text,
     TouchableOpacity,
@@ -7,16 +8,24 @@ import {
     ViewBase,
 } from "react-native";
 import { Button, Sheet, SheetFrame } from "tamagui";
-import { ClockIcon, CogIcon, PowerIcon } from "react-native-heroicons/outline";
+import {
+    ChartBarIcon,
+    ClockIcon,
+    CogIcon,
+    PowerIcon,
+} from "react-native-heroicons/outline";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { DeviceSheet } from "./elements/BottomSheet";
+import { LineChart } from "react-native-chart-kit";
 import React, { useEffect, useState } from "react";
 import Slider from "@react-native-community/slider";
 import ToggleSwitch from "toggle-switch-react-native";
+
 function Lamp({ updateValue, device }) {
     const [date, setDate2] = useState(new Date());
     const [schedule, setSchedule] = useState(0);
     const [auto, setAuto] = useState(0);
+    const [chart, setChart] = useState(0);
     const [timer, setTimer] = useState(false);
     const [second, setSecond] = useState(0);
     const [minute, setMinute] = useState(0);
@@ -48,41 +57,18 @@ function Lamp({ updateValue, device }) {
     };
 
     return (
-        // <View className="flex flex-col w-full h-full items-center bg-white py-5">
-        //     <View className="flex flex-row justify-between items-center px-2.5 w-full">
-        //         <Text className="font-semibold text-gray-700 text-xl">
-        //             {powerState == 1 ? "On" : "Off"}
-        //         </Text>
-        //         <ToggleSwitch
-        //             isOn={powerState == 1}
-        //             onToggle={handleToggle}
-        //         ></ToggleSwitch>
-        //     </View>
-        //     <View className="flex justify-center items-center w-72 h-72">
-        //         <Image
-        //             className="w-52 h-52"
-        //             source={require("../assets/lamp.png")}
-        //         ></Image>
-        //     </View>
-        //     <Text>Current level: {power}</Text>
-        //     <View className="flex flex-row justify-center items-center w-full h-20 gap-3">
-        //         <Image source={require("../assets/lamp_off.png")}></Image>
-        //         <Slider
-        //             style={{ width: 200, height: 40 }}
-        //             minimumValue={0}
-        //             maximumValue={100}
-        //             value={powerState}
-        //             onValueChange={(newValue) => {
-        //                 callback(newValue);
-        //             }}
-        //             disabled={powerState == 0}
-        //             step={5}
-        //         ></Slider>
-        //         <Image source={require("../assets/lamp_on.png")}></Image>
-        //     </View>
-        // </View>
         <View className="flex flex-col w-full h-full p-3 gap-1 items-center">
-            <View className="w-[250px] h-[220px] items-center"></View>
+            <View className="w-[250px] h-[220px] items-center">
+                <Image
+                    className="h-[220px] w-[220px]"
+                    source={
+                        device.value != 0
+                            ? require("../assets/lightOn.png")
+                            : require("../assets/lightOff.png")
+                    }
+                    resizeMode="stretch"
+                ></Image>
+            </View>
             <View className="flex flex-row justify-center h-[100px] items-start w-full overflow-hidden px-3">
                 <View className="flex flex-col items-center justify-center h-full w-[100px]">
                     <TouchableOpacity
@@ -167,6 +153,33 @@ function Lamp({ updateValue, device }) {
 
                     <Text className="text-small text-center font-medium text-black absolute bottom-2">
                         Schedule
+                    </Text>
+                </View>
+                <View className="flex flex-col items-center justify-center h-full w-[100px]">
+                    <TouchableOpacity
+                        className="rounded-xl items-center"
+                        onPress={() => {
+                            setChart(!chart);
+                        }}
+                    >
+                        <Image
+                            className="w-[80px] h-[80px] left-[2.5px]"
+                            source={
+                                chart != 0
+                                    ? require("../assets/button-air-on.png")
+                                    : require("../assets/button-air-off.png")
+                            }
+                        ></Image>
+                        <ChartBarIcon
+                            color={chart == 0 ? "black" : "white"}
+                            size={28}
+                            position={"absolute"}
+                            top={chart == 0 ? 22 : 23}
+                        />
+                    </TouchableOpacity>
+
+                    <Text className="text-small text-center font-medium text-black absolute bottom-2">
+                        Chart
                     </Text>
                 </View>
             </View>
