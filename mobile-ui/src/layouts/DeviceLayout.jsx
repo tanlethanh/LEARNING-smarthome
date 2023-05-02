@@ -37,7 +37,7 @@ function DeviceLayout({ children, roomName, deviceName, navigation }) {
                     scaleIcon={2}
                 />
             </View>
-            <View className="flex-1 w-full">{children}</View>
+            <View className="flex-1 w-full h-full">{children}</View>
             <View className="flex flex-row justify-center items-center w-full">
                 <Button
                     width={"$18"}
@@ -78,7 +78,7 @@ function DeviceLayout({ children, roomName, deviceName, navigation }) {
                             backgroundColor={"white"}
                         >
                             <View className="flex flex-col rounded-xl border border-slate-200 h-full w-full overflow-hidden">
-                                {Object.values(roomTypes).map((ele, index) => {
+                                {Object.values(roomTypes).map((room, index) => {
                                     return (
                                         <View key={index}>
                                             <View className="bg-zinc-100 border-b border-b-[#363636]/10 w-full h-[50px]">
@@ -88,27 +88,24 @@ function DeviceLayout({ children, roomName, deviceName, navigation }) {
                                                     backgroundColor="transparent"
                                                     onPress={() => {
                                                         setShow(
-                                                            show === ele.name
+                                                            show === room.name
                                                                 ? ""
-                                                                : ele.name,
+                                                                : room.name,
                                                         );
                                                     }}
                                                 >
                                                     <Text className="w-[200px] h-fit font-bold text-[16px] text-[#363636]/90">
-                                                        {ele.name}
+                                                        {room.name}
                                                     </Text>
                                                     <ChevronLeft></ChevronLeft>
                                                 </Button>
                                             </View>
-                                            {/* {() => {
-                                                return <View></View>;
-                                            }} */}
-                                            {show === ele.name ? (
+                                            {show === room.name ? (
                                                 Object.values(devicesMap)
                                                     .filter(
                                                         (device) =>
                                                             device.room ===
-                                                            ele.key,
+                                                            room.key,
                                                     )
                                                     .map((device, index) => {
                                                         return (
@@ -148,7 +145,20 @@ function DeviceLayout({ children, roomName, deviceName, navigation }) {
                                                                                 .name
                                                                         }
                                                                     </Text>
-                                                                    {/* {deviceName === ? () :} */}
+                                                                    {deviceTypes.find(
+                                                                        (ele) =>
+                                                                            ele.key ===
+                                                                            device.type,
+                                                                    ).name ===
+                                                                    deviceName ? (
+                                                                        <StarIcon
+                                                                            color={
+                                                                                "#999999"
+                                                                            }
+                                                                        ></StarIcon>
+                                                                    ) : (
+                                                                        <></>
+                                                                    )}
                                                                 </Button>
                                                             </View>
                                                         );
@@ -159,36 +169,13 @@ function DeviceLayout({ children, roomName, deviceName, navigation }) {
                                         </View>
                                     );
                                 })}
-                                <View className="self-center w-full items-center h-[50px] overflow-hidden">
-                                    {/* <View className="flex flex-col w-full h-full justify-center items-center ">
-                                        {devices.map((device, index) => {
-                                            return (
-                                                <View
-                                                    key={index}
-                                                    className="border-b border-b-[#363636]/10 w-full h-[50px]"
-                                                >
-                                                    <Button
-                                                        className="w-full h-full"
-                                                        borderRadius="$0"
-                                                        backgroundColor="transparent"
-                                                        onPress={() => {
-
-                                                        }}
-                                                    >
-                                                        <Text className="w-full h-fit font-bold text-[16px] text-[#363636]/90">
-                                                            {device.name}
-                                                        </Text>
-                                                    </Button>
-                                                </View>
-                                            );
-                                        })}
-                                    </View> */}
-                                </View>
+                                <View className="self-center w-full items-center h-[50px] overflow-hidden"></View>
                             </View>
                         </Sheet.Frame>
                     </Sheet>
                 </Button>
             </View>
+            <View className="h-[100px]"></View>
         </View>
     );
 }
