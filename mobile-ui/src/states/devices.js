@@ -1,3 +1,4 @@
+import { and } from "react-native-reanimated";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -14,9 +15,12 @@ const deviceSlice = createSlice({
             const classifiedFields = metadata.name.split("_");
             // console.log(classifiedFields);
 
-            if (classifiedFields.length >= 2) {
+            if (
+                classifiedFields.length == 3 &&
+                classifiedFields[1] == "DEVICE"
+            ) {
                 const room = classifiedFields[0];
-                const type = classifiedFields[1];
+                const type = classifiedFields[2];
                 state.devicesMap[key] = {
                     key,
                     name: metadata.name,
