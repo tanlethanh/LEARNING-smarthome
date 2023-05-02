@@ -1,4 +1,3 @@
-import nltk
 from nltk.stem import WordNetLemmatizer
 from nltk.parse import load_parser
 from nltk import Tree
