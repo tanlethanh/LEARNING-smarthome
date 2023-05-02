@@ -1,0 +1,12 @@
+turn on the light in the living room
+turn on the fan in the living room
+turn on the air conditioner in the living room
+
+turn off the light in the living room
+turn off the fan in the living room
+turn off the air conditioner in the living room
+
+turn on the first light in the living room
+turn on the light in the living room after 5 minutes
+turn on the light in the living room after 5 hours
+turn on the light in the living room at 6pm
