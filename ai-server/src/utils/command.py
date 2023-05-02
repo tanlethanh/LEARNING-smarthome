@@ -6,7 +6,7 @@ import json
 print("-------- package imported --------")
 
 lemmartizer = WordNetLemmatizer()
-cp = load_parser(grammar_url='./grammar.fcfg')
+cp = load_parser(grammar_url='../grammar.fcfg')
 # print(cp.grammar())
 
 print("-------- parser loaded --------")
