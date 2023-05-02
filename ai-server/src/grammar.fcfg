@@ -1,0 +1,29 @@
+% start S
+
+S[SEM=(?ac + ?de + ?po + ?ti)] -> Action[SEM=?ac] Device[SEM=?de] Position[SEM=?po] Timing[SEM=?ti]
+S[SEM=(?ac + ?de + ?po)] -> Action[SEM=?ac] Device[SEM=?de] Position[SEM=?po]
+S[SEM=(?ac + ?de)] -> Action[SEM=?ac] Device[SEM=?de]
+
+Action[SEM='Turn_on'] -> 'turn_on' | 'open'
+Action[SEM='Turn_off'] -> 'turn_off'
+
+Device[SEM=('De' + ?de)] -> NP[SEM=?de]
+NP[SEM=?np] -> 'the' N[SEM=?np]
+NP[SEM=?np] -> 'the' Idx N[SEM=?np]
+
+N[SEM='_light'] -> 'light'
+N[SEM='_fan'] -> 'fan'
+N[SEM='_air_conditioner'] -> 'air_conditioner'
+
+
+Position[SEM=('Pos' + ?np)] -> PrePos NP[SEM=?np]
+PrePos -> 'in' | 'at' | 'on'
+
+N[SEM=?n] -> Pos[SEM=?n]
+
+Pos[SEM='_living_room'] -> 'living_room'
+Pos[SEM='_living_room'] -> 'living'
+Pos[SEM='_bed_room'] -> 'bed_room'
+Pos[SEM='_bed_room'] -> 'bed'
+
+Timing -> 'hello_world'
