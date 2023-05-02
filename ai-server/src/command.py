@@ -1,14 +1,13 @@
 from nltk.stem import WordNetLemmatizer
 from nltk.parse import load_parser
 from nltk import Tree
+import json
 
 print("-------- package imported --------")
 
 lemmartizer = WordNetLemmatizer()
-
 cp = load_parser(grammar_url='./grammar.fcfg')
-
-print(cp.grammar())
+# print(cp.grammar())
 
 print("-------- parser loaded --------")
 
@@ -33,9 +32,8 @@ def parse_command(tokens: list[str]):
     res = cp.parse_one(tokens)
 
     if isinstance(res, Tree):
-        return res.label()['SEM']
+        json_str = "".join(res.label()['SEM'])
+        print(json_str)
+        return json.loads(json_str)
 
     return None
-
-    
-    
