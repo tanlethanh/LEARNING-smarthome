@@ -1,5 +1,5 @@
 import { Animated, Image, Text, TouchableOpacity, View } from "react-native";
-import { Button } from "tamagui";
+import { Button, Sheet } from "tamagui";
 import {
     ChartBarIcon,
     ClockIcon,
@@ -17,13 +17,13 @@ import { Chart } from "./Chart";
 
 function Fan({ updateValue, device }) {
     const [date, setDate2] = useState(new Date());
-    const [schedule, setSchedule] = useState(0);
+    const [schedule, setSchedule] = useState(false);
     const [chart, setChart] = useState(0);
     const [timer, setTimer] = useState(false);
     const [second, setSecond] = useState(0);
     const [minute, setMinute] = useState(0);
     const [hour, setHour] = useState(0);
-    const [value, setValue] = useState(device.value);
+    const [position, setPosition] = useState(0);
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate;
         setDate2(currentDate);
@@ -221,6 +221,33 @@ function Fan({ updateValue, device }) {
                     ></Chart>
                 </View>
             )}
+            <Sheet
+                forceRemoveScrollEnabled={schedule}
+                modal={true}
+                open={schedule}
+                onOpenChange={setSchedule}
+                snapPoints={[60, 40, 20]}
+                dismissOnSnapToBottom
+                position={position}
+                onPositionChange={setPosition}
+                zIndex={100_000}
+                animation="bouncy" // for the css driver
+            >
+                <Sheet.Overlay />
+                <Sheet.Handle />
+                <Sheet.Frame
+                    f={1}
+                    p="$4"
+                    jc="center"
+                    ai="center"
+                    space="$5"
+                    backgroundColor={"white"}
+                >
+                    <View className="flex flex-col rounded-xl border border-slate-200 h-full w-full overflow-hidden">
+                        <View className="self-center w-full items-center h-[50px] overflow-hidden"></View>
+                    </View>
+                </Sheet.Frame>
+            </Sheet>
         </View>
     );
 }

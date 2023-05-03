@@ -1,4 +1,4 @@
-import { Button } from "tamagui";
+import { Button, Sheet } from "tamagui";
 import { Chart } from "./Chart";
 import {
     ChartBarIcon,
@@ -15,7 +15,7 @@ import { useSelector } from "react-redux";
 import React, { useEffect, useRef, useState } from "react";
 
 function AirConditioner({ updateValue, device }) {
-    const [schedule, setSchedule] = useState(0);
+    const [schedule, setSchedule] = useState(false);
     const [chart, setChart] = useState(0);
     const [timer, setTimer] = useState(false);
     const [second, setSecond] = useState(0);
@@ -23,7 +23,7 @@ function AirConditioner({ updateValue, device }) {
     const [hour, setHour] = useState(0);
     const [value, setValue] = useState(device.value);
     const devicesMap = useSelector(selectDevices);
-
+    const [position, setPosition] = useState(0);
     useEffect(() => {
         updateValue(value);
     }, [value]);
@@ -228,6 +228,7 @@ function AirConditioner({ updateValue, device }) {
                     <Text className="font-bold text-gray-700">
                         {/* {
                             devicesMap.find((ele) => {
+                                console.log(ele.name);
                                 return (
                                     ele.room == device.room &&
                                     ele.type == "TEMP"
@@ -284,6 +285,34 @@ function AirConditioner({ updateValue, device }) {
                     ></Chart>
                 </View>
             )}
+            <Sheet
+                forceRemoveScrollEnabled={schedule}
+                modal={true}
+                open={schedule}
+                onOpenChange={setSchedule}
+                snapPoints={[60, 40, 20]}
+                dismissOnSnapToBottom
+                position={position}
+                onPositionChange={setPosition}
+                zIndex={100_000}
+                animation="bouncy" // for the css driver
+            >
+                <Sheet.Overlay />
+                <Sheet.Handle />
+                <Sheet.Frame
+                    f={1}
+                    p="$4"
+                    jc="center"
+                    ai="center"
+                    space="$5"
+                    backgroundColor={"white"}
+                    borderRadius={40}
+                >
+                    <View className="flex flex-col rounded-xl border border-slate-200 h-full w-full overflow-hidden">
+                        <View className="self-center w-full items-center h-[50px] overflow-hidden"></View>
+                    </View>
+                </Sheet.Frame>
+            </Sheet>
         </View>
     );
 }
