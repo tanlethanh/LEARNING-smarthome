@@ -1,8 +1,13 @@
 % start S
 
 S[SEM=('{' + ?ac + ',' + ?de + ',' + ?po + ',' + ?ti + '}')] -> Action[SEM=?ac] Device[SEM=?de] Position[SEM=?po] Timing[SEM=?ti]
+S[SEM=('{' + ?ac + ',' + ?de + ',' + ?po + ',' + ?ti + '}')] -> Timing[SEM=?ti] Action[SEM=?ac] Device[SEM=?de] Position[SEM=?po] 
+S[SEM=('{' + ?ac + ',' + ?de + ',' + ?po + ',' + ?ti + '}')] -> Timing[SEM=?ti] Position[SEM=?po] Action[SEM=?ac] Device[SEM=?de] 
 S[SEM=('{' + ?ac + ','  + ?de + ','  + ?po  + '}')] -> Action[SEM=?ac] Device[SEM=?de] Position[SEM=?po]
+S[SEM=('{' + ?ac + ','  + ?de + ','  + ?po  + '}')] -> Position[SEM=?po] Action[SEM=?ac] Device[SEM=?de]
+S[SEM=('{' + ?ac + ','  + ?de + ','  + ?po  + '}')] -> Device[SEM=?de] Position[SEM=?po] Action[SEM=?ac]
 S[SEM=('{' + ?ac + ','  + ?de + '}')] -> Action[SEM=?ac] Device[SEM=?de]
+S[SEM=('{' + ?ac + ','  + ?de + '}')] -> Device[SEM=?de] Action[SEM=?ac]
 
 Action[SEM='"Ac": "turn_on"'] -> 'turn_on' | 'open'
 Action[SEM='"Ac": "turn_off"'] -> 'turn_off'
