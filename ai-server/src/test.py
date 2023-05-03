@@ -13,6 +13,7 @@ if not os.path.exists(model_dir):
 from neuralintents import GenericAssistant
 
 def handle_command_intent(topic: list[str], res):
+    print(res, "<--")
     processed_text = processing_text(res)
     result = parse_command(processed_text)
     print("Parsed: {}".format(result))

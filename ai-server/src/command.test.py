@@ -1,4 +1,4 @@
-from command import processing_text, parse_command, handle_command
+from utils.command import processing_text, parse_command, handle_command
 import sys
 
 
