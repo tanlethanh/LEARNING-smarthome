@@ -38,7 +38,7 @@ function DeviceLayout({ children, roomName, deviceName, navigation }) {
                 />
             </View>
             <View className="flex-1 w-full h-full">{children}</View>
-            {/* <View className="flex flex-row justify-center items-center w-full">
+            <View className="flex flex-row justify-center items-center w-full">
                 <Button
                     width={"$18"}
                     height="$4"
@@ -100,12 +100,14 @@ function DeviceLayout({ children, roomName, deviceName, navigation }) {
                                                     <ChevronLeft></ChevronLeft>
                                                 </Button>
                                             </View>
-                                            {show === room.name ? (
+                                            {show === room.name &&
                                                 Object.values(devicesMap)
                                                     .filter(
                                                         (device) =>
                                                             device.room ===
-                                                            room.key,
+                                                                room.key &&
+                                                            device.tag !==
+                                                                "DATA",
                                                     )
                                                     .map((device, index) => {
                                                         return (
@@ -138,9 +140,12 @@ function DeviceLayout({ children, roomName, deviceName, navigation }) {
                                                                             deviceTypes.find(
                                                                                 (
                                                                                     ele,
-                                                                                ) =>
-                                                                                    ele.key ===
-                                                                                    device.type,
+                                                                                ) => {
+                                                                                    return (
+                                                                                        ele.key ==
+                                                                                        device.type
+                                                                                    );
+                                                                                },
                                                                             )
                                                                                 .name
                                                                         }
@@ -150,22 +155,17 @@ function DeviceLayout({ children, roomName, deviceName, navigation }) {
                                                                             ele.key ===
                                                                             device.type,
                                                                     ).name ===
-                                                                    deviceName ? (
+                                                                        deviceName && (
                                                                         <StarIcon
                                                                             color={
                                                                                 "#999999"
                                                                             }
                                                                         ></StarIcon>
-                                                                    ) : (
-                                                                        <></>
                                                                     )}
                                                                 </Button>
                                                             </View>
                                                         );
-                                                    })
-                                            ) : (
-                                                <></>
-                                            )}
+                                                    })}
                                         </View>
                                     );
                                 })}
@@ -174,7 +174,7 @@ function DeviceLayout({ children, roomName, deviceName, navigation }) {
                         </Sheet.Frame>
                     </Sheet>
                 </Button>
-            </View> */}
+            </View>
             <View className="h-[100px]"></View>
         </View>
     );

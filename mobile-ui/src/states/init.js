@@ -10,27 +10,6 @@ export const initAllDevice = async () => {
         // Remember to put this line into try catch block
         const conn = await mqttClient.connect();
         console.log("started", conn);
-
-        // Subcribe Fan feeds and register dispatch function on message
-        // feeds.map(async (feed) => {
-        //     // Add new device into store
-        //     // store.dispatch(
-        //     //     addNewDevice({
-        //     //         key: feed.key,
-        //     //         metadata: feed,
-        //     //     }),
-        //     // );
-        //     // await mqttClient.subcribeFeed(feed.key, (message) => {
-        //     //     // Update state of device to newest
-        //     //     store.dispatch(
-        //     //         updateDeviceState({
-        //     //             key: feed.key,
-        //     //             value: Number(message.payloadString),
-        //     //             notPublish: true,
-        //     //         }),
-        //     //     );
-        //     // });
-        // });
         await mqttClient.subcribeGroup("smarthome", (message) => {
             // Update state of device to newest
             console.log(typeof message.payloadString);
@@ -62,3 +41,11 @@ export const initAllDevice = async () => {
         console.log("Init device error: " + error);
     }
 };
+
+// export const reloadDevice = async () => {
+//     try{
+
+//     }catch(error){
+//         console.log("Init device error: " + error);
+//     }
+// }
