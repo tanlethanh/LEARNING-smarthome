@@ -1,0 +1,19 @@
+{
+    "actions": {
+        "turn_on": {
+            "value": 1
+        },
+        "turn_off": {
+            "value": 0
+        }
+    },
+    "rooms": {
+        "living_room": "LR",
+        "bed_room": "BR"
+    },
+    "devices": {
+        "light": "LIGHT",
+        "fan": "FAN",
+        "air_conditioner": "AIRCOND"
+    }
+}

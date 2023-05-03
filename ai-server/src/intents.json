@@ -50,6 +50,95 @@
                 "You own the following shares: ABBV, AAPL, FB, NVDA and an ETF of the S&P 500 Index!"
             ],
             "context_set": ""
+        },{
+            "tag": "command",
+            "patterns": [
+                "Can you turn off the light for me",
+                "I wanna turn off the light in the living room",
+                "I wanna turn off the first fan in the bedroom",
+                "I wanna turn on the light in the bedroom",
+                "Please turn on the light after 1 hours",
+                "Please turn on the light at 7pm",
+                "How many devices are on",
+                "Can I know how many devices are on",
+                "Please tell me how many devices are on",
+                "Turn off all devices in the living room",
+                "How many fan in the living room?",
+                "Can you adjust the air conditioner in living room to 28",
+                "Turn off the light in the living room",
+                "I wanna turn on the air conditioner in 28 from now to 6pm ",
+                "Do we have any fans are on"
+            ],
+            "responses": [
+                "Here we go"
+            ],
+            "context_set": ""
+        }, {
+            "tag": "conflict",
+            "patterns":[
+                "Can you turn off for me",
+                "I wanna turn off in the",
+                "I wanna turn off the first in the",
+                "I wanna the light in the bedroom",
+                "Please the light after 1 hours",
+                "Please turn on the light at 7pm",
+                "How many devices are on",
+                "Can I know how many are on",
+                "Please tell me how many are on",
+                "Turn off all in the",
+                "How many fan in the living room?",
+                "Can you adjust in living room to 28",
+                "Turn off the light in the",
+                "I wanna 28 from now to 6pm ",
+                "Do we have any are on"
+            ],
+            "responses": [
+                "Wrong"
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "informative.weather",
+            "patterns":[
+                "What the weather today",
+                "How the weather today",
+                "Sovi, can you tell me the weather",
+                "I wanna know the weather today"
+            ],
+            "responses": [
+                "Ok! let me see",
+                "Yes sir! I will check the weather now",
+                "Ok wait a minute"
+            ],
+            "context_set": ""
+        }, 
+        {
+            "tag": "informative.all_devices.on",
+            "patterns":[
+                "Can you tell me what devices are on",
+                "How many device are on",
+                "I wanna know what devices are on"
+            ],
+            "responses": [
+                "Ok! let me see",
+                "Yes sir! I will check the all devices now",
+                "Ok wait a minute"
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "informative.all_devices.off",
+            "patterns":[
+                "Can you tell me what devices are off",
+                "How many device are off",
+                "I wanna know what devices are off"
+            ],
+            "responses": [
+                "Ok! let me see",
+                "Yes sir! I will check the all devices now",
+                "Ok wait a minute"
+            ],
+            "context_set": ""
         }
     ]
 }

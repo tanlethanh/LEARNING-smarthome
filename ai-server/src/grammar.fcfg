@@ -1,0 +1,48 @@
+% start S
+
+S[SEM=('{' + ?ac + ',' + ?de + ',' + ?po + ',' + ?ti + '}')] -> Action[SEM=?ac] Device[SEM=?de] Position[SEM=?po] Timing[SEM=?ti]
+S[SEM=('{' + ?ac + ','  + ?de + ','  + ?po  + '}')] -> Action[SEM=?ac] Device[SEM=?de] Position[SEM=?po]
+S[SEM=('{' + ?ac + ','  + ?de + '}')] -> Action[SEM=?ac] Device[SEM=?de]
+
+Action[SEM='"Ac": "turn_on"'] -> 'turn_on' | 'open'
+Action[SEM='"Ac": "turn_off"'] -> 'turn_off'
+
+Device[SEM=('"De":' + ?de)] -> NP[SEM=?de]
+NP[SEM=?np] -> 'the' N[SEM=?np]
+NP[SEM=?np] -> 'the' Idx N[SEM=?np]
+
+# NP[SEM='"#"'] -> Unknown
+
+N[SEM='"light"'] -> 'light'
+N[SEM='"fan"'] -> 'fan'
+N[SEM='"air_conditioner"'] -> 'air_conditioner'
+
+
+Position[SEM=('"Pos":' + ?np)] -> PrePos NP[SEM=?np]
+PrePos -> 'in' | 'at' | 'on' | 'after' 
+
+N[SEM=?n] -> Pos[SEM=?n]
+
+Pos[SEM='"living_room"'] -> 'living_room'
+Pos[SEM='"living_room"'] -> 'living'
+Pos[SEM='"bed_room"'] -> 'bed_room'
+Pos[SEM='"bed_room"'] -> 'bed'
+
+Timing[SEM=('"Ti":' + '{ "num":' + ?num + ',"type":' + ?typ + '}')] -> PrePos Number[SEM=?num] TiType[SEM=?typ]
+
+# Unknown -> r".*"
+
+Number[SEM="1"] -> "one" | "1"
+Number[SEM="2"] -> "two" | "2"
+Number[SEM="3"] -> "three" | "3"
+Number[SEM="4"] -> "four" | "4"
+Number[SEM="5"] -> "five" | "5"
+Number[SEM="6"] -> "six" | "6"
+Number[SEM="7"] -> "seven" | "7"
+Number[SEM="8"] -> "eight" | "8"
+Number[SEM="9"] -> "nine" | "9"
+Number[SEM="10"] -> "ten" | "10"
+
+TiType[SEM='"second"'] -> 'second'
+TiType[SEM='"minute"'] -> 'minute'
+TiType[SEM='"hour"'] -> 'hour'
