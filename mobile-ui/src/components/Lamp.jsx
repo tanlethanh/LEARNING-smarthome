@@ -62,7 +62,7 @@ function Lamp({ updateValue, device }) {
                 <Image
                     className="h-[220px] w-[220px]"
                     source={
-                        device.value != 0
+                        device.value % 1000 != 0
                             ? require("../assets/lightOn.png")
                             : require("../assets/lightOff.png")
                     }
@@ -74,26 +74,28 @@ function Lamp({ updateValue, device }) {
                     <TouchableOpacity
                         className="rounded-xl items-center"
                         onPress={() => {
-                            if (device.value == 0) {
-                                updateValue(device.defaultValue || 2);
+                            if (device.value % 1000 == 0) {
+                                updateValue(device.value + 2);
                             } else {
-                                updateValue(0);
+                                updateValue(
+                                    Math.floor(device.value / 1000) * 1000,
+                                );
                             }
                         }}
                     >
                         <Image
                             className="w-[80px] h-[80px] left-[2.5px]"
                             source={
-                                device.value != 0
+                                device.value % 1000 != 0
                                     ? require("../assets/button-air-on.png")
                                     : require("../assets/button-air-off.png")
                             }
                         ></Image>
                         <PowerIcon
-                            color={device.value == 0 ? "black" : "white"}
+                            color={device.value % 1000 == 0 ? "black" : "white"}
                             size={28}
                             position={"absolute"}
-                            top={device.value == 0 ? 22 : 23}
+                            top={device.value % 1000 == 0 ? 22 : 23}
                         />
                     </TouchableOpacity>
 
@@ -102,31 +104,37 @@ function Lamp({ updateValue, device }) {
                     </Text>
                 </View>
 
-                <View className="flex flex-col items-center justify-center h-full w-[100px]">
-                    <TouchableOpacity
-                        className="rounded-xl items-center"
-                        onPress={handleToggleAuto}
-                    >
-                        <Image
-                            className="w-[80px] h-[80px] left-[2.5px]"
-                            source={
-                                auto != 0
-                                    ? require("../assets/button-air-on.png")
-                                    : require("../assets/button-air-off.png")
-                            }
-                        ></Image>
-                        <CogIcon
-                            color={auto == 0 ? "black" : "white"}
-                            size={28}
-                            position={"absolute"}
-                            top={auto == 0 ? 22 : 23}
-                        />
-                    </TouchableOpacity>
+                {device.tag == "AUTO" && (
+                    <View className="flex flex-col items-center justify-center h-full w-[100px]">
+                        <TouchableOpacity
+                            className="rounded-xl items-center"
+                            onPress={() => {
+                                if (device.value >= 1000) {
+                                    updateValue(device.value - 1000);
+                                } else updateValue(device.value + 1000);
+                            }}
+                        >
+                            <Image
+                                className="w-[80px] h-[80px] left-[2.5px]"
+                                source={
+                                    device.value >= 1000
+                                        ? require("../assets/button-air-on.png")
+                                        : require("../assets/button-air-off.png")
+                                }
+                            ></Image>
+                            <CogIcon
+                                color={device.value < 1000 ? "black" : "white"}
+                                size={28}
+                                position={"absolute"}
+                                top={device.value < 1000 ? 22 : 23}
+                            />
+                        </TouchableOpacity>
 
-                    <Text className="text-small text-center font-medium text-black absolute bottom-2">
-                        Auto
-                    </Text>
-                </View>
+                        <Text className="text-small text-center font-medium text-black absolute bottom-2">
+                            Auto
+                        </Text>
+                    </View>
+                )}
 
                 <View className="flex flex-col items-center justify-center h-full w-[100px]">
                     <TouchableOpacity
@@ -183,27 +191,30 @@ function Lamp({ updateValue, device }) {
                     </Text>
                 </View>
             </View>
-            {device.value != 0 ? (
+            {device.value % 1000 != 0 ? (
                 <View className="flex flex-col border-[#8088b7] shadow-lg shadow-black border-2 items-center w-[300px] h-[120px] rounded-[10px] overflow-hidden ">
                     <View className="flex flex-row items-center w-[100%] h-[50%]">
                         <View className="w-[50%] h-fit">
                             <Button
                                 className={
-                                    device.value === 1
+                                    device.value % 1000 === 1
                                         ? "bg-[#41455d]"
                                         : "bg-[#DEE2E7]"
                                 }
                                 flex={1}
                                 borderRadius={0}
                                 onPress={() => {
-                                    updateValue(1);
+                                    updateValue(
+                                        Math.floor(device.value / 1000) * 1000 +
+                                            1,
+                                    );
                                 }}
                                 height="100%"
                                 width="100%"
                             >
                                 <Text
                                     className={
-                                        device.value === 1
+                                        device.value % 1000 === 1
                                             ? "text-white"
                                             : "text-black"
                                     }
@@ -215,21 +226,24 @@ function Lamp({ updateValue, device }) {
                         <View className="w-[50%] h-full">
                             <Button
                                 className={
-                                    device.value === 2
+                                    device.value % 1000 === 2
                                         ? "bg-[#41455d]"
                                         : "bg-[#DEE2E7]"
                                 }
                                 flex={1}
                                 borderRadius={0}
                                 onPress={() => {
-                                    updateValue(2);
+                                    updateValue(
+                                        Math.floor(device.value / 1000) * 1000 +
+                                            2,
+                                    );
                                 }}
                                 height="100%"
                                 width="100%"
                             >
                                 <Text
                                     className={
-                                        device.value === 2
+                                        device.value % 1000 === 2
                                             ? "text-white"
                                             : "text-black"
                                     }
@@ -243,21 +257,24 @@ function Lamp({ updateValue, device }) {
                         <View className="w-[50%] h-fit">
                             <Button
                                 className={
-                                    device.value === 3
+                                    device.value % 1000 === 3
                                         ? "bg-[#41455d]"
                                         : "bg-[#DEE2E7]"
                                 }
                                 flex={1}
                                 borderRadius={0}
                                 onPress={() => {
-                                    updateValue(3);
+                                    updateValue(
+                                        Math.floor(device.value / 1000) * 1000 +
+                                            3,
+                                    );
                                 }}
                                 height="100%"
                                 width="100%"
                             >
                                 <Text
                                     className={
-                                        device.value === 3
+                                        device.value % 1000 === 3
                                             ? "text-white"
                                             : "text-black"
                                     }
@@ -269,21 +286,24 @@ function Lamp({ updateValue, device }) {
                         <View className="w-[50%] h-fit">
                             <Button
                                 className={
-                                    device.value === 4
+                                    device.value % 1000 === 4
                                         ? "bg-[#41455d]"
                                         : "bg-[#DEE2E7]"
                                 }
                                 flex={1}
                                 borderRadius={0}
                                 onPress={() => {
-                                    updateValue(4);
+                                    updateValue(
+                                        Math.floor(device.value / 1000) * 1000 +
+                                            4,
+                                    );
                                 }}
                                 height="100%"
                                 width="100%"
                             >
                                 <Text
                                     className={
-                                        device.value === 4
+                                        device.value % 1000 === 4
                                             ? "text-white"
                                             : "text-black"
                                     }

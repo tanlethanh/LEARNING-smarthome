@@ -92,7 +92,12 @@ export function HomeScreen() {
 
                 <View className="w-full h-full flex-row flex-wrap justify-around">
                     {Object.values(devicesMap)
-                        .filter((ele) => ele.room === currentRoom.key)
+                        .filter(
+                            (ele) =>
+                                ele.room === currentRoom.key &&
+                                ele.type != "TEMP" &&
+                                ele.type != "HUMI",
+                        )
                         .map((ele, index) => {
                             return (
                                 <View key={index} className="mt-4">

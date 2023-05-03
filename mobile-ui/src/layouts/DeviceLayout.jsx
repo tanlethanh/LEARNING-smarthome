@@ -38,7 +38,7 @@ function DeviceLayout({ children, roomName, deviceName, navigation }) {
                 />
             </View>
             <View className="flex-1 w-full h-full">{children}</View>
-            <View className="flex flex-row justify-center items-center w-full">
+            {/* <View className="flex flex-row justify-center items-center w-full">
                 <Button
                     width={"$18"}
                     height="$4"
@@ -174,7 +174,7 @@ function DeviceLayout({ children, roomName, deviceName, navigation }) {
                         </Sheet.Frame>
                     </Sheet>
                 </Button>
-            </View>
+            </View> */}
             <View className="h-[100px]"></View>
         </View>
     );

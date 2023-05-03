@@ -7,6 +7,8 @@ import {
     PowerIcon,
 } from "react-native-heroicons/outline";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
+import { roomTypes, selectDevices } from "../states";
+import { useSelector } from "react-redux";
 import Lottie from "lottie-react-native";
 import React, { useEffect, useRef, useState } from "react";
 import Slider from "@react-native-community/slider";
@@ -17,7 +19,6 @@ function Fan({ updateValue, device }) {
     const [date, setDate2] = useState(new Date());
     const [schedule, setSchedule] = useState(0);
     const [chart, setChart] = useState(0);
-    const [auto, setAuto] = useState(0);
     const [timer, setTimer] = useState(false);
     const [second, setSecond] = useState(0);
     const [minute, setMinute] = useState(0);
@@ -27,6 +28,8 @@ function Fan({ updateValue, device }) {
         const currentDate = selectedDate;
         setDate2(currentDate);
     };
+
+    const devicesMap = useSelector(selectDevices);
 
     const showMode = (currentMode) => {
         DateTimePickerAndroid.open({
@@ -49,9 +52,7 @@ function Fan({ updateValue, device }) {
     const showTimepicker = () => {
         showMode("time");
     };
-    const handleToggleAuto = () => {
-        setAuto(!auto);
-    };
+
     const fanRef = useRef(new Animated.Value(0));
 
     return (
@@ -95,32 +96,6 @@ function Fan({ updateValue, device }) {
 
                     <Text className="text-small text-center font-medium text-black absolute bottom-2">
                         Power
-                    </Text>
-                </View>
-
-                <View className="flex flex-col items-center justify-center h-full w-[100px]">
-                    <TouchableOpacity
-                        className="rounded-xl items-center"
-                        onPress={handleToggleAuto}
-                    >
-                        <Image
-                            className="w-[80px] h-[80px] left-[2.5px]"
-                            source={
-                                auto != 0
-                                    ? require("../assets/button-air-on.png")
-                                    : require("../assets/button-air-off.png")
-                            }
-                        ></Image>
-                        <CogIcon
-                            color={auto == 0 ? "black" : "white"}
-                            size={28}
-                            position={"absolute"}
-                            top={auto == 0 ? 22 : 23}
-                        />
-                    </TouchableOpacity>
-
-                    <Text className="text-small text-center font-medium text-black absolute bottom-2">
-                        Auto
                     </Text>
                 </View>
 
@@ -184,7 +159,16 @@ function Fan({ updateValue, device }) {
                     <Text className="font-semibold text-gray-700">
                         Humidity
                     </Text>
-                    <Text className="font-bold text-gray-700">50%</Text>
+                    <Text className="font-bold text-gray-700">
+                        {
+                            // devicesMap.find((ele) => {
+                            //     return (
+                            //         ele.room == device.room &&
+                            //         ele.name == "HUMI"
+                            //     );
+                            // }).value
+                        }
+                    </Text>
                 </View>
             </View>
             {device.value !== 0 && (

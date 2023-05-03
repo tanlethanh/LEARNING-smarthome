@@ -63,7 +63,7 @@ export function Chart({ devicekey, title }) {
         httpClient.Feeds.getChartData(devicekey, start, end).then((res) => {
             const dat = JSON.parse(JSON.stringify(data1));
             dat.datasets[0].data.forEach((ele, index, arr) => (arr[index] = 0));
-            console.log(dat.datasets[0].data);
+            console.log(res);
             res.data.forEach((ele) => {
                 const temp = new Date(ele[0]);
                 dat.datasets[0].data[temp.getUTCHours() / 2] = parseInt(
@@ -73,7 +73,7 @@ export function Chart({ devicekey, title }) {
             });
             setData1(dat);
         });
-    });
+    }, [date]);
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate;

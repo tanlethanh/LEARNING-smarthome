@@ -15,12 +15,11 @@ const deviceSlice = createSlice({
             const classifiedFields = metadata.name.split("_");
             // console.log(classifiedFields);
 
-            if (
-                classifiedFields.length == 3 &&
-                classifiedFields[1] == "DEVICE"
-            ) {
+            if (classifiedFields.length >= 2) {
                 const room = classifiedFields[0];
-                const type = classifiedFields[2];
+                const type = classifiedFields[1];
+                const tag =
+                    classifiedFields.length == 2 ? "NONE" : classifiedFields[2];
                 state.devicesMap[key] = {
                     key,
                     name: metadata.name,
@@ -28,6 +27,7 @@ const deviceSlice = createSlice({
                     room,
                     type,
                     metadata,
+                    tag,
                 };
             }
         },

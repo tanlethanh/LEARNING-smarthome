@@ -2,12 +2,12 @@ import serial.tools.list_ports
 import time
 import  sys
 from  Adafruit_IO import  MQTTClient
+from dotenv import *
 
 AIO_FEED_IDS = ["lr-aircond","lr-aircond-auto", "lr-fan", "lr-humi", "lr-light", "lr-light-auto", "lr-lock", "lr-temp"]
 
-
 AIO_USERNAME = "soviteam"
-AIO_KEY = "aio_Rlxt00O0MHvyeumBM95E7jfWVqfX"
+AIO_KEY = ""
 
 def  connected(client):
     print("Ket noi thanh cong...")
