@@ -4,8 +4,6 @@
             "tag": "greeting",
             "patterns": [
                 "Hi",
-                "How are you",
-                "Is anyone there?",
                 "Hello",
                 "Good day",
                 "Whats up",
@@ -39,18 +37,6 @@
             "context_set": ""
         },
         {
-            "tag": "stocks",
-            "patterns": [
-                "what stocks do I own?",
-                "how are my shares?",
-                "what companies am I investing in?",
-                "what am I doing in the markets?"
-            ],
-            "responses": [
-                "You own the following shares: ABBV, AAPL, FB, NVDA and an ETF of the S&P 500 Index!"
-            ],
-            "context_set": ""
-        },{
             "tag": "command",
             "patterns": [
                 "Can you turn off the light for me",
@@ -73,29 +59,6 @@
                 "Here we go"
             ],
             "context_set": ""
-        }, {
-            "tag": "conflict",
-            "patterns":[
-                "Can you turn off for me",
-                "I wanna turn off in the",
-                "I wanna turn off the first in the",
-                "I wanna the light in the bedroom",
-                "Please the light after 1 hours",
-                "Please turn on the light at 7pm",
-                "How many devices are on",
-                "Can I know how many are on",
-                "Please tell me how many are on",
-                "Turn off all in the",
-                "How many fan in the living room?",
-                "Can you adjust in living room to 28",
-                "Turn off the light in the",
-                "I wanna 28 from now to 6pm ",
-                "Do we have any are on"
-            ],
-            "responses": [
-                "Wrong"
-            ],
-            "context_set": ""
         },
         {
             "tag": "informative.weather",
@@ -116,7 +79,8 @@
             "tag": "informative.all_devices.on",
             "patterns":[
                 "Can you tell me what devices are on",
-                "How many device are on",
+                "How many devices are on",
+                "how many devices are on in my house",
                 "I wanna know what devices are on"
             ],
             "responses": [
@@ -131,7 +95,24 @@
             "patterns":[
                 "Can you tell me what devices are off",
                 "How many device are off",
+                "how many devices are off in my house",
                 "I wanna know what devices are off"
+            ],
+            "responses": [
+                "Ok! let me see",
+                "Yes sir! I will check the all devices now",
+                "Ok wait a minute"
+            ],
+            "context_set": ""
+        },        {
+            "tag": "informative.all_devices",
+            "patterns":[
+                "How many devices in my home",
+                "can you tell me how many device",
+                "How many devices in my house",
+                "Summary my house",
+                "I want to know all devices in my home",
+                "I want to know all devices"
             ],
             "responses": [
                 "Ok! let me see",
