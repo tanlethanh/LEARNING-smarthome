@@ -178,7 +178,7 @@ class GenericAssistant(IAssistant):
     def _predict_class(self, sentence):
         p = self._bag_of_words(sentence, self.words)
         res = self.model.predict(np.array([p]))[0]
-        ERROR_THRESHOLD = 0.1
+        ERROR_THRESHOLD = 0.7
         results = [[i, r] for i, r in enumerate(res) if r > ERROR_THRESHOLD]
 
         results.sort(key=lambda x: x[1], reverse=True)
@@ -190,7 +190,7 @@ class GenericAssistant(IAssistant):
     def _get_response(self, ints, intents_json):
         try:
             tag = ints[0]['intent']
-            print("intents: {}".format(ints))
+            # print("intents: {}".format(ints))
             list_of_intents = intents_json['intents']
             for i in list_of_intents:
                 if i['tag']  == tag:
@@ -211,9 +211,13 @@ class GenericAssistant(IAssistant):
 
     def request(self, message):
         ints = self._predict_class(message)
+        if len(ints) == 0:
+            return self.intent_methods.get('another')(message)
         details = ints[0]['intent'].split(".")
 
         if details[0] in self.intent_methods.keys():
-            self.intent_methods[details[0]](details[1:])
+            return self.intent_methods[details[0]](details[1:])
         else:
-            return self._get_response(ints, self.intents)
+            return self.intent_methods.get('another')(message)
+
+            return {"typ": "unknown", "res" : self._get_response(ints, self.intents)}

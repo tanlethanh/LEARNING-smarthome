@@ -4,8 +4,6 @@
             "tag": "greeting",
             "patterns": [
                 "Hi",
-                "How are you",
-                "Is anyone there?",
                 "Hello",
                 "Good day",
                 "Whats up",
@@ -116,7 +114,8 @@
             "tag": "informative.all_devices.on",
             "patterns":[
                 "Can you tell me what devices are on",
-                "How many device are on",
+                "How many devices are on",
+                "how many devices are on in my house",
                 "I wanna know what devices are on"
             ],
             "responses": [
@@ -131,7 +130,22 @@
             "patterns":[
                 "Can you tell me what devices are off",
                 "How many device are off",
+                "how many devices are off in my house",
                 "I wanna know what devices are off"
+            ],
+            "responses": [
+                "Ok! let me see",
+                "Yes sir! I will check the all devices now",
+                "Ok wait a minute"
+            ],
+            "context_set": ""
+        },        {
+            "tag": "informative.all_devices",
+            "patterns":[
+                "How many devices in my home",
+                "Summary my house",
+                "I want to know all devices in my home",
+                "I want to know all devices"
             ],
             "responses": [
                 "Ok! let me see",
