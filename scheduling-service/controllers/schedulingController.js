@@ -58,7 +58,7 @@ export const getAllSchedulings = async (req, res) => {
 export const addNewScheduling = async (req, res) => {
     const { feedId, value, time } = req.body
     console.log(req.body)
-    if (!feedId || !value || !time) {
+    if (feedId === undefined || value === undefined || time === undefined) {
         return res.status(StatusCodes.BAD_REQUEST).json({
             message: 'Require feedId, value, time'
         })
