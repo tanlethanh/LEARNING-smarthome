@@ -1,4 +1,4 @@
-import { Button } from "tamagui";
+import { Button, Sheet } from "tamagui";
 import { Chart } from "./Chart";
 import {
     ChartBarIcon,
@@ -9,14 +9,18 @@ import {
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { Image, Modal, Text, TouchableOpacity, View } from "react-native";
 import { RadialSlider } from "react-native-radial-slider";
+import { addPadding, getPadding, removePadding } from "../utils/numberUtils";
 import { roomTypes, selectDevices } from "../states";
 import { useDebounce } from "../utils/debounce";
 import { useSelector } from "react-redux";
 import React, { useEffect, useRef, useState } from "react";
 
 function AirConditioner({ updateValue, device }) {
-    const [schedule, setSchedule] = useState(0);
+    const [schedule, setSchedule] = useState(false);
     const [chart, setChart] = useState(0);
+
+    const devicesMap = useSelector(selectDevices);
+    const [position, setPosition] = useState(0);
 
     const [date, setDate] = useState(new Date());
 
@@ -80,11 +84,13 @@ function AirConditioner({ updateValue, device }) {
                     <TouchableOpacity
                         className="rounded-xl items-center"
                         onPress={() => {
-                            if (device.value == 0 || device.value == 1000) {
-                                updateValue(device.defaultValue || 25);
+                            if (removePadding(device.value) == 0) {
+                                updateValue(
+                                    addPadding(25, getPadding(device.value)),
+                                );
                             } else {
                                 updateValue(
-                                    Math.floor(device.value / 1000) * 1000,
+                                    addPadding(0, getPadding(device.value)),
                                 );
                             }
                         }}
@@ -92,16 +98,20 @@ function AirConditioner({ updateValue, device }) {
                         <Image
                             className="w-[80px] h-[80px] left-[2.5px]"
                             source={
-                                device.value % 1000 != 0
+                                removePadding(device.value) != 0
                                     ? require("../assets/button-air-on.png")
                                     : require("../assets/button-air-off.png")
                             }
                         ></Image>
                         <PowerIcon
-                            color={device.value % 1000 == 0 ? "black" : "white"}
+                            color={
+                                removePadding(device.value) == 0
+                                    ? "black"
+                                    : "white"
+                            }
                             size={28}
                             position={"absolute"}
-                            top={device.value % 1000 == 0 ? 22 : 23}
+                            top={removePadding(device.value) == 0 ? 22 : 23}
                         />
                     </TouchableOpacity>
 
@@ -115,24 +125,29 @@ function AirConditioner({ updateValue, device }) {
                         <TouchableOpacity
                             className="rounded-xl items-center"
                             onPress={() => {
-                                if (device.value >= 1000) {
-                                    updateValue(device.value - 1000);
-                                } else updateValue(device.value + 1000);
+                                if (getPadding(device.value) == 1000) {
+                                    updateValue(removePadding(device.value));
+                                } else
+                                    updateValue(addPadding(device.value, 1000));
                             }}
                         >
                             <Image
                                 className="w-[80px] h-[80px] left-[2.5px]"
                                 source={
-                                    Math.floor(device.value / 1000) != 0
+                                    getPadding(device.value) == 1000
                                         ? require("../assets/button-air-on.png")
                                         : require("../assets/button-air-off.png")
                                 }
                             ></Image>
                             <CogIcon
-                                color={device.value >= 1000 ? "black" : "white"}
+                                color={
+                                    getPadding(device.value) == 0
+                                        ? "black"
+                                        : "white"
+                                }
                                 size={28}
                                 position={"absolute"}
-                                top={device.value >= 1000 ? 22 : 23}
+                                top={getPadding(device.value) == 0 ? 22 : 23}
                             />
                         </TouchableOpacity>
 
@@ -203,11 +218,15 @@ function AirConditioner({ updateValue, device }) {
                         Temp Indoor
                     </Text>
                     <Text className="font-bold text-gray-700">
-                        {/* {devicesMap.find((ele) => {
-                            return (
-                                ele.room == device.room && ele.name == "TEMP"
-                            );
-                        })} */}
+                        {/* {
+                            devicesMap.find((ele) => {
+                                console.log(ele.name);
+                                return (
+                                    ele.room == device.room &&
+                                    ele.type == "TEMP"
+                                );
+                            }).value
+                        } */}
                     </Text>
                 </View>
                 <View className="bg-[#d9d9d9] shadow-md shadow-black w-[110px] h-[80px] items-center justify-center rounded-[20px]">
@@ -258,6 +277,34 @@ function AirConditioner({ updateValue, device }) {
                     ></Chart>
                 </View>
             )}
+            <Sheet
+                forceRemoveScrollEnabled={schedule}
+                modal={true}
+                open={schedule}
+                onOpenChange={setSchedule}
+                snapPoints={[60, 40, 20]}
+                dismissOnSnapToBottom
+                position={position}
+                onPositionChange={setPosition}
+                zIndex={100_000}
+                animation="bouncy" // for the css driver
+            >
+                <Sheet.Overlay />
+                <Sheet.Handle />
+                <Sheet.Frame
+                    f={1}
+                    p="$4"
+                    jc="center"
+                    ai="center"
+                    space="$5"
+                    backgroundColor={"white"}
+                    borderRadius={40}
+                >
+                    <View className="flex flex-col rounded-xl border border-slate-200 h-full w-full overflow-hidden">
+                        <View className="self-center w-full items-center h-[50px] overflow-hidden"></View>
+                    </View>
+                </Sheet.Frame>
+            </Sheet>
         </View>
     );
 }

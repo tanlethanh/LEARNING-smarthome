@@ -11,7 +11,7 @@ class Feeds {
     }
 
     async getFeedById(feedId) {
-        const res = await this.api.get(`/feeds/${feedId}/data`);
+        const res = await this.api.get(`/feeds/${feedId}`);
         return res.data;
     }
 
@@ -32,6 +32,15 @@ class Feeds {
             const res = await this.api.get(
                 `/feeds/${feedId}/data/chart?field=avg&start_time=${start}&end_time=${end}&resolution=120`,
             );
+            return res.data;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async getGroupFeed(groupId) {
+        try {
+            const res = await this.api.get(`/groups/${groupId}/feeds`);
             return res.data;
         } catch (error) {
             console.log(error);

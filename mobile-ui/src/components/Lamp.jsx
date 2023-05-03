@@ -7,7 +7,7 @@ import {
     View,
     ViewBase,
 } from "react-native";
-import { Button, Sheet, SheetFrame } from "tamagui";
+import { Button, Sheet } from "tamagui";
 import {
     ChartBarIcon,
     ClockIcon,
@@ -15,22 +15,22 @@ import {
     PowerIcon,
 } from "react-native-heroicons/outline";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
-import { DeviceSheet } from "./elements/BottomSheet";
-import { LineChart } from "react-native-chart-kit";
+
+import { addPadding, getPadding, removePadding } from "../utils/numberUtils";
 import React, { useEffect, useState } from "react";
-import Slider from "@react-native-community/slider";
-import ToggleSwitch from "toggle-switch-react-native";
 
 function Lamp({ updateValue, device }) {
     const [date, setDate2] = useState(new Date());
     const [schedule, setSchedule] = useState(0);
     const [auto, setAuto] = useState(0);
-    const [chart, setChart] = useState(0);
+    const [chart, setChart] = useState(false);
     const [timer, setTimer] = useState(false);
     const [second, setSecond] = useState(0);
     const [minute, setMinute] = useState(0);
     const [hour, setHour] = useState(0);
     const [value, setValue] = useState(device.value);
+    const [position, setPosition] = useState(0);
+
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate;
         setDate2(currentDate);
@@ -62,7 +62,7 @@ function Lamp({ updateValue, device }) {
                 <Image
                     className="h-[220px] w-[220px]"
                     source={
-                        device.value % 1000 != 0
+                        removePadding(device.value) != 0
                             ? require("../assets/lightOn.png")
                             : require("../assets/lightOff.png")
                     }
@@ -74,11 +74,13 @@ function Lamp({ updateValue, device }) {
                     <TouchableOpacity
                         className="rounded-xl items-center"
                         onPress={() => {
-                            if (device.value % 1000 == 0) {
-                                updateValue(device.value + 2);
+                            if (removePadding(device.value) == 0) {
+                                updateValue(
+                                    addPadding(2, getPadding(device.value)),
+                                );
                             } else {
                                 updateValue(
-                                    Math.floor(device.value / 1000) * 1000,
+                                    addPadding(0, getPadding(device.value)),
                                 );
                             }
                         }}
@@ -86,16 +88,20 @@ function Lamp({ updateValue, device }) {
                         <Image
                             className="w-[80px] h-[80px] left-[2.5px]"
                             source={
-                                device.value % 1000 != 0
+                                removePadding(device.value) != 0
                                     ? require("../assets/button-air-on.png")
                                     : require("../assets/button-air-off.png")
                             }
                         ></Image>
                         <PowerIcon
-                            color={device.value % 1000 == 0 ? "black" : "white"}
+                            color={
+                                removePadding(device.value) == 0
+                                    ? "black"
+                                    : "white"
+                            }
                             size={28}
                             position={"absolute"}
-                            top={device.value % 1000 == 0 ? 22 : 23}
+                            top={removePadding(device.value) == 0 ? 22 : 23}
                         />
                     </TouchableOpacity>
 
@@ -109,24 +115,29 @@ function Lamp({ updateValue, device }) {
                         <TouchableOpacity
                             className="rounded-xl items-center"
                             onPress={() => {
-                                if (device.value >= 1000) {
-                                    updateValue(device.value - 1000);
-                                } else updateValue(device.value + 1000);
+                                if (getPadding(device.value) == 1000) {
+                                    updateValue(removePadding(device.value));
+                                } else
+                                    updateValue(addPadding(device.value, 1000));
                             }}
                         >
                             <Image
                                 className="w-[80px] h-[80px] left-[2.5px]"
                                 source={
-                                    device.value >= 1000
+                                    getPadding(device.value) == 1000
                                         ? require("../assets/button-air-on.png")
                                         : require("../assets/button-air-off.png")
                                 }
                             ></Image>
                             <CogIcon
-                                color={device.value < 1000 ? "black" : "white"}
+                                color={
+                                    getPadding(device.value) == 0
+                                        ? "black"
+                                        : "white"
+                                }
                                 size={28}
                                 position={"absolute"}
-                                top={device.value < 1000 ? 22 : 23}
+                                top={getPadding(device.value) == 0 ? 22 : 23}
                             />
                         </TouchableOpacity>
 
@@ -191,13 +202,13 @@ function Lamp({ updateValue, device }) {
                     </Text>
                 </View>
             </View>
-            {device.value % 1000 != 0 ? (
+            {removePadding(device.value) != 0 ? (
                 <View className="flex flex-col border-[#8088b7] shadow-lg shadow-black border-2 items-center w-[300px] h-[120px] rounded-[10px] overflow-hidden ">
                     <View className="flex flex-row items-center w-[100%] h-[50%]">
                         <View className="w-[50%] h-fit">
                             <Button
                                 className={
-                                    device.value % 1000 === 1
+                                    removePadding(device.value) === 1
                                         ? "bg-[#41455d]"
                                         : "bg-[#DEE2E7]"
                                 }
@@ -205,8 +216,7 @@ function Lamp({ updateValue, device }) {
                                 borderRadius={0}
                                 onPress={() => {
                                     updateValue(
-                                        Math.floor(device.value / 1000) * 1000 +
-                                            1,
+                                        addPadding(1, getPadding(device.value)),
                                     );
                                 }}
                                 height="100%"
@@ -214,7 +224,7 @@ function Lamp({ updateValue, device }) {
                             >
                                 <Text
                                     className={
-                                        device.value % 1000 === 1
+                                        removePadding(device.value) === 1
                                             ? "text-white"
                                             : "text-black"
                                     }
@@ -226,7 +236,7 @@ function Lamp({ updateValue, device }) {
                         <View className="w-[50%] h-full">
                             <Button
                                 className={
-                                    device.value % 1000 === 2
+                                    removePadding(device.value) === 2
                                         ? "bg-[#41455d]"
                                         : "bg-[#DEE2E7]"
                                 }
@@ -234,8 +244,7 @@ function Lamp({ updateValue, device }) {
                                 borderRadius={0}
                                 onPress={() => {
                                     updateValue(
-                                        Math.floor(device.value / 1000) * 1000 +
-                                            2,
+                                        addPadding(2, getPadding(device.value)),
                                     );
                                 }}
                                 height="100%"
@@ -243,7 +252,7 @@ function Lamp({ updateValue, device }) {
                             >
                                 <Text
                                     className={
-                                        device.value % 1000 === 2
+                                        removePadding(device.value) === 2
                                             ? "text-white"
                                             : "text-black"
                                     }
@@ -257,7 +266,7 @@ function Lamp({ updateValue, device }) {
                         <View className="w-[50%] h-fit">
                             <Button
                                 className={
-                                    device.value % 1000 === 3
+                                    removePadding(device.value) === 3
                                         ? "bg-[#41455d]"
                                         : "bg-[#DEE2E7]"
                                 }
@@ -265,8 +274,7 @@ function Lamp({ updateValue, device }) {
                                 borderRadius={0}
                                 onPress={() => {
                                     updateValue(
-                                        Math.floor(device.value / 1000) * 1000 +
-                                            3,
+                                        addPadding(3, getPadding(device.value)),
                                     );
                                 }}
                                 height="100%"
@@ -274,7 +282,7 @@ function Lamp({ updateValue, device }) {
                             >
                                 <Text
                                     className={
-                                        device.value % 1000 === 3
+                                        removePadding(device.value) === 3
                                             ? "text-white"
                                             : "text-black"
                                     }
@@ -286,7 +294,7 @@ function Lamp({ updateValue, device }) {
                         <View className="w-[50%] h-fit">
                             <Button
                                 className={
-                                    device.value % 1000 === 4
+                                    removePadding(device.value) === 4
                                         ? "bg-[#41455d]"
                                         : "bg-[#DEE2E7]"
                                 }
@@ -294,8 +302,7 @@ function Lamp({ updateValue, device }) {
                                 borderRadius={0}
                                 onPress={() => {
                                     updateValue(
-                                        Math.floor(device.value / 1000) * 1000 +
-                                            4,
+                                        addPadding(4, getPadding(device.value)),
                                     );
                                 }}
                                 height="100%"
@@ -303,7 +310,7 @@ function Lamp({ updateValue, device }) {
                             >
                                 <Text
                                     className={
-                                        device.value % 1000 === 4
+                                        removePadding(device.value) === 4
                                             ? "text-white"
                                             : "text-black"
                                     }
@@ -342,6 +349,33 @@ function Lamp({ updateValue, device }) {
             ) : (
                 <></>
             )}
+            <Sheet
+                forceRemoveScrollEnabled={schedule}
+                modal={true}
+                open={schedule}
+                onOpenChange={setSchedule}
+                snapPoints={[60, 40, 20]}
+                dismissOnSnapToBottom
+                position={position}
+                onPositionChange={setPosition}
+                zIndex={100_000}
+                animation="bouncy" // for the css driver
+            >
+                <Sheet.Overlay />
+                <Sheet.Handle />
+                <Sheet.Frame
+                    f={1}
+                    p="$4"
+                    jc="center"
+                    ai="center"
+                    space="$5"
+                    backgroundColor={"white"}
+                >
+                    <View className="flex flex-col rounded-xl border border-slate-200 h-full w-full overflow-hidden">
+                        <View className="self-center w-full items-center h-[50px] overflow-hidden"></View>
+                    </View>
+                </Sheet.Frame>
+            </Sheet>
         </View>
     );
 }

@@ -17,14 +17,11 @@ import ToggleSwitch from "toggle-switch-react-native";
 
 export default function Lock({ updateValue, device }) {
     const password = ["1", "0", "0", "6", "0", "2"];
-    const [schedule, setSchedule] = useState(0);
     const [date, setDate2] = useState(new Date());
     const [passcode, setPass] = useState(["", "", "", "", "", ""]);
 
     const [position, setPosition] = useState(0);
     const [open, setOpen] = useState(false);
-    const [modal, setModal] = useState(false);
-    const [innerOpen, setInnerOpen] = useState(false);
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate;
         setDate2(currentDate);
@@ -44,7 +41,6 @@ export default function Lock({ updateValue, device }) {
     };
 
     const showTimepicker = () => {
-        console.log("Here");
         showMode("time");
     };
 
@@ -70,10 +66,19 @@ export default function Lock({ updateValue, device }) {
         }
         let i = 0;
         const tempCode = passcode.map((x) => x);
-        for (i = 0; i < tempCode.length; i++) {
-            if (tempCode[i] == "") {
-                tempCode[i] = num;
-                break;
+        if (num == "Cancel") {
+            for (i = 0; i < tempCode.length; i++) {
+                if (tempCode[i] == "") {
+                    break;
+                }
+            }
+            if (i != 0) tempCode[i - 1] = "";
+        } else {
+            for (i = 0; i < tempCode.length; i++) {
+                if (tempCode[i] == "") {
+                    tempCode[i] = num;
+                    break;
+                }
             }
         }
         setPass(tempCode);
@@ -111,60 +116,6 @@ export default function Lock({ updateValue, device }) {
                 </TouchableOpacity>
             </View>
 
-            <View className="flex flex-row justify-center h-[100px] items-start w-full overflow-hidden px-3">
-                <View className="flex items-center justify-center h-full w-[100px]">
-                    <TouchableOpacity
-                        className="rounded-xl items-center"
-                        onPress={() => {
-                            setSchedule(!schedule);
-                        }}
-                    >
-                        <Image
-                            className="w-[80px] h-[80px] left-[2.5px]"
-                            source={
-                                schedule != 0
-                                    ? require("../assets/button-air-on.png")
-                                    : require("../assets/button-air-off.png")
-                            }
-                        ></Image>
-                        <ClockIcon
-                            color={schedule == 0 ? "black" : "white"}
-                            size={28}
-                            position={"absolute"}
-                            top={schedule == 0 ? 22 : 23}
-                        />
-                    </TouchableOpacity>
-
-                    <Text className="text-small text-center font-medium text-black absolute bottom-2">
-                        Schedule
-                    </Text>
-                </View>
-            </View>
-            {schedule == 1 ? (
-                <View className="flex flex-col items-center justify-center gap-1">
-                    <Button
-                        onPress={() => {
-                            showDatepicker();
-                        }}
-                        title="Show time picker!"
-                        backgroundColor={"#cccccc"}
-                    >
-                        Date
-                    </Button>
-                    <Button
-                        onPress={() => {
-                            showTimepicker();
-                        }}
-                        title="Show time picker!"
-                        backgroundColor={"#cccccc"}
-                    >
-                        Time
-                    </Button>
-                    <Text>Schedule: {date.toLocaleString()}</Text>
-                </View>
-            ) : (
-                <></>
-            )}
             <Sheet
                 forceRemoveScrollEnabled={open}
                 modal={true}

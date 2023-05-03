@@ -76,7 +76,6 @@ export function HomeScreen() {
                         <EnergyWidget />
                     </View>
                 </View>
-
                 <View className="first:h-fit w-full flex flex-row justify-between items-center ">
                     <FlatList
                         className="h-fit w-full px-[15px]"
