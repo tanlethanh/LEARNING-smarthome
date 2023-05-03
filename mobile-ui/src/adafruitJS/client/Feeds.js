@@ -11,7 +11,7 @@ class Feeds {
     }
 
     async getFeedById(feedId) {
-        const res = await this.api.get(`/feeds/${feedId}/data`);
+        const res = await this.api.get(`/feeds/${feedId}`);
         return res.data;
     }
 

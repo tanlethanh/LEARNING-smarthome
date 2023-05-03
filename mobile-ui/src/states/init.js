@@ -9,15 +9,23 @@ export const initAllDevice = async () => {
 
         // Remember to put this line into try catch block
         const conn = await mqttClient.connect();
-        console.log("started", conn);
-        await mqttClient.subcribeGroup("smarthome", (message) => {
+        await mqttClient.subcribeGroup("smarthome", async (message) => {
             // Update state of device to newest
-            console.log(typeof message.payloadString);
-
             const payload = JSON.parse(message.payloadString);
-
-            console.log(Object.keys(payload.feeds), "<--");
             const key = Object.keys(payload.feeds)[0];
+            const device = Object.keys(store.getState().devices.devicesMap);
+            if (device.includes("smarthome." + key) == false) {
+                console.log("here");
+                const feed = await httpClient.Feeds.getFeedById(
+                    "smarthome." + key,
+                );
+                store.dispatch(
+                    addNewDevice({
+                        key: "smarthome." + key,
+                        metadata: feed,
+                    }),
+                );
+            }
             store.dispatch(
                 updateDeviceState({
                     key: "smarthome." + key,
