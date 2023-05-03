@@ -133,7 +133,7 @@ class GenericAssistant(IAssistant):
         sgd = gradient_descent_v2.SGD(learning_rate=0.001, momentum=0.9, nesterov=True)
         self.model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'])
 
-        self.hist = self.model.fit(np.array(train_x), np.array(train_y), epochs=500, batch_size=5, verbose=1)
+        self.hist = self.model.fit(np.array(train_x), np.array(train_y), epochs=200, batch_size=5, verbose=0)
 
     def save_model(self, model_name=None):
         
@@ -178,7 +178,7 @@ class GenericAssistant(IAssistant):
     def _predict_class(self, sentence):
         p = self._bag_of_words(sentence, self.words)
         res = self.model.predict(np.array([p]))[0]
-        ERROR_THRESHOLD = 0.7
+        ERROR_THRESHOLD = 0.5
         results = [[i, r] for i, r in enumerate(res) if r > ERROR_THRESHOLD]
 
         results.sort(key=lambda x: x[1], reverse=True)
@@ -210,14 +210,16 @@ class GenericAssistant(IAssistant):
         pass
 
     def request(self, message):
+        print('->',message)
         ints = self._predict_class(message)
+        print('=>',ints)
         if len(ints) == 0:
-            return self.intent_methods.get('another')(message)
+            return self.intent_methods.get('another')([], message)
         details = ints[0]['intent'].split(".")
 
         if details[0] in self.intent_methods.keys():
-            return self.intent_methods[details[0]](details[1:])
+            return self.intent_methods[details[0]](details[1:], self._get_response(ints, self.intents))
         else:
-            return self.intent_methods.get('another')(message)
+            return self.intent_methods.get('another')([], message)
 
             return {"typ": "unknown", "res" : self._get_response(ints, self.intents)}

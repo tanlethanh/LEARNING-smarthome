@@ -11,13 +11,12 @@ if not os.path.exists(model_dir):
 
 from neuralintents import GenericAssistant
 
-def handle_command_intent(command):
-    print(command)
-    return {"typ": "command", "res": '' .join(command)}
+def handle_command_intent(topic: list[str], res):
+    print(topic)
+    return {"typ": "command", "res": '' .join(topic)}
     
 
-def handle_informative_intent(topic: list[str]):
-    print(topic)
+def handle_informative_intent(topic: list[str], res):
     if topic[0] == "weather":
         print("Take action to get weather")
     elif topic[0] == "all_devices":
@@ -25,16 +24,14 @@ def handle_informative_intent(topic: list[str]):
     res = ""
     return {"typ": "informative", "res": ",".join(topic)}
 
-def handle_external_intent(msg=""):
-    res = get_openai_response(msg, context)
-    print(res)
-    speak(res)
+def handle_external_intent(topic: list[str], res):
+    res = get_openai_response(res, context)
     return {"typ": "external", "res": res}
 
 
-def handle_greeting_intent(msg=""):
+def handle_greeting_intent(topic: list[str], res):
     print("access greeting")
-    return {"typ": "greeting", "res": ""}
+    return {"typ": "greeting", "res": res}
 
 intent_methods = {
     "command": handle_command_intent,
@@ -54,8 +51,9 @@ class Assistant:
     
     def __init__(self):
         self.assistant = GenericAssistant(os.path.join(dir, "./intents.json"), intent_methods=intent_methods)
-        self.assistant.load_model()
-        # self.assistant.train_model()
+        # self.assistant.load_model()
+        self.assistant.train_model()
+        self.assistant.save_model()
         self.context = context
         
     def run_assistant(self):
@@ -69,17 +67,18 @@ class Assistant:
                 if res.get("typ") == 'greeting':
                     speak("I am ready")
                     while 1:
-                        print('User: ', end="")
                         command = get_audio()
+                        if command == "":
+                            continue
+                        print('User: {}'.format(command))
                         self.context += [{'role':'user', 'content': command}]
                         if command.count(STOP) > 0:
                             speak('Ok! You can call me later with {}'.format(WAKE))
                             break
-                        print(command)
                         res = self.assistant.request(command)
                         self.context += [{'role':'assistant', 'content': res.get("res")}]
-                        print(res)
-                        print("Sovi: ", end ="")
+                        print("Sovi:{}".format(res.get('res')))
+                        speak(res.get('res'))
 
 print("\n------------- Init assistant -------------\n")
 st = time.time()
