@@ -67,6 +67,30 @@ class MQTTClient {
         });
     }
 
+    async subcribeGroup(groupId, callback) {
+        // Adding callback for each subcriber
+        const subUrl = `${this.username}/feeds/${groupId}`;
+        this.subcribers[subUrl] = callback;
+
+        return new Promise((resolve, reject) => {
+            // Subcribe to MQTT client
+            this.client.subscribe(subUrl, {
+                qos: 0,
+                onSuccess: (sub) => {
+                    console.log(`ADA -> Subscribed to MQTT group. ${subUrl}`);
+                    resolve(sub);
+                },
+                onFailure: (error) => {
+                    console.error(
+                        "ADA -> Failed to subscribe to MQTT topic: ",
+                        error,
+                    );
+                    reject(error);
+                },
+            });
+        });
+    }
+
     async onMessage(callback) {
         this.client.onMessageArrived = (message) => {
             console.log("onMessage custom");

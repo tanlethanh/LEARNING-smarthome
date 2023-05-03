@@ -26,6 +26,17 @@ class Feeds {
         const res = await this.api.get(`/feeds/${feedId}/data/last`);
         return res.data;
     }
+
+    async getChartData(feedId, start, end) {
+        try {
+            const res = await this.api.get(
+                `/feeds/${feedId}/data/chart?field=avg&start_time=${start}&end_time=${end}&resolution=120`,
+            );
+            return res.data;
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }
 
 export default Feeds;

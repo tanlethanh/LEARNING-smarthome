@@ -1,33 +1,37 @@
 import { Button } from "tamagui";
+import { Chart } from "./Chart";
+import {
+    ChartBarIcon,
+    ClockIcon,
+    CogIcon,
+    PowerIcon,
+} from "react-native-heroicons/outline";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { Image, Modal, Text, TouchableOpacity, View } from "react-native";
 import { RadialSlider } from "react-native-radial-slider";
-
+import { roomTypes, selectDevices } from "../states";
+import { useSelector } from "react-redux";
 import React, { useEffect, useRef, useState } from "react";
-// import PowerIcon
-import { ClockIcon, CogIcon, PowerIcon } from "react-native-heroicons/outline";
 
 function AirConditioner({ updateValue, device }) {
     const [schedule, setSchedule] = useState(0);
-    const [auto, setAuto] = useState(0);
+    const [chart, setChart] = useState(0);
     const [timer, setTimer] = useState(false);
     const [second, setSecond] = useState(0);
     const [minute, setMinute] = useState(0);
     const [hour, setHour] = useState(0);
     const [value, setValue] = useState(device.value);
+    const devicesMap = useSelector(selectDevices);
 
     useEffect(() => {
         updateValue(value);
     }, [value]);
 
-    const handleToggleAuto = () => {
-        setAuto(!auto);
-    };
-
     const handleSetTimer = (newValue) => {
         const sValue = newValue % 60;
         const mValue = Math.floor(newValue / 60) % 60;
         const hValue = Math.floor(newValue / 3600);
+        const [chart, setChart] = useState(0);
         setSecond(() => parseInt(sValue));
         setMinute(() => parseInt(mValue));
         setHour(() => parseInt(hValue));
@@ -67,10 +71,12 @@ function AirConditioner({ updateValue, device }) {
                     min={15}
                     max={30}
                     onChange={(newValue) => {
-                        setValue(newValue);
+                        updateValue(
+                            Math.floor(device.value / 1000) * 1000 + newValue,
+                        );
                     }}
                     unit={"\u00b0C"}
-                    subTitle={device.value == 0 ? "Turn Off" : "Cooling"}
+                    subTitle={device.value % 1000 == 0 ? "Turn Off" : "Cooling"}
                     sliderTrackColor="#cccccc"
                     lineColor="#cccccc"
                     thumbColor="#0088cc"
@@ -85,26 +91,28 @@ function AirConditioner({ updateValue, device }) {
                     <TouchableOpacity
                         className="rounded-xl items-center"
                         onPress={() => {
-                            if (device.value == 0) {
+                            if (device.value == 0 || device.value == 1000) {
                                 updateValue(device.defaultValue || 25);
                             } else {
-                                updateValue(0);
+                                updateValue(
+                                    Math.floor(device.value / 1000) * 1000,
+                                );
                             }
                         }}
                     >
                         <Image
                             className="w-[80px] h-[80px] left-[2.5px]"
                             source={
-                                device.value != 0
+                                device.value % 1000 != 0
                                     ? require("../assets/button-air-on.png")
                                     : require("../assets/button-air-off.png")
                             }
                         ></Image>
                         <PowerIcon
-                            color={device.value == 0 ? "black" : "white"}
+                            color={device.value % 1000 == 0 ? "black" : "white"}
                             size={28}
                             position={"absolute"}
-                            top={device.value == 0 ? 22 : 23}
+                            top={device.value % 1000 == 0 ? 22 : 23}
                         />
                     </TouchableOpacity>
 
@@ -113,31 +121,37 @@ function AirConditioner({ updateValue, device }) {
                     </Text>
                 </View>
 
-                <View className="flex flex-col items-center justify-center h-full w-[100px]">
-                    <TouchableOpacity
-                        className="rounded-xl items-center"
-                        onPress={handleToggleAuto}
-                    >
-                        <Image
-                            className="w-[80px] h-[80px] left-[2.5px]"
-                            source={
-                                auto != 0
-                                    ? require("../assets/button-air-on.png")
-                                    : require("../assets/button-air-off.png")
-                            }
-                        ></Image>
-                        <CogIcon
-                            color={auto == 0 ? "black" : "white"}
-                            size={28}
-                            position={"absolute"}
-                            top={auto == 0 ? 22 : 23}
-                        />
-                    </TouchableOpacity>
+                {device.tag === "AUTO" && (
+                    <View className="flex flex-col items-center justify-center h-full w-[100px]">
+                        <TouchableOpacity
+                            className="rounded-xl items-center"
+                            onPress={() => {
+                                if (device.value >= 1000) {
+                                    updateValue(device.value - 1000);
+                                } else updateValue(device.value + 1000);
+                            }}
+                        >
+                            <Image
+                                className="w-[80px] h-[80px] left-[2.5px]"
+                                source={
+                                    Math.floor(device.value / 1000) != 0
+                                        ? require("../assets/button-air-on.png")
+                                        : require("../assets/button-air-off.png")
+                                }
+                            ></Image>
+                            <CogIcon
+                                color={device.value >= 1000 ? "black" : "white"}
+                                size={28}
+                                position={"absolute"}
+                                top={device.value >= 1000 ? 22 : 23}
+                            />
+                        </TouchableOpacity>
 
-                    <Text className="text-small text-center font-medium text-black absolute bottom-2">
-                        Auto
-                    </Text>
-                </View>
+                        <Text className="text-small text-center font-medium text-black absolute bottom-2">
+                            Auto
+                        </Text>
+                    </View>
+                )}
 
                 <View className="flex flex-col items-center justify-center h-full w-[100px]">
                     <TouchableOpacity
@@ -166,6 +180,33 @@ function AirConditioner({ updateValue, device }) {
                         Schedule
                     </Text>
                 </View>
+                <View className="flex flex-col items-center justify-center h-full w-[100px]">
+                    <TouchableOpacity
+                        className="rounded-xl items-center"
+                        onPress={() => {
+                            setChart(!chart);
+                        }}
+                    >
+                        <Image
+                            className="w-[80px] h-[80px] left-[2.5px]"
+                            source={
+                                chart != 0
+                                    ? require("../assets/button-air-on.png")
+                                    : require("../assets/button-air-off.png")
+                            }
+                        ></Image>
+                        <ChartBarIcon
+                            color={chart == 0 ? "black" : "white"}
+                            size={28}
+                            position={"absolute"}
+                            top={chart == 0 ? 22 : 23}
+                        />
+                    </TouchableOpacity>
+
+                    <Text className="text-small text-center font-medium text-black absolute bottom-2">
+                        Chart
+                    </Text>
+                </View>
             </View>
             <View className="flex flex-row justify-between h-[95px] items-start w-full overflow-hidden px-3">
                 <View className="bg-[#d9d9d9] shadow-md shadow-black w-[105px] h-[80px] items-center justify-center rounded-[20px]">
@@ -173,7 +214,11 @@ function AirConditioner({ updateValue, device }) {
                         Temp Indoor
                     </Text>
                     <Text className="font-bold text-gray-700">
-                        {18 + "\u00b0C"}
+                        {/* {devicesMap.find((ele) => {
+                            return (
+                                ele.room == device.room && ele.name == "TEMP"
+                            );
+                        })} */}
                     </Text>
                 </View>
                 <View className="bg-[#d9d9d9] shadow-md shadow-black w-[110px] h-[80px] items-center justify-center rounded-[20px]">
@@ -193,7 +238,7 @@ function AirConditioner({ updateValue, device }) {
                     </Text>
                 </View>
             </View>
-            {schedule == 1 ? (
+            {schedule == 1 && (
                 <View className="flex flex-col items-center justify-center gap-1">
                     <Button
                         onPress={() => {
@@ -215,8 +260,14 @@ function AirConditioner({ updateValue, device }) {
                     </Button>
                     <Text>Schedule: {date.toLocaleString()}</Text>
                 </View>
-            ) : (
-                <></>
+            )}
+            {chart == 1 && (
+                <View>
+                    <Chart
+                        devicekey={"smarthome.lr-temp"}
+                        title={"Temperature"}
+                    ></Chart>
+                </View>
             )}
         </View>
     );

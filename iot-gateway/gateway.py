@@ -2,17 +2,17 @@ import serial.tools.list_ports
 import time
 import  sys
 from  Adafruit_IO import  MQTTClient
+from dotenv import *
 
-AIO_FEED_IDS = ["aiot-light", "aiot-temp", "aiot-humi", "aiot-lock", "aiot-light-auto", "aiot-light-sensor", "aiot-fan"]
+AIO_FEED_IDS = ["lr-aircond","lr-aircond-auto", "lr-fan", "lr-humi", "lr-light", "lr-light-auto", "lr-lock", "lr-temp"]
 
-
-AIO_USERNAME = "pvbt2002"
-AIO_KEY = "aio_JjXp80H6wRINfUXLM8nm11LBiPlB"
+AIO_USERNAME = "soviteam"
+AIO_KEY = ""
 
 def  connected(client):
     print("Ket noi thanh cong...")
     for feed in AIO_FEED_IDS:
-        client.subscribe(feed)
+        client.subscribe("smarthome." + feed)
 
 def  subscribe(client , userdata , mid , granted_qos):
     print("Subcribe thanh cong...")
@@ -25,20 +25,36 @@ def  message(client , feed_id , payload):
     print(feed_id + " nhan du lieu: " + payload)
     if isMicrobitConnected:
         print(feed_id)
-        if(feed_id == "aiot-light"):
-            print("access")
-            if(str(payload) == "1"): ser.write(("A").encode())
-            elif(str(payload) == "0"): ser.write(("B").encode())
-        elif(feed_id == "aiot-fan"):
-            if(str(payload) == "100"): ser.write(("E").encode())
-            elif(str(payload) == "50"): ser.write(("F").encode())
-            elif(str(payload) == "0"): ser.write(("G").encode())
-        elif(feed_id == "aiot-light-auto"):
-            if(str(payload) == "1"): ser.write(("C").encode())
-            elif(str(payload) == "0"): ser.write(("D").encode())
-        elif(feed_id == "aiot-lock"):
-            if(str(payload) == "1"): ser.write(("H").encode())
-            elif(str(payload) == "0"): ser.write(("I").encode())
+        if(feed_id ==  "smarthome.lr-light"):
+            print("hello")
+            if(str(payload) == "0"):
+                ser.write(("A").encode())
+            elif(str(payload) == "1"):
+                ser.write(("B").encode())
+            elif(str(payload) == "2"):
+                ser.write(("C").encode())
+            elif(str(payload) == "3"):
+                ser.write(("D").encode())
+            elif(str(payload) == "4"):
+                ser.write(("E").encode())
+        elif(feed_id == "smarthome.lr-fan"):
+            if(str(payload) == "0"): ser.write(("H").encode())
+            elif(str(payload) == "1"): ser.write(("I").encode())
+            elif(str(payload) == "2"): ser.write(("J").encode())
+            elif(str(payload) == "3"): ser.write(("K").encode())
+        elif(feed_id == "smarthome.lr-light-auto"):
+            if(str(payload) == "1"): ser.write(("G").encode())
+            elif(str(payload) == "0"): ser.write(("F").encode())
+        elif(feed_id == "smarthome.lr-lock"):
+            if(str(payload) == "1"): ser.write(("L").encode())
+            elif(str(payload) == "0"): ser.write(("M").encode())
+        elif(feed_id == "smarthome.lr-aircond-auto"):
+            if(str(payload) == "1"): ser.write(("R").encode())
+            elif(str(payload) == "0"): ser.write(("Q").encode())
+        elif(feed_id == "smarthome.lr-aircond"):
+            ser.write(("P").encode())
+            ser.write(str(int(payload)/10).encode())
+            ser.write(str(int(payload)%10).encode())
 
 client = MQTTClient(AIO_USERNAME , AIO_KEY)
 client.on_connect = connected
@@ -63,8 +79,7 @@ def getPort():
 isMicrobitConnected = False
 
 # if getPort() != "None":
-# ser = serial.Serial( port=getPort(), baudrate=115200)
-ser = serial.Serial( port="COM9", baudrate=115200)
+ser = serial.Serial( port="COM3", baudrate=115200)
 isMicrobitConnected = True
 print("Connect to yolobit!")
 
@@ -76,21 +91,21 @@ def processData(data):
     print(splitData)
     try:
         if splitData[0] == "TEMP":
-            client.publish("aiot-temp", splitData[1])
+            client.publish("smarthome.lr-temp", splitData[1])
         elif splitData[0] == "HUMI":
-            client.publish("aiot-humi", splitData[1])
+            client.publish("smarthome.lr-humi", splitData[1])
         elif splitData[0] == "LIGHT":
-            client.publish("aiot-light", splitData[1])
+            client.publish("smarthome.lr-light", splitData[1])
         elif splitData[0] == "LOCK":
-            client.publish("aiot-lock", splitData[1])
+            client.publish("smarthome.lr-lock", splitData[1])
         elif splitData[0] == "LIGHT_AUTO":
-            client.publish("aiot-light-auto", splitData[1])
-        elif splitData[0] == "LIGHT_SESNOR":
-            client.publish("aiot-light-sensor", splitData[1])
+            client.publish("smarthome.lr-light-auto", splitData[1])
         elif splitData[0] == "FAN":
-            client.publish("aiot-fan", splitData[1])
-        elif splitData[0] == "PIR":
-            pass       
+            client.publish("smarthome.lr-fan", splitData[1])
+        elif splitData[0] == "AIR":
+            client.publish("smarthome.lr-aircond", splitData[1])
+        elif splitData[0] == "AIR_AUTO":
+            client.publish("smarthome.lr-aircond-auto", splitData[1])
     except:
         pass
 
