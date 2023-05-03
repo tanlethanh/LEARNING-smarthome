@@ -69,7 +69,7 @@ class MQTTClient {
 
     async subcribeGroup(groupId, callback) {
         // Adding callback for each subcriber
-        const subUrl = `${this.username}/feeds/${groupId}`;
+        const subUrl = `${this.username}/groups/${groupId}`;
         this.subcribers[subUrl] = callback;
 
         return new Promise((resolve, reject) => {
@@ -82,7 +82,7 @@ class MQTTClient {
                 },
                 onFailure: (error) => {
                     console.error(
-                        "ADA -> Failed to subscribe to MQTT topic: ",
+                        "ADA -> Failed to subscribe to MQTT group: ",
                         error,
                     );
                     reject(error);

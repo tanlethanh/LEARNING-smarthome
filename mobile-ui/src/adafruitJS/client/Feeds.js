@@ -37,6 +37,15 @@ class Feeds {
             console.log(error);
         }
     }
+
+    async getGroupFeed(groupId) {
+        try {
+            const res = await this.api.get(`/groups/${groupId}/feeds`);
+            return res.data;
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }
 
 export default Feeds;
