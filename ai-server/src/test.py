@@ -3,6 +3,7 @@ import os
 import time
 from utils.speed_to_text import *
 from utils.openaiapi import *
+from utils.command import processing_text, parse_command, handle_command
 dir = os.path.dirname(__file__)
 
 model_dir = os.path.join(dir, "../model")
@@ -12,10 +13,16 @@ if not os.path.exists(model_dir):
 from neuralintents import GenericAssistant
 
 def handle_command_intent(topic: list[str], res):
-    print(topic)
-    return {"typ": "command", "res": '' .join(topic)}
-    
+    processed_text = processing_text(res)
+    result = parse_command(processed_text)
+    print("Parsed: {}".format(result))
 
+    if result is None:
+        print("Res: I dont understand, can you repeat")
+
+    res = handle_command(result)
+    return {"typ": "command", "res": res}
+    
 def handle_informative_intent(topic: list[str], res):
     if topic[0] == "weather":
         print("Take action to get weather")
