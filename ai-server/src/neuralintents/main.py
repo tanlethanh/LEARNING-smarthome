@@ -214,12 +214,12 @@ class GenericAssistant(IAssistant):
         ints = self._predict_class(message)
         print('=>',ints)
         if len(ints) == 0:
-            return self.intent_methods.get('another')([], message)
+            return self.intent_methods.get('another')([],"", message)
         details = ints[0]['intent'].split(".")
 
         if details[0] in self.intent_methods.keys():
-            return self.intent_methods[details[0]](details[1:], self._get_response(ints, self.intents))
+            return self.intent_methods[details[0]](details[1:], self._get_response(ints, self.intents), message)
         else:
-            return self.intent_methods.get('another')([], message)
+            return self.intent_methods.get('another')([],"", message)
 
             return {"typ": "unknown", "res" : self._get_response(ints, self.intents)}
