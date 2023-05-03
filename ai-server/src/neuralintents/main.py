@@ -95,8 +95,6 @@ class GenericAssistant(IAssistant):
 
         self.classes = sorted(list(set(self.classes)))
 
-
-
         training = []
         output_empty = [0] * len(self.classes)
 
@@ -135,7 +133,7 @@ class GenericAssistant(IAssistant):
         sgd = gradient_descent_v2.SGD(learning_rate=0.001, momentum=0.9, nesterov=True)
         self.model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'])
 
-        self.hist = self.model.fit(np.array(train_x), np.array(train_y), epochs=200, batch_size=5, verbose=1)
+        self.hist = self.model.fit(np.array(train_x), np.array(train_y), epochs=500, batch_size=5, verbose=1)
 
     def save_model(self, model_name=None):
         
@@ -213,8 +211,9 @@ class GenericAssistant(IAssistant):
 
     def request(self, message):
         ints = self._predict_class(message)
+        details = ints[0]['intent'].split(".")
 
-        if ints[0]['intent'] in self.intent_methods.keys():
-            self.intent_methods[ints[0]['intent']]()
+        if details[0] in self.intent_methods.keys():
+            self.intent_methods[details[0]](details[1:])
         else:
             return self._get_response(ints, self.intents)
