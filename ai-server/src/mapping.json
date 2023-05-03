@@ -12,8 +12,8 @@
         "bed_room": "BR"
     },
     "devices": {
-        "light": "DEVICE_LIGHT",
-        "fan": "DEVICE_FAN",
-        "air_conditioner": "DEVICE_AIRCOND"
+        "light": "LIGHT",
+        "fan": "FAN",
+        "air_conditioner": "AIRCOND"
     }
 }

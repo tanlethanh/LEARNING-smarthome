@@ -1,5 +1,6 @@
 from nltk.stem import WordNetLemmatizer
 from nltk.parse import load_parser
+from nltk import data
 from nltk import Tree
 import json
 
@@ -7,26 +8,32 @@ print("-------- package imported --------")
 
 lemmartizer = WordNetLemmatizer()
 cp = load_parser(grammar_url='../grammar.fcfg')
+
 # print(cp.grammar())
 
-print("-------- parser loaded --------")
+rules = cp.grammar()._productions
+terminal_nodes = []
+for rule in rules:
+    ls = list(rule.rhs())
+    for node in ls:
+        if isinstance(node, str):
+            terminal_nodes += [" ".join(node.split("_"))]
+            
+accepted_token = ['_'.join(tok.split()) for tok in terminal_nodes]
 
-special_token = [
-    'turn on',
-    'turn off',
-    'living room',
-    'bed room',
-    'air conditioner'
-]
+print("-------- parser loaded --------")
 
 def processing_text(text: str):
     text = text.lower()
     text = ' '.join([lemmartizer.lemmatize(word) for word in text.split()])
 
-    for tok in special_token:
+    for tok in terminal_nodes:
         text = text.replace(tok, '_'.join(tok.split()))
-    
-    return text.split()    
+        
+    tokens = text.split()
+    filtered_tokens = [tok for tok in tokens if tok in accepted_token]
+
+    return filtered_tokens  
 
 def parse_command(tokens: list[str]):
     try:
