@@ -4,6 +4,12 @@ import tkinter as tk
 import threading
 import sys
 import os
+import sys
+import os
+import time
+from utils.speed_to_text import *
+from utils.openaiapi import *
+dir = os.path.dirname(__file__)
 
 dir = os.path.dirname(__file__)
 
@@ -19,65 +25,35 @@ class Assistant:
         self.recognizer = speech_recognition.Recognizer()
         self.speaker = tts.init()
         self.speaker.setProperty('rate', 150)
-        
         self.assistant = GenericAssistant(os.path.join(dir, "./intents.json"),intent_methods={"file": self.create_file})
         self.assistant.train_model()
-        
         self.assistant.save_model()
-        
-        self.root = tk.Tk()
-        self.label = tk.Label(text="Hello world", font=("Arial", 120, "bold"))
-        
-        self.label.pack()
-        
         threading.Thread(target=self.run_assistant).start()
         
-        self.root.mainloop()
-
     def create_file(self):
         print("Hello world")
 
     def run_assistant(self):
-        while True:
-            print("Reloop")
-            self.label.config(fg="black")
-            try:
-                print("\tStart")
-                with speech_recognition.Microphone() as mic:
-                    print("\tTry mic")
-                    self.recognizer.adjust_for_ambient_noise(mic, duration=1)
-                    audio = self.recognizer.listen(mic)
-                    
-                    text = self.recognizer.recognize_google(audio).lower()
-                    
-                    print("Tan: ", text);
-
-                    if "hello world" in text:
-                        self.label.config(fg="green")
-                        audio = self.recognizer.listen(mic)
-                        text = self.recognizer.recognize_google(audio)
-                        text = text.lower()
-                        
-                        print("Next Tan:", text)
-                        
-                        if text == "stop":
-                            self.speaker.say("Bye Sovi")
-                            self.speaker.runAndWait()
-                            self.speaker.stop()
-                            self.root.destroy()
-                            return sys.exit(0)
-                            
-                        elif text is not None:
-                            print("Here")
-                            response = self.assistant.request(text)
-                            if response is not None:
-                                print("Response", response)
-                                self.speaker.say(response)
-                    
-            except Exception as e:
-                print(e)
-                print("Something wrong")
-                continue
+        while 1:
+            text = get_audio()
+            if text.count(TERMINATE) > 0:
+                speak('Ok! See you later!')
+                sys.exit()
+            else:
+                res = self.assistant.request(text)
+                if res.get("typ") == 'greeting':
+                    speak("I am ready")
+                    while 1:
+                        command = get_audio()
+                        print('User: {}'.format(command))
+                        self.context += [{'role':'user', 'content': command}]
+                        if command.count(STOP) > 0:
+                            speak('Ok! You can call me later with {}'.format(WAKE))
+                            break
+                        res = self.assistant.request(command)
+                        self.context += [{'role':'assistant', 'content': res.get("res")}]
+                        print("Sovi:{}".format(res.get('res')))
+                        speak(res.get('res'))
 
 
 Assistant()

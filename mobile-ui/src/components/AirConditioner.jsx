@@ -11,39 +11,31 @@ import { Image, Modal, Text, TouchableOpacity, View } from "react-native";
 import { RadialSlider } from "react-native-radial-slider";
 import { addPadding, getPadding, removePadding } from "../utils/numberUtils";
 import { roomTypes, selectDevices } from "../states";
+import { useDebounce } from "../utils/debounce";
 import { useSelector } from "react-redux";
 import React, { useEffect, useRef, useState } from "react";
 
 function AirConditioner({ updateValue, device }) {
     const [schedule, setSchedule] = useState(false);
     const [chart, setChart] = useState(0);
-    const [timer, setTimer] = useState(false);
-    const [second, setSecond] = useState(0);
-    const [minute, setMinute] = useState(0);
-    const [hour, setHour] = useState(0);
-    const [value, setValue] = useState(device.value);
+
     const devicesMap = useSelector(selectDevices);
     const [position, setPosition] = useState(0);
+
+    const [date, setDate] = useState(new Date());
+
+    const localData = useRef(device.value);
+    const [data, setData] = useState(device.value);
+
+    const debouncedValue = useDebounce(data, 500);
+
     useEffect(() => {
-        updateValue(value);
-    }, [value]);
-
-    const handleSetTimer = (newValue) => {
-        const sValue = newValue % 60;
-        const mValue = Math.floor(newValue / 60) % 60;
-        const hValue = Math.floor(newValue / 3600);
-        const [chart, setChart] = useState(0);
-        setSecond(() => parseInt(sValue));
-        setMinute(() => parseInt(mValue));
-        setHour(() => parseInt(hValue));
-        setTimer(newValue != 0);
-    };
-
-    const [date, setDate2] = useState(new Date());
+        updateValue(Math.floor(device.value / 1000) * 1000 + debouncedValue);
+    }, [debouncedValue]);
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate;
-        setDate2(currentDate);
+        setDate(currentDate);
     };
 
     const showMode = (currentMode) => {
@@ -60,7 +52,6 @@ function AirConditioner({ updateValue, device }) {
     };
 
     const showTimepicker = () => {
-        console.log("Here");
         showMode("time");
     };
 
@@ -68,13 +59,13 @@ function AirConditioner({ updateValue, device }) {
         <View className="flex flex-col w-full h-full p-3 gap-1 items-center">
             <View className="w-[250px] h-[220px] items-center">
                 <RadialSlider
-                    value={device.value}
+                    value={data}
                     min={15}
                     max={30}
                     onChange={(newValue) => {
-                        updateValue(
-                            Math.floor(device.value / 1000) * 1000 + newValue,
-                        );
+                        console.log({ newValue });
+                        setData(newValue);
+                        localData.current = newValue;
                     }}
                     unit={"\u00b0C"}
                     subTitle={device.value % 1000 == 0 ? "Turn Off" : "Cooling"}
@@ -84,6 +75,7 @@ function AirConditioner({ updateValue, device }) {
                     thumbBorderColor="#b3e0ff"
                     isHideValue={device.value === 0}
                     isHideSlider={device.value === 0}
+                    isHideButtons={true}
                 />
             </View>
 
