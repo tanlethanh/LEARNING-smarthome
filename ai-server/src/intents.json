@@ -96,6 +96,49 @@
                 "Wrong"
             ],
             "context_set": ""
+        },
+        {
+            "tag": "informative.weather",
+            "patterns":[
+                "What the weather today",
+                "How the weather today",
+                "Sovi, can you tell me the weather",
+                "I wanna know the weather today"
+            ],
+            "responses": [
+                "Ok! let me see",
+                "Yes sir! I will check the weather now",
+                "Ok wait a minute"
+            ],
+            "context_set": ""
+        }, 
+        {
+            "tag": "informative.all_devices.on",
+            "patterns":[
+                "Can you tell me what devices are on",
+                "How many device are on",
+                "I wanna know what devices are on"
+            ],
+            "responses": [
+                "Ok! let me see",
+                "Yes sir! I will check the all devices now",
+                "Ok wait a minute"
+            ],
+            "context_set": ""
+        },
+        {
+            "tag": "informative.all_devices.off",
+            "patterns":[
+                "Can you tell me what devices are off",
+                "How many device are off",
+                "I wanna know what devices are off"
+            ],
+            "responses": [
+                "Ok! let me see",
+                "Yes sir! I will check the all devices now",
+                "Ok wait a minute"
+            ],
+            "context_set": ""
         }
     ]
 }
