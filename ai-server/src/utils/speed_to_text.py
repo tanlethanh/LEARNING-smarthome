@@ -30,6 +30,7 @@ def get_audio(duration = 0.2):
             # said = to_text(audio,prompt)
             # if said == ".":
             said = r.recognize_google(audio)
+            
     except Exception as e:
         # print(traceback.format_exc())
         print("Exception: " + str(e))

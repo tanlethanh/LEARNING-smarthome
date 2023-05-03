@@ -12,19 +12,19 @@ if not os.path.exists(model_dir):
 
 from neuralintents import GenericAssistant
 
-def handle_command_intent(topic: list[str], res):
-    print(res, "<--")
-    processed_text = processing_text(res)
+def handle_command_intent(topic: list[str], res, req):
+    print(req, "<--")
+    processed_text = processing_text(req)
     result = parse_command(processed_text)
     print("Parsed: {}".format(result))
 
     if result is None:
-        print("Res: I dont understand, can you repeat")
+        return {"typ": "command", "res": "I dont understand, can you repeat"}
 
     res = handle_command(result)
     return {"typ": "command", "res": res}
     
-def handle_informative_intent(topic: list[str], res):
+def handle_informative_intent(topic: list[str], res, req):
     if topic[0] == "weather":
         print("Take action to get weather")
     elif topic[0] == "all_devices":
@@ -32,12 +32,12 @@ def handle_informative_intent(topic: list[str], res):
     res = ""
     return {"typ": "informative", "res": ",".join(topic)}
 
-def handle_external_intent(topic: list[str], res):
-    res = get_openai_response(res, context)
+def handle_external_intent(topic: list[str], res, req):
+    res = get_openai_response(req, context)
     return {"typ": "external", "res": res}
 
 
-def handle_greeting_intent(topic: list[str], res):
+def handle_greeting_intent(topic: list[str], res, req):
     print("access greeting")
     return {"typ": "greeting", "res": res}
 

@@ -8,7 +8,11 @@
                 "Good day",
                 "Whats up",
                 "Hey",
-                "greetings"
+                "greetings",
+                "Hi tom",
+                "Hello tom",
+                "I need help, tom",
+                "Tom, are you here"
             ],
             "responses": [
                 "Hello!",
@@ -22,12 +26,14 @@
             "patterns": [
                 "cya",
                 "See you later",
-                "Goodbye",
+                "Good bye",
                 "I am Leaving",
                 "Have a Good day",
                 "bye",
                 "cao",
-                "see ya"
+                "see ya",
+                "that's it",
+                "that's enough, thanks"
             ],
             "responses": [
                 "Sad to see you go :(",
