@@ -24,9 +24,9 @@ def get_audio(duration = 0.2):
             # r.adjust_for_ambient_noise(source, duration=1)
             # import time
             # time.sleep(duration)
-            print("Sovi is listening...")
+            print("\tlistening...")
             audio = r.listen(source)
-            print('...listened')
+            print("\tlistened")
             # said = to_text(audio,prompt)
             # if said == ".":
             said = r.recognize_google(audio)
