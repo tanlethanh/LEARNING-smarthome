@@ -62,10 +62,17 @@ def handle_command(cmd):
     action_str = " ".join(cmd.get("Ac").split("_"))
     
     device = mapping["devices"].get(cmd.get("De"))
-    device_str = " ".join(cmd.get("De").split("_"))
+
+    device_str = "unknown"
+    if device is not None:
+        device_str = " ".join(cmd.get("De").split("_"))
 
     room = mapping["rooms"].get(cmd.get("Pos"))
-    room_str = " ".join(cmd.get("Pos").split("_"))
+    
+    room_str = "unknown"
+    if room_str is not None:
+        room_str = " ".join(cmd.get("Pos").split("_"))
+        
     name = "_".join([room, device])
 
     feeds = getAllFeeds()
