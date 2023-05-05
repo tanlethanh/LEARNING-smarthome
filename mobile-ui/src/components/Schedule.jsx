@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import { LOCAL_HOST,SCHE_PORT} from "@env";
 const ScheduleCard = (props) => {
     const {
         onDelete = (sche) => {
@@ -253,7 +254,7 @@ const addSchedule = async (sche) => {
     await axios
         .request({
             method: "post",
-            url: "http://172.20.5.236:8080/api/v1/scheduling?option",
+            url: `http://${LOCAL_HOST}:${SCHE_PORT}/api/v1/scheduling?option`,
             data: sche,
         })
         .then(
@@ -327,7 +328,7 @@ const Schedule = (props) => {
         await axios
             .request({
                 method: "delete",
-                url: `http://172.20.5.236:8080/api/v1/scheduling/${sche._id}`,
+                url: `http://${LOCAL_HOST}:${SCHE_PORT}/api/v1/scheduling/${sche._id}`,
             })
             .then(
                 (res) => {
@@ -345,7 +346,7 @@ const Schedule = (props) => {
             console.log(info);
             const result = await axios({
                 method: "get",
-                url: `http://172.20.5.236:8080/api/v1/scheduling?feed-id=${info.key}`,
+                url: `http://${LOCAL_HOST}:${SCHE_PORT}/api/v1/scheduling?feed-id=${info.key}`,
             })
                 .then(
                     (res) => {
