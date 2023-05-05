@@ -51,15 +51,9 @@
                 "I wanna turn on the light in the bedroom",
                 "Please turn on the light after 1 hours",
                 "Please turn on the light at 7pm",
-                "How many devices are on",
-                "Can I know how many devices are on",
-                "Please tell me how many devices are on",
                 "Turn off all devices in the living room",
-                "How many fan in the living room?",
                 "Can you adjust the air conditioner in living room to 28",
-                "Turn off the light in the living room",
-                "I wanna turn on the air conditioner in 28 from now to 6pm ",
-                "Do we have any fans are on"
+                "Turn off the light in the living room"
             ],
             "responses": [
                 "Here we go"
