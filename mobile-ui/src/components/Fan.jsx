@@ -30,7 +30,9 @@ function Fan({ updateValue, device }) {
     };
 
     const devicesMap = useSelector(selectDevices);
-
+    const humi = Object.values(devicesMap).find((ele) => {
+        return ele.room == device.room && ele.type == "HUMI";
+    });
     const showMode = (currentMode) => {
         DateTimePickerAndroid.open({
             value: date,
@@ -160,14 +162,7 @@ function Fan({ updateValue, device }) {
                         Humidity
                     </Text>
                     <Text className="font-bold text-gray-700">
-                        {
-                            // devicesMap.find((ele) => {
-                            //     return (
-                            //         ele.room == device.room &&
-                            //         ele.name == "HUMI"
-                            //     );
-                            // }).value
-                        }
+                        {humi != undefined ? humi.value : "No data"}
                     </Text>
                 </View>
             </View>

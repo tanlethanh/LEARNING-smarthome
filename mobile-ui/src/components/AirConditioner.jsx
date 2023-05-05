@@ -29,6 +29,10 @@ function AirConditioner({ updateValue, device }) {
 
     const debouncedValue = useDebounce(data, 500);
 
+    const temp = Object.values(devicesMap).find((ele) => {
+        return ele.room == device.room && ele.type == "TEMP";
+    });
+
     useEffect(() => {
         updateValue(Math.floor(device.value / 1000) * 1000 + debouncedValue);
     }, [debouncedValue]);
@@ -218,15 +222,7 @@ function AirConditioner({ updateValue, device }) {
                         Temp Indoor
                     </Text>
                     <Text className="font-bold text-gray-700">
-                        {/* {
-                            devicesMap.find((ele) => {
-                                console.log(ele.name);
-                                return (
-                                    ele.room == device.room &&
-                                    ele.type == "TEMP"
-                                );
-                            }).value
-                        } */}
+                        {temp != undefined ? temp.value : "No data"}
                     </Text>
                 </View>
                 <View className="bg-[#d9d9d9] shadow-md shadow-black w-[110px] h-[80px] items-center justify-center rounded-[20px]">
