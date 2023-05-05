@@ -23,6 +23,7 @@ app.use(morgan('tiny'))
 // Cors setup
 const corsOptions = {
     origin: '*',
+    methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],
     optionsSuccessStatus: 200
 }
 app.use(cors(corsOptions))
@@ -33,6 +34,7 @@ app.use(bodyParser.json())
 mongoose.set('strictQuery', false)
 
 mongoose.connect(process.env.SCHE_DB_URI).then((conn) => {
+    conn.connection.db.dropDatabase()
     return console.log('Database connected')
 }).catch((error) => {
     console.log('Database connection fail', error)

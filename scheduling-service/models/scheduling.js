@@ -28,6 +28,10 @@ const scheduling = new Schema({
         type: Date,
         required: true
     },
+    expired_time: {
+        type: Date,
+        require: false
+    },
     status: {
         type: String,
         enum: Object.values(SchedulingStatus),
