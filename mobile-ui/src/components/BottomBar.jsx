@@ -1,6 +1,12 @@
 import { Button } from "tamagui";
-import { HomeIcon, UserIcon } from "react-native-heroicons/solid";
-import { Image, TouchableOpacity, View } from "react-native";
+import {
+    CloudArrowDownIcon,
+    HomeIcon,
+    UserIcon,
+} from "react-native-heroicons/solid";
+import { Image, Text, TouchableOpacity, View } from "react-native";
+import { RefreshCcw } from "@tamagui/lucide-icons";
+import { loadFeeds } from "../states/init";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 
@@ -8,14 +14,20 @@ export default function BottomBar() {
     const navigation = useNavigation();
 
     return (
-        <View className="absolute bottom-0 h-[100px] w-full flex flex-row justify-center bg-[#EFF1F5]">
-            <TouchableOpacity className="h-24 absolute top-[-6px]">
-                <Image
-                    source={require("../assets/mic-icon.png")}
-                    className="flex-1 w-[null] h-[null]"
-                    resizeMode="contain"
-                ></Image>
-            </TouchableOpacity>
+        <View className="absolute bottom-0 h-[100px] w-full flex flex-row justify-center">
+            {/* <TouchableOpacity
+                className="h-[50px] w-[50px] flex absolute items-center justify-center rounded-full bg-slate-200 bg-black"
+                onPress={loadFeeds}
+            ></TouchableOpacity> */}
+            <Button
+                className="h-[50px] w-[50px] flex absolute items-center justify-center rounded-full z-30"
+                icon={<RefreshCcw size={28} fill={"white"} />}
+                circular={true}
+                onPress={() => {
+                    console.log("Refresh");
+                    loadFeeds();
+                }}
+            ></Button>
 
             <View className="flex flex-row justify-between w-screen absolute bottom-0 z-0">
                 <Image

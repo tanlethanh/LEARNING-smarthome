@@ -34,7 +34,9 @@ export default function App() {
 
     useEffect(() => {
         (async () => {
+            console.log("Init App ...");
             await initAllDevice();
+            console.log("Loaded");
             setDeviceLoaded(true);
         })();
     }, []);
