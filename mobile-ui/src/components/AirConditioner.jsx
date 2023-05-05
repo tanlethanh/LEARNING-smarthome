@@ -14,6 +14,8 @@ import { roomTypes, selectDevices } from "../states";
 import { useDebounce } from "../utils/debounce";
 import { useSelector } from "react-redux";
 import React, { useEffect, useRef, useState } from "react";
+import { ClockIcon, CogIcon, PowerIcon } from "react-native-heroicons/outline";
+import { Schedule } from "./Schedule";
 
 function AirConditioner({ updateValue, device }) {
     const [schedule, setSchedule] = useState(false);
@@ -36,6 +38,22 @@ function AirConditioner({ updateValue, device }) {
     useEffect(() => {
         updateValue(Math.floor(device.value / 1000) * 1000 + debouncedValue);
     }, [debouncedValue]);
+// import PowerIcon
+
+    const [auto, setAuto] = useState(0);
+    const [value, setValue] = useState(0);
+
+    useEffect(() => {
+        setValue(device.value);
+    }, [device.value]);
+    useEffect(() => {
+        updateValue(value);
+    }, [value]);
+    const handleToggleAuto = () => {
+        setAuto(!auto);
+    };
+
+
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate;
@@ -58,7 +76,6 @@ function AirConditioner({ updateValue, device }) {
     const showTimepicker = () => {
         showMode("time");
     };
-
     return (
         <View className="flex flex-col w-full h-full p-3 gap-1 items-center">
             <View className="w-[250px] h-[220px] items-center">
@@ -242,28 +259,10 @@ function AirConditioner({ updateValue, device }) {
                     </Text>
                 </View>
             </View>
-            {schedule == 1 && (
-                <View className="flex flex-col items-center justify-center gap-1">
-                    <Button
-                        onPress={() => {
-                            showDatepicker();
-                        }}
-                        title="Show time picker!"
-                        backgroundColor={"#cccccc"}
-                    >
-                        Date
-                    </Button>
-                    <Button
-                        onPress={() => {
-                            showTimepicker();
-                        }}
-                        title="Show time picker!"
-                        backgroundColor={"#cccccc"}
-                    >
-                        Time
-                    </Button>
-                    <Text>Schedule: {date.toLocaleString()}</Text>
-                </View>
+            {schedule == 1 ? (
+                <Schedule />
+            ) : (
+                <></>
             )}
             {chart == 1 && (
                 <View>
